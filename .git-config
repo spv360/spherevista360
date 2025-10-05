@@ -1,0 +1,34 @@
+# Git Global Configuration
+
+[user]
+    name = Juhi
+    email = dpjkkd@gmail.com
+
+[init]
+    defaultBranch = main
+
+# Optional recommended settings you can uncomment and customize:
+
+# [color]
+#     ui = auto
+
+# [core]
+#     editor = code --wait
+#     autocrlf = input
+#     excludesfile = ~/.gitignore_global
+
+# [pull]
+#     rebase = false
+
+# [push]
+#     default = simple
+
+# [alias]
+#     st = status
+#     co = checkout
+#     br = branch
+#     ci = commit
+#     lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+
+# [credential]
+#     helper = cache --timeout=3600
