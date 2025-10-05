@@ -6,8 +6,8 @@ tags: ["Inflation", "Emerging Markets", "Rates", "2025"]
 seo_title: "Global Inflation 2025: What It Means for EM Investors"
 seo_description: "A clear view of inflation dynamics in 2025 and how they affect equity and bond opportunities in emerging markets."
 publish: true
-image: "https://images.unsplash.com/photo-1604594849809-dfedbc827105?w=800&h=500&fit=crop"
-image_caption: "Photo by Ibrahim Boran on Unsplash"
+image: "https://images.unsplash.com/photo-1604594849809-dfedbc827105?auto=format&fit=crop&w=800&h=500&q=80"
+alt: "Inflation graph illustration – Finance"
 ---
 
 Inflation remains uneven across regions. Some EMs benefit from commodities; others face currency and input-cost pressures.

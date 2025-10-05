@@ -6,8 +6,8 @@ tags: ["Elections", "Policy", "Geopolitics"]
 seo_title: "Global Elections 2025: Why the World Is Watching"
 seo_description: "A concise view of the 2025 election map and how outcomes could influence trade, energy, and tech policy."
 publish: true
-image: "https://images.unsplash.com/photo-1470167290877-7d5d3446de4c?w=800&h=500&fit=crop"
-image_caption: "Photo by Element5 Digital on Unsplash"
+image: "https://images.unsplash.com/photo-1470167290877-7d5d3446de4c?auto=format&fit=crop&w=800&h=500&q=80"
+alt: "Ballot box and voting sticker – World"
 ---
 
 Elections can reset priorities. Energy security, trade, and data policy are likely pivot points in 2025.

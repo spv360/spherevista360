@@ -6,8 +6,8 @@ tags: ["Digital nomad", "Remote work", "Visas"]
 seo_title: "Digital Nomad Visas 2025: A Practical Guide"
 seo_description: "Explore countries offering digital-nomad visas in 2025, with tips on cost of living and internet reliability."
 publish: true
-image: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=800&h=500&fit=crop"
-image_caption: "Photo by Alex Wong on Unsplash"
+image: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=800&h=500&q=80"
+alt: "Remote worker with laptop by the sea – Travel"
 ---
 
 Remote work is now mainstream. Governments are courting talent with multi-month visas and simple requirements.

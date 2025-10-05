@@ -6,8 +6,8 @@ tags: ["Visa-free", "Budget travel", "2025 destinations"]
 seo_title: "Visa-Free Travel 2025: Affordable Destinations"
 seo_description: "Plan smart: discover budget-friendly visa-free destinations to visit in 2025 with minimal paperwork."
 publish: true
-image: "https://images.unsplash.com/photo-1502920917128-1aa500764cbd?w=800&h=500&fit=crop"
-image_caption: "Photo by Vicko Mozara on Unsplash"
+image: "https://images.unsplash.com/photo-1502920917128-1aa500764cbd?auto=format&fit=crop&w=800&h=500&q=80"
+alt: "Tropical beach and blue water – Travel"
 ---
 
 Visa friction can kill momentum. Here are traveler-friendly countries with easy entry and strong experiences.

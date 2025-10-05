@@ -6,8 +6,8 @@ tags: ["Cloud", "AWS", "Azure", "Google Cloud", "FinOps"]
 seo_title: "Cloud Pricing & AI in 2025: AWS vs Azure vs GCP"
 seo_description: "A practical comparison of pricing, performance, and AI services across AWS, Azure, and Google Cloud in 2025."
 publish: true
-image: "https://images.unsplash.com/photo-1518779578993-ec3579fee39f?w=800&h=500&fit=crop"
-image_caption: "Photo by Taylor Vick on Unsplash"
+image: "https://images.unsplash.com/photo-1518779578993-ec3579fee39f?auto=format&fit=crop&w=800&h=500&q=80"
+alt: "Server racks and cloud infrastructure – Tech"
 ---
 
 Cloud selection is now about AI platforms as much as compute price. Multi-cloud guardrails help teams avoid lock-in and outages.

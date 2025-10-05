@@ -6,8 +6,8 @@ tags: ["US India trade", "Supply chain", "Partnerships"]
 seo_title: "US–India Trade 2025: Supply Chains & Tech Partnerships"
 seo_description: "Why US–India trade ties are strengthening in 2025—from supply chains to capital and technology."
 publish: true
-image: "https://images.unsplash.com/photo-1520975916090-3105956dac38?w=800&h=500&fit=crop"
-image_caption: "Photo by Frank McKenna on Unsplash"
+image: "https://images.unsplash.com/photo-1520975916090-3105956dac38?auto=format&fit=crop&w=800&h=500&q=80"
+alt: "US India trade handshake – World"
 ---
 
 From semiconductors to services, US–India ties are deepening as companies diversify supply chains and talent.

@@ -6,8 +6,8 @@ tags: ["Startups", "Funding", "Venture Capital"]
 seo_title: "Startup Funding 2025: What Investors Want"
 seo_description: "From AI infra to fintech workflows, see the sectors attracting capital and how to prepare your raise in 2025."
 publish: true
-image: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=800&h=500&fit=crop"
-image_caption: "Photo by Austin Distel on Unsplash"
+image: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=800&h=500&q=80"
+alt: "Startup team reviewing charts – Business"
 ---
 
 After a reset, capital is flowing to durable themes: AI infrastructure, security, and essential workflows.

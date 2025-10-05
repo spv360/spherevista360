@@ -6,8 +6,8 @@ tags: ["Generative AI", "Creator Tools", "Automation"]
 seo_title: "Top Generative AI Tools 2025: Create Faster, Better"
 seo_description: "A curated list of generative AI tools that help teams write, design, and edit video more efficiently in 2025."
 publish: true
-image: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=800&h=500&fit=crop"
-image_caption: "Photo by rawpixel on Unsplash"
+image: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=800&h=500&q=80"
+alt: "Generative AI interface on laptop – Tech"
 ---
 
 Generative AI has moved from novelty to daily utility. The best tools hide complexity and speed up real work.

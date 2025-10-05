@@ -6,8 +6,8 @@ tags: ["AI", "Investing", "FinTech", "2025"]
 seo_title: "AI Investing 2025: Smarter Portfolios and Signals"
 seo_description: "Discover how artificial intelligence is reshaping global investing in 2025—from research to portfolio automation."
 publish: true
-image: "https://images.unsplash.com/photo-1554224154-22dec7ec8818?w=800&h=500&fit=crop"
-image_caption: "Photo by Adeolu Eletu on Unsplash"
+image: "https://images.unsplash.com/photo-1554224154-22dec7ec8818?auto=format&fit=crop&w=800&h=500&q=80"
+alt: "AI investing concept – Finance"
 ---
 
 Artificial intelligence is no longer a fringe tool in finance—it’s the engine powering research, screening, and risk control.

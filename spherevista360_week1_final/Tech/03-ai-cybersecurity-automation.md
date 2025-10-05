@@ -6,8 +6,8 @@ tags: ["Cybersecurity", "AI", "Automation"]
 seo_title: "AI Cybersecurity 2025: Automation for Defense"
 seo_description: "Understand automated threats and how AI-assisted tooling can strengthen detection and response in 2025."
 publish: true
-image: "https://images.unsplash.com/photo-1556157382-97eda2d62296?w=800&h=500&fit=crop"
-image_caption: "Photo by Jefferson Santos on Unsplash"
+image: "https://images.unsplash.com/photo-1556157382-97eda2d62296?auto=format&fit=crop&w=800&h=500&q=80"
+alt: "Cybersecurity lock icon on screen – Tech"
 ---
 
 Automation cuts both ways. Attackers scale phishing and credential stuffing; defenders use AI to score risk and reduce alert fatigue.
