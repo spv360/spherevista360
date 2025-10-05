@@ -236,3 +236,19 @@ Check WordPress → Posts → Drafts — your content should appear!
 **Version:** 1.3.0  
 **License:** MIT  
 **Purpose:** Effortless, SEO-ready WordPress content publishing ✨
+
+## 💎 Pro Version
+Looking for more advanced features? Check out [SphereVista360 Pro](./PREMIUM_FEATURES.md):
+- 🤖 AI-powered content enhancement
+- 📊 Advanced SEO & Analytics
+- 🔄 Workflow automation
+- 🖼️ Advanced media handling
+- 🔒 Security & backup features
+- 📧 Premium support
+
+## ❤️ Support This Project
+If you find this tool useful, consider:
+- ⭐ Starring the repository
+- 💖 [Becoming a sponsor](https://github.com/sponsors/YOUR_USERNAME)
+- ☕ [Buying me a coffee](https://www.buymeacoffee.com/spherevista360)
+- 🤝 Contributing code or documentation
