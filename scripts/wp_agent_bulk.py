@@ -14,10 +14,12 @@ Features:
 - Command-line flags for flexibility
 """
 
-import os, sys, re, base64, requests, argparse, yaml
+import os, sys, re, base64, requests, argparse, yaml, hashlib
 from pathlib import Path
 from slugify import slugify
 import markdown as md
+from typing import Dict, List, Tuple
+from urllib.parse import urlparse
 
 SITE = os.getenv("WP_SITE", "https://spherevista360.com")
 USER = os.getenv("WP_USER", "EDITOR_USERNAME")
@@ -94,19 +96,124 @@ def upload_media_return_url(path: Path):
     resp = post_json(f"{API}/media", None, files=files)
     return resp.get("id"), resp.get("source_url")
 
-def pick_first_image(md_path, fm):
+from image_validator import find_best_image, ImageValidator
+
+def validate_remote_image(url: str, metadata: dict) -> Tuple[bool, List[str]]:
+    """Validate a remote image using our ImageValidator"""
+    try:
+        # Download image to temp file
+        response = requests.get(url, timeout=10)
+        response.raise_for_status()
+        
+        temp_dir = Path("temp_images")
+        temp_dir.mkdir(exist_ok=True)
+        
+        # Use URL filename or generate one
+        filename = Path(urlparse(url).path).name
+        if not filename:
+            filename = f"temp_{hashlib.md5(url.encode()).hexdigest()[:8]}.jpg"
+            
+        temp_path = temp_dir / filename
+        temp_path.write_bytes(response.content)
+        
+        # Enhanced metadata for validation
+        enhanced_metadata = {
+            'alt_text': metadata.get('alt', metadata.get('title', 'Content image')),
+            'title': metadata.get('title', 'Article image'),
+            'caption': metadata.get('caption', ''),
+            'description': metadata.get('description', metadata.get('alt', '')),
+            'source_url': url,
+            'license': 'Unsplash License' if 'unsplash.com' in url else 'Stock image'
+        }
+        
+        # Validate using our enhanced validator
+        validator = ImageValidator()
+        is_valid, messages = validator.validate_image(
+            image_path=temp_path,
+            category=metadata.get('category', 'World'),
+            keywords=metadata.get('keywords', []),
+            metadata=enhanced_metadata
+        )
+        
+        # Cleanup
+        temp_path.unlink()
+        return is_valid, messages
+        
+    except Exception as e:
+        return True, [f"Remote image validation skipped: {str(e)}"]  # More lenient
+
+def pick_first_image(md_path, fm, category=None, keywords=None):
+    """Enhanced image picker with validation"""
+    # If image is specified in front matter, validate and use it
     if (img := fm.get("image", "")) and img.startswith("http"):
-        return "remote", img
-    for ext in (".jpg", ".jpeg", ".png"):
-        c = md_path.with_suffix(ext)
-        if c.exists() and c.stat().st_size > 0:
-            return "local", c
+        # Prepare metadata for validation
+        metadata = {
+            'category': category or fm.get('category', 'World'),
+            'alt': fm.get('alt', fm.get('title', '')),
+            'title': fm.get('title', ''),
+            'keywords': keywords or []
+        }
+        
+        # Add keywords from tags and content
+        if fm.get("tags"):
+            metadata['keywords'].extend([t.lower() for t in fm["tags"]])
+        if fm.get("keywords"):
+            metadata['keywords'].extend([k.lower() for k in fm["keywords"]])
+        
+        # Validate remote image
+        is_valid, messages = validate_remote_image(img, metadata)
+        if is_valid:
+            print("✅ Remote image validated successfully:")
+            for msg in messages:
+                print(f"  • {msg}")
+            return "remote", img
+        else:
+            print("⚠️ Remote image validation failed:")
+            for msg in messages:
+                print(f"  • {msg}")
+            
+    # Try to find the most relevant local image
+    if best_img := find_best_image(md_path.parent, category or "World", keywords or []):
+        # Validate local image
+        validator = ImageValidator()
+        is_valid, messages = validator.validate_image(
+            image_path=best_img,
+            category=category or "World",
+            keywords=keywords or [],
+            metadata={
+                'alt_text': fm.get('alt', fm.get('title', '')),
+                'title': fm.get('title', ''),
+                'description': fm.get('excerpt', '')
+            }
+        )
+        
+        if is_valid:
+            print("✅ Local image validated successfully:")
+            for msg in messages:
+                print(f"  • {msg}")
+            return "local", best_img
+        else:
+            print("⚠️ Local image validation failed:")
+            for msg in messages:
+                print(f"  • {msg}")
+    
     return None, None
 
-def wrap_with_figure(url, alt="", caption=""):
+def wrap_with_figure(url, alt="", caption="", title=""):
+    # Escape quotes in alt and title attributes
     alt = alt.replace('"', "&quot;")
+    title = title.replace('"', "&quot;")
+    
+    # Build the HTML attributes
+    title_attr = f' title="{title}"' if title else ""
     cap = f"<figcaption>{caption}</figcaption>" if caption else ""
-    return f'<figure style="text-align:center;margin:1rem 0;"><img src="{url}" alt="{alt}" style="max-width:100%;height:auto;">{cap}</figure>'
+    
+    # Return the complete figure HTML
+    return (
+        f'<figure style="text-align:center;margin:1rem 0;">'
+        f'<img src="{url}" alt="{alt}"{title_attr} style="max-width:100%;height:auto;" loading="lazy">'
+        f'{cap}</figure>'
+    )
 
 def inject_after_first_h2(html, block):
     if not block: return html
@@ -154,7 +261,10 @@ def process(md_dir: Path, place_top=False, disable_image=False, force_publish=Fa
 
         embedded = ""
         if not disable_image:
-            kind, val = pick_first_image(p, fm)
+            # Extract keywords from title and excerpt
+            keywords = [word.lower() for word in re.findall(r'\w+', f"{title} {excerpt}")]
+            kind, val = pick_first_image(p, fm, category=cat, keywords=keywords)
+            
             if kind == "remote":
                 embedded = wrap_with_figure(val, alt=title, caption=fm.get("image_caption", ""))
             elif kind == "local":
