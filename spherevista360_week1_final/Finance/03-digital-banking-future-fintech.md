@@ -6,7 +6,7 @@ tags: ["Digital Banking", "FinTech", "Payments"]
 seo_title: "Digital Banking in 2025: Embedded Finance & Instant Payments"
 seo_description: "See how embedded finance, instant payments, and smarter onboarding define the next wave of digital banking."
 publish: true
-image: "https://images.unsplash.com/photo-1556741533-f6acd6477e9a?auto=format&fit=crop&w=800&h=500&q=80"
+image: "https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&h=900&q=80"
 alt: "Digital banking app on smartphone – Finance"
 ---
 

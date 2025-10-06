@@ -1,0 +1,71 @@
+{
+  "detection_indicators": [
+    "Unusual traffic patterns or spikes",
+    "Failed login attempts from multiple IPs",
+    "Suspicious file modifications",
+    "Unexpected admin users",
+    "Website defacement or content changes",
+    "Performance degradation",
+    "SEO spam or malicious redirects"
+  ],
+  "immediate_response": [
+    {
+      "step": 1,
+      "action": "Assess the situation",
+      "description": "Determine the scope and nature of the incident"
+    },
+    {
+      "step": 2,
+      "action": "Isolate affected systems",
+      "description": "Take compromised site offline if necessary"
+    },
+    {
+      "step": 3,
+      "action": "Preserve evidence",
+      "description": "Backup current state before making changes"
+    },
+    {
+      "step": 4,
+      "action": "Change all passwords",
+      "description": "Update WordPress, hosting, and database passwords"
+    },
+    {
+      "step": 5,
+      "action": "Scan for malware",
+      "description": "Run comprehensive security scans"
+    }
+  ],
+  "recovery_steps": [
+    {
+      "step": 1,
+      "action": "Restore from clean backup",
+      "description": "Use most recent verified clean backup"
+    },
+    {
+      "step": 2,
+      "action": "Update all software",
+      "description": "Ensure WordPress, plugins, and themes are current"
+    },
+    {
+      "step": 3,
+      "action": "Harden security",
+      "description": "Implement additional security measures"
+    },
+    {
+      "step": 4,
+      "action": "Monitor closely",
+      "description": "Increase monitoring for 30 days post-incident"
+    },
+    {
+      "step": 5,
+      "action": "Document lessons learned",
+      "description": "Update security procedures based on incident"
+    }
+  ],
+  "emergency_contacts": {
+    "hosting_provider": "Contact hosting support immediately",
+    "security_expert": "Consider hiring security consultant",
+    "legal_counsel": "If data breach involves personal information",
+    "law_enforcement": "For serious criminal activity"
+  }
+}

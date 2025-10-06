@@ -41,3 +41,26 @@ Thumbs.db
 # Git configuration
 .git-config
 *.git-credentials
+# WordPress credentials and sensitive files - SECURITY FIX
+scripts/wp-setup.sh
+scripts/wp-config.local.sh
+scripts/*.local.*
+**/*credentials*
+**/*.env.local
+**/config.local.*
+
+# API keys and tokens
+**/*api*key*
+**/*secret*
+**/*token*
+**/*password*
+
+# Backup files
+scripts/wp_agent_bulk.py.backup
+*.backup
+
+# Temporary files
+temp_images/
+**/.cache/
+*.log
+*.tmp

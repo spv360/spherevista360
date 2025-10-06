@@ -1,0 +1,52 @@
+
+// Security hardening for SphereVista360
+// Add these lines to your wp-config.php file
+
+// Disable file editing in WordPress admin
+define('DISALLOW_FILE_EDIT', true);
+
+// Disable file modifications
+define('DISALLOW_FILE_MODS', false); // Set to true in production
+
+// Force SSL for admin area
+define('FORCE_SSL_ADMIN', true);
+
+// Disable WordPress debug mode (set to false in production)
+define('WP_DEBUG', false);
+define('WP_DEBUG_LOG', false);
+define('WP_DEBUG_DISPLAY', false);
+
+// Increase memory limit if needed
+define('WP_MEMORY_LIMIT', '256M');
+
+// Set automatic update configuration
+define('WP_AUTO_UPDATE_CORE', true);
+
+// Disable XML-RPC (if not needed)
+add_filter('xmlrpc_enabled', '__return_false');
+
+// Remove WordPress version info
+remove_action('wp_head', 'wp_generator');
+
+// Disable pingbacks
+add_filter('xmlrpc_methods', function($methods) {
+    unset($methods['pingback.ping']);
+    return $methods;
+});
+
+// Security keys (generate new ones at https://api.wordpress.org/secret-key/1.1/salt/)
+// Replace existing AUTH_KEY, SECURE_AUTH_KEY, etc. with new ones
+
+// Database security
+define('DB_CHARSET', 'utf8mb4');
+define('DB_COLLATE', '');
+
+// Limit post revisions
+define('WP_POST_REVISIONS', 3);
+
+// Set cookie domain
+define('COOKIE_DOMAIN', '.spherevista360.com');
+
+// Additional security measures
+define('MEDIA_TRASH', true);
+define('EMPTY_TRASH_DAYS', 30);

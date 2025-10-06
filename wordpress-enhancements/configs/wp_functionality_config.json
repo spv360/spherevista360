@@ -1,0 +1,151 @@
+{
+  "menu": true,
+  "widgets": {
+    "popular_posts": {
+      "title": "Popular Articles",
+      "description": "Display trending content",
+      "type": "popular_posts"
+    },
+    "categories": {
+      "title": "Categories",
+      "description": "Browse by topic",
+      "type": "categories"
+    },
+    "recent_posts": {
+      "title": "Latest Updates",
+      "description": "Stay current with new content",
+      "type": "recent_posts"
+    },
+    "search": {
+      "title": "Search",
+      "description": "Find specific content",
+      "type": "search"
+    },
+    "social_links": {
+      "title": "Follow Us",
+      "description": "Connect on social media",
+      "type": "social_media"
+    }
+  },
+  "homepage": {
+    "hero_section": {
+      "title": "Explore the World of 360-Degree Visuals",
+      "subtitle": "Comprehensive insights on finance, technology, politics, travel, and global affairs",
+      "cta_text": "Start Exploring",
+      "cta_link": "/category/finance/"
+    },
+    "featured_categories": [
+      {
+        "name": "Finance",
+        "description": "Market analysis, investment trends, and economic insights",
+        "icon": "\ud83d\udcb0",
+        "link": "/category/finance/"
+      },
+      {
+        "name": "Technology",
+        "description": "AI developments, cybersecurity, and digital transformation",
+        "icon": "\ud83d\udcbb",
+        "link": "/category/tech/"
+      },
+      {
+        "name": "Politics",
+        "description": "Global elections, policy analysis, and governance trends",
+        "icon": "\ud83c\udfdb\ufe0f",
+        "link": "/category/politics/"
+      },
+      {
+        "name": "Travel",
+        "description": "Destination guides, visa information, and travel trends",
+        "icon": "\u2708\ufe0f",
+        "link": "/category/travel/"
+      }
+    ],
+    "latest_posts_count": 6,
+    "popular_posts_count": 5
+  },
+  "social_sharing": {
+    "config": {
+      "platforms": [
+        "twitter",
+        "linkedin",
+        "facebook",
+        "email"
+      ],
+      "position": "both",
+      "style": "buttons",
+      "show_counts": true
+    },
+    "buttons": {
+      "twitter": {
+        "name": "Twitter",
+        "icon": "\ud83d\udc26",
+        "url_template": "https://twitter.com/intent/tweet?text={title}&url={url}"
+      },
+      "linkedin": {
+        "name": "LinkedIn",
+        "icon": "\ud83d\udcbc",
+        "url_template": "https://www.linkedin.com/sharing/share-offsite/?url={url}"
+      },
+      "facebook": {
+        "name": "Facebook",
+        "icon": "\ud83d\udcd8",
+        "url_template": "https://www.facebook.com/sharer/sharer.php?u={url}"
+      },
+      "email": {
+        "name": "Email",
+        "icon": "\ud83d\udce7",
+        "url_template": "mailto:?subject={title}&body={url}"
+      }
+    }
+  },
+  "sitemap": {
+    "include": {
+      "posts": true,
+      "pages": true,
+      "categories": true,
+      "tags": false
+    },
+    "exclude": {
+      "posts": [],
+      "pages": [
+        "privacy-policy-3"
+      ],
+      "categories": []
+    },
+    "frequencies": {
+      "posts": "weekly",
+      "pages": "monthly",
+      "categories": "weekly"
+    },
+    "priorities": {
+      "homepage": 1.0,
+      "posts": 0.8,
+      "pages": 0.6,
+      "categories": 0.7
+    }
+  },
+  "performance": {
+    "caching": {
+      "page_cache": true,
+      "browser_cache": true,
+      "cache_duration": "1 week"
+    },
+    "compression": {
+      "gzip": true,
+      "images": "auto-optimize"
+    },
+    "lazy_loading": {
+      "images": true,
+      "iframes": true
+    },
+    "minification": {
+      "css": true,
+      "js": true,
+      "html": true
+    },
+    "cdn": {
+      "images": "recommended",
+      "static_files": "recommended"
+    }
+  }
+}

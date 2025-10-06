@@ -99,7 +99,41 @@ def upload_media_return_url(path: Path):
 from image_validator import find_best_image, ImageValidator
 
 def validate_remote_image(url: str, metadata: dict) -> Tuple[bool, List[str]]:
-    """Validate a remote image using our ImageValidator"""
+    """
+    Enhanced remote image validation with 404 handling and fallback URLs
+    """
+    validator = ImageValidator()
+    
+    # First, verify the URL is accessible
+    is_accessible, access_msg = validator.verify_image_url(url)
+    
+    if not is_accessible:
+        print(f"🔄 Original URL failed: {access_msg}")
+        
+        # Try to get fallback URLs for the category
+        category = metadata.get('category', 'World')
+        keywords = metadata.get('keywords', [])
+        fallback_urls = validator.get_multiple_fallback_urls(category, keywords, count=2)
+        
+        # Try each fallback URL
+        working_url = None
+        for i, fallback_url in enumerate(fallback_urls, 1):
+            is_fallback_ok, fallback_msg = validator.verify_image_url(fallback_url)
+            if is_fallback_ok:
+                working_url = fallback_url
+                print(f"✅ Using fallback URL #{i}: {working_url}")
+                break
+            else:
+                print(f"❌ Fallback URL #{i} also failed: {fallback_msg}")
+        
+        if not working_url:
+            return False, [f"All image URLs failed. Original: {access_msg}"]
+        
+        # Update the URL to use the working fallback
+        url = working_url
+        metadata['source_url'] = working_url
+        metadata['fallback_used'] = True
+    
     try:
         # Download image to temp file
         response = requests.get(url, timeout=10)
@@ -110,7 +144,7 @@ def validate_remote_image(url: str, metadata: dict) -> Tuple[bool, List[str]]:
         
         # Use URL filename or generate one
         filename = Path(urlparse(url).path).name
-        if not filename:
+        if not filename or len(filename) < 5:
             filename = f"temp_{hashlib.md5(url.encode()).hexdigest()[:8]}.jpg"
             
         temp_path = temp_dir / filename
@@ -123,11 +157,11 @@ def validate_remote_image(url: str, metadata: dict) -> Tuple[bool, List[str]]:
             'caption': metadata.get('caption', ''),
             'description': metadata.get('description', metadata.get('alt', '')),
             'source_url': url,
-            'license': 'Unsplash License' if 'unsplash.com' in url else 'Stock image'
+            'license': 'Unsplash License' if 'unsplash.com' in url else 'Stock image',
+            'fallback_used': metadata.get('fallback_used', False)
         }
         
         # Validate using our enhanced validator
-        validator = ImageValidator()
         is_valid, messages = validator.validate_image(
             image_path=temp_path,
             category=metadata.get('category', 'World'),
@@ -135,12 +169,23 @@ def validate_remote_image(url: str, metadata: dict) -> Tuple[bool, List[str]]:
             metadata=enhanced_metadata
         )
         
+        # Add success message about URL verification
+        if metadata.get('fallback_used'):
+            messages.insert(0, f"✅ Fallback image URL used successfully")
+        else:
+            messages.insert(0, f"✅ Original image URL verified")
+        
         # Cleanup
         temp_path.unlink()
         return is_valid, messages
         
     except Exception as e:
-        return True, [f"Remote image validation skipped: {str(e)}"]  # More lenient
+        # Don't be lenient anymore - if we've verified the URL works, this is a real error
+        error_msg = str(e)
+        if "404" in error_msg:
+            return False, [f"❌ Unexpected 404 error after URL verification: {error_msg}"]
+        else:
+            return False, [f"❌ Image download/validation failed: {error_msg}"]
 
 def pick_first_image(md_path, fm, category=None, keywords=None):
     """Enhanced image picker with validation"""

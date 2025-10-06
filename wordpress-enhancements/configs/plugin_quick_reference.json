@@ -1,0 +1,45 @@
+{
+  "essential_plugins": [
+    {
+      "slug": "wordpress-seo",
+      "name": "Yoast SEO",
+      "description": "Complete SEO solution"
+    },
+    {
+      "slug": "wp-smushit",
+      "name": "Smush",
+      "description": "Image compression and optimization"
+    },
+    {
+      "slug": "wordfence",
+      "name": "Wordfence Security",
+      "description": "Comprehensive security protection"
+    },
+    {
+      "slug": "updraftplus",
+      "name": "UpdraftPlus",
+      "description": "Backup and restoration"
+    },
+    {
+      "slug": "contact-form-7",
+      "name": "Contact Form 7",
+      "description": "Contact form builder"
+    },
+    {
+      "slug": "google-analytics-for-wordpress",
+      "name": "MonsterInsights",
+      "description": "Google Analytics integration"
+    }
+  ],
+  "installation_order": [
+    "1. Wordfence Security (CRITICAL)",
+    "2. UpdraftPlus (CRITICAL)",
+    "3. Yoast SEO",
+    "4. Smush",
+    "5. Contact Form 7",
+    "6. MonsterInsights"
+  ],
+  "wordpress_admin_url": "https://spherevista360.com/wp-admin/",
+  "plugin_installation_path": "Plugins \u2192 Add New",
+  "verification_command": "./verify_plugins.sh"
+}

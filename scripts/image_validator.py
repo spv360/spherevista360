@@ -283,6 +283,80 @@ class ImageValidator:
         
         return all_passed, messages
 
+    def verify_image_url(self, url: str) -> Tuple[bool, str]:
+        """
+        Verify if an image URL is accessible and returns valid image content
+        Returns: (is_accessible, message)
+        """
+        try:
+            # Make a HEAD request first to check if URL exists without downloading
+            response = requests.head(url, timeout=10, allow_redirects=True)
+            if response.status_code == 404:
+                return False, f"URL returns 404: {url}"
+            elif response.status_code >= 400:
+                return False, f"URL returns {response.status_code}: {url}"
+            
+            # Check if the content type is an image
+            content_type = response.headers.get('content-type', '').lower()
+            if not any(img_type in content_type for img_type in ['image/', 'jpeg', 'png', 'webp', 'jpg']):
+                return False, f"URL does not return image content: {content_type}"
+            
+            return True, f"URL verified: {response.status_code}"
+            
+        except requests.exceptions.RequestException as e:
+            return False, f"URL verification failed: {str(e)}"
+        except Exception as e:
+            return False, f"URL verification error: {str(e)}"
+
+    def get_multiple_fallback_urls(self, category: str, keywords: List[str] = None, count: int = 3) -> List[str]:
+        """
+        Get multiple fallback URLs to try in sequence
+        Returns a list of different Unsplash URLs for the same category
+        """
+        fallback_urls = []
+        
+        # Predefined working Unsplash photo IDs for different categories
+        category_photo_ids = {
+            "Finance": [
+                "1566492031773-4f4e44671db1",  # Business chart
+                "1590283603385-17ffb3a7f29f",  # Financial data
+                "1611974789855-9c2a0a7236a3"   # Business meeting
+            ],
+            "Tech": [
+                "1518709268805-4e9042af9f23",  # Code on screen
+                "1484807352052-23338990c6c6",  # Technology setup
+                "1487058792275-0ad4aaf24ca7"   # Computer workspace
+            ],
+            "World": [
+                "1506905925346-21bda4d32df4",  # Earth from space
+                "1559827260-ec8d3df693d8",  # World map
+                "1584464491033-06628f3a6b7b"   # Global connectivity
+            ],
+            "Travel": [
+                "1469474968028-56623f02e42e",  # Travel destination
+                "1436491865332-7a61a109cc05",  # Adventure
+                "1501594907352-04cda38ebc29"   # Vacation scene
+            ],
+            "Politics": [
+                "1541872705-1f85cc19c3a8",  # Government building
+                "1450477517-fd30b3f31c3c",  # Meeting room
+                "1571019614242-c5c5dee9f50b"   # Political discussion
+            ]
+        }
+        
+        # Get photo IDs for the category
+        photo_ids = category_photo_ids.get(category, category_photo_ids["World"])
+        
+        # Generate URLs using specific photo IDs (more reliable)
+        for photo_id in photo_ids[:count]:
+            url = f"https://images.unsplash.com/photo-{photo_id}?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&h=900&q=80"
+            fallback_urls.append(url)
+        
+        # Add a general fallback URL as last resort
+        fallback_urls.append("https://images.unsplash.com/photo-1557804506-669a67965ba0?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&h=900&q=80")
+        
+        return fallback_urls
+
 def find_best_image(folder_path: Path, category: str, keywords: List[str]) -> Optional[Path]:
     """Find most relevant image in folder"""
     validator = ImageValidator()
@@ -296,4 +370,4 @@ def find_best_image(folder_path: Path, category: str, keywords: List[str]) -> Op
                 best_score = score
                 best_image = img_path
     
-    return best_image
+        return best_image
