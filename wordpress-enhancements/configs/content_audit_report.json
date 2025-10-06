@@ -1,0 +1,58 @@
+{
+  "duplicate_groups": [],
+  "low_quality_items": [
+    {
+      "id": 298,
+      "title": "Blog",
+      "slug": "blog",
+      "word_count": 0,
+      "title_length": 4,
+      "has_excerpt": false,
+      "published_date": "2025-10-04T00:44:03",
+      "quality_score": 2,
+      "link": "https://spherevista360.com/blog/",
+      "type": "page",
+      "removal_reasons": [
+        "Low quality score: 2/8",
+        "Very short content: 0 words",
+        "Very short title: 4 characters"
+      ]
+    },
+    {
+      "id": 904,
+      "title": "Home",
+      "slug": "home-2",
+      "word_count": 436,
+      "title_length": 4,
+      "has_excerpt": true,
+      "published_date": "2025-10-04T00:44:03",
+      "quality_score": 6,
+      "link": "https://spherevista360.com/home-2/",
+      "type": "page",
+      "removal_reasons": [
+        "Very short title: 4 characters"
+      ]
+    }
+  ],
+  "total_items_for_removal": 2,
+  "removal_plan": [
+    {
+      "id": 298,
+      "title": "Blog",
+      "type": "page",
+      "reason": "Low quality score: 2/8; Very short content: 0 words; Very short title: 4 characters",
+      "quality_score": 2,
+      "keep_instead_id": null,
+      "keep_instead_title": null
+    },
+    {
+      "id": 904,
+      "title": "Home",
+      "type": "page",
+      "reason": "Very short title: 4 characters",
+      "quality_score": 6,
+      "keep_instead_id": null,
+      "keep_instead_title": null
+    }
+  ]
+}
