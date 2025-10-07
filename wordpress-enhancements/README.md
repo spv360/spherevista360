@@ -1,4 +1,7 @@
-# 🎯 WordPress Enhancement Tools - Core Production Suite
+# 🎯 WordPress Enhancement Tools - Core Production Sui### 📖 `SMART_PUBLISHER_GUIDE.md`
+**Location:** [scripts/SMART_PUBLISHER_GUIDE.md](scripts/SMART_PUBLISHER_GUIDE.md)
+
+Comprehensive guide covering:
 
 ## 🚀 Quick Start
 
@@ -92,7 +95,7 @@ Specialized tools are organized in the `archive/` folder by purpose:
 - ❌ **Don't use** - replaced by core tools
 - 📚 **Kept for reference** and potential feature extraction
 
-See `archive/README.md` for complete details.
+See [archive/README.md](archive/README.md) for complete details.
 
 ## �️ Setup & Configuration
 
@@ -183,7 +186,7 @@ python post_analyzer.py
 4. **Use `post_analyzer.py`** for cleanup and analysis
 5. **Check archive folders** for specialized needs
 6. **Follow safety confirmations** - they prevent accidents
-7. **Review documentation** in `SMART_PUBLISHER_GUIDE.md` for details
+7. **Review documentation** in [SMART_PUBLISHER_GUIDE.md](scripts/SMART_PUBLISHER_GUIDE.md) for details
 
 ## 🆘 Troubleshooting
 
@@ -210,9 +213,9 @@ python scripts/smart_publisher.py
 
 ## 📚 Documentation Structure
 
-- **`README.md`** (this file) - Main overview and quick start
-- **`scripts/SMART_PUBLISHER_GUIDE.md`** - Detailed user guide  
-- **`archive/README.md`** - Archive organization and specialized tools
+- **[README.md](README.md)** (this file) - Main overview and quick start
+- **[scripts/SMART_PUBLISHER_GUIDE.md](scripts/SMART_PUBLISHER_GUIDE.md)** - Detailed user guide  
+- **[archive/README.md](archive/README.md)** - Archive organization and specialized tools
 
 ---
 *Core Production Suite - Clean, Professional, Efficient* 🎯
