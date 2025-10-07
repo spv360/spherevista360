@@ -174,10 +174,11 @@ class PageCreator:
                 <h3>Browse by Category</h3>
                 <ul>
                     <li><a href="/category/finance/">Finance</a> - Market analysis, investment trends, and economic insights</li>
-                    <li><a href="/category/tech/">Technology</a> - AI developments, cybersecurity, and digital transformation</li>
+                    <li><a href="/category/technology/">Technology</a> - AI developments, cybersecurity, and digital transformation</li>
                     <li><a href="/category/politics/">Politics</a> - Global elections, policy analysis, and governance trends</li>
                     <li><a href="/category/travel/">Travel</a> - Destination guides, visa information, and travel insights</li>
                     <li><a href="/category/world/">World</a> - International relations and global developments</li>
+                    <li><a href="/category/entertainment/">Entertainment</a> - Movies, TV shows, celebrity news, and pop culture</li>
                 </ul>
                 
                 <h3>Browse by Date</h3>
@@ -216,10 +217,11 @@ class PageCreator:
                 <h3>Content Categories</h3>
                 <ul>
                     <li><a href="/category/finance/">Finance</a></li>
-                    <li><a href="/category/tech/">Technology</a></li>
+                    <li><a href="/category/technology/">Technology</a></li>
                     <li><a href="/category/politics/">Politics</a></li>
                     <li><a href="/category/travel/">Travel</a></li>
                     <li><a href="/category/world/">World</a></li>
+                    <li><a href="/category/entertainment/">Entertainment</a></li>
                 </ul>
                 
                 <h3>Legal & Policy</h3>
