@@ -10,10 +10,10 @@ import sys
 from pathlib import Path
 import re
 
-# Add wp_tools to path
-sys.path.append(str(Path(__file__).parent / 'wp_tools'))
+# Add wp_tools to path (adjust for new location)
+sys.path.append(str(Path(__file__).parent.parent / 'wp_tools'))
 
-def analyze_content_directory(content_dir="content_to_publish"):
+def analyze_content_directory(content_dir="../../content_to_publish"):
     """Analyze all content ready for publishing."""
     
     if not os.path.exists(content_dir):

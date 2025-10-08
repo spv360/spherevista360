@@ -1,0 +1,12 @@
+# WordPress Tools Requirements
+# Core dependencies for production-ready blog publishing
+
+requests>=2.25.0
+beautifulsoup4>=4.10.0
+markdown>=3.4.0
+pyyaml>=6.0.0
+python-slugify>=6.0.0
+
+# Optional for enhanced functionality
+Pillow>=8.0.0  # For image processing
+lxml>=4.6.0    # Better HTML parsing performance
