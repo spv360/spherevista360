@@ -1,0 +1,14 @@
+IMAGE VALIDATION REPORT
+==================================================
+
+Total posts analyzed: 1
+Posts with images: 1
+Average image score: 70.0%
+
+1. Streaming Gets Personal: How AI Recommenders Shape What You Watch
+   Images: 2
+   Score: 70.0%
+   Issues: 2
+     - Image 1: Missing alt text
+     - Image 2: Not accessible (https://images.unsplash.com/photo-1518709268805-4e9042af2176?auto=format&fit=crop&w=1600&h=900&q=80)
+
