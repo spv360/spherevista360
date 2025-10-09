@@ -7,8 +7,11 @@ Script to fix the 5 known broken links on spherevista360.com
 
 import sys
 import os
-sys.path.append('.')
-sys.path.append('./master_toolkit')
+from pathlib import Path
+
+# Add the project root to path
+project_root = Path(__file__).parent.parent.parent
+sys.path.append(str(project_root))
 
 from master_toolkit.validation.links import LinkValidator
 from master_toolkit.core.client import WordPressClient

@@ -6,7 +6,11 @@ Creates redirects for broken URLs using available WordPress methods
 """
 
 import sys
-sys.path.append('./master_toolkit')
+from pathlib import Path
+
+# Add the project root to path
+project_root = Path(__file__).parent.parent.parent
+sys.path.append(str(project_root))
 
 from master_toolkit.core.client import WordPressClient
 import requests

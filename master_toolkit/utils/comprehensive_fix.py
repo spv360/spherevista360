@@ -6,8 +6,11 @@ Fix broken links using the comprehensive validation system
 """
 
 import sys
-sys.path.append('.')
-sys.path.append('./master_toolkit')
+from pathlib import Path
+
+# Add the project root to path
+project_root = Path(__file__).parent.parent.parent
+sys.path.append(str(project_root))
 
 from master_toolkit.validation.comprehensive import ComprehensiveValidator
 from master_toolkit.core.client import WordPressClient
