@@ -19,5 +19,5 @@ Artists and studios win when discovery is fair and transparent.
 - Better evals beyond clicks
 
 **Related reading:**  
-- [Product Analytics in 2025](https://spherevista360.com/product-analytics-2025/)  
-- [On-Device AI vs Cloud AI](https://spherevista360.com/on-device-vs-cloud-ai-2025/)
+- [Product Analytics in 2025](https://spherevista360.com/product-analytics-in-2025-from-dashboards-to-decisions/)  
+- [On-Device AI vs Cloud AI](https://spherevista360.com/on-device-ai-vs-cloud-ai-where-each-wins-in-2025/)

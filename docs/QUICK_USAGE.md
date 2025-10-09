@@ -16,6 +16,12 @@ Quickly identifies and fixes broken links in your WordPress content using the in
 ```
 Runs complete website validation and applies all available fixes including SEO optimization, link validation, and content quality improvements.
 
+### Enhance Redirect Posts
+```bash
+./bin/enhance-redirects.sh
+```
+Upgrades redirect posts with professional styling, beautiful gradients, clear subheadings, and informative content explaining the page moves.
+
 ## ⚡ Easy Setup
 
 ### Option 1: Run the Setup Script
@@ -26,6 +32,7 @@ This will add the `bin/` directory to your PATH so you can run the commands from
 ```bash
 fix-links.sh
 comprehensive-fix.sh
+enhance-redirects.sh
 ```
 
 ### Option 2: Manual PATH Setup
@@ -39,6 +46,7 @@ Run scripts directly without setup:
 ```bash
 ./bin/fix-links.sh
 ./bin/comprehensive-fix.sh
+./bin/enhance-redirects.sh
 ```
 
 ## 🎯 Professional Organization

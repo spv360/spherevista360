@@ -39,6 +39,7 @@ if echo "$PATH" | grep -q "$BIN_DIR"; then
     echo "Available commands:"
     echo "  fix-links.sh         - Fix broken links in website content"
     echo "  comprehensive-fix.sh - Run comprehensive validation and fixing"
+    echo "  enhance-redirects.sh - Enhance redirect posts with professional styling"
     echo ""
 else
     echo "Would you like to add the bin/ directory to your PATH? (y/n)"
@@ -57,6 +58,7 @@ else
         echo "Available commands after setup:"
         echo "  fix-links.sh         - Fix broken links in website content"
         echo "  comprehensive-fix.sh - Run comprehensive validation and fixing"
+        echo "  enhance-redirects.sh - Enhance redirect posts with professional styling"
         echo ""
     else
         echo "Setup cancelled. You can run scripts directly:"
@@ -70,6 +72,7 @@ echo "🎯 Manual Usage:"
 echo "Without PATH setup, you can always run:"
 echo "  ./bin/fix-links.sh"
 echo "  ./bin/comprehensive-fix.sh"
+echo "  ./bin/enhance-redirects.sh"
 echo ""
 echo "Or add this project's bin/ to PATH manually:"
 echo "  export PATH=\"$BIN_DIR:\$PATH\""

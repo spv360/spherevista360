@@ -7,6 +7,7 @@ SEO validation and optimization utilities for WordPress content.
 import re
 from typing import Dict, List, Any, Optional
 from urllib.parse import urlparse
+from bs4 import BeautifulSoup
 
 from ..core import WordPressClient, WordPressAPIError
 from ..utils import print_success, print_error, print_warning
@@ -360,4 +361,288 @@ class SEOValidator:
         elif score >= 60:
             return 'D'
         else:
+            return 'F'
+
+    def add_meta_description(self, post_id: int, meta_description: str = None, dry_run: bool = False) -> Dict[str, Any]:
+        """Add or update meta description for a post."""
+        try:
+            post = self.wp.get_post(post_id, context='edit')
+            
+            result = {
+                'post_id': post_id,
+                'post_title': post.get('title', {}).get('rendered', 'Untitled')
+            }
+            
+            # Check if meta description already exists
+            current_meta = post.get('meta', {})
+            existing_desc = current_meta.get('_yoast_wpseo_metadesc', '')
+            
+            if existing_desc and not meta_description:
+                result['message'] = 'Post already has meta description'
+                result['current_meta_description'] = existing_desc
+                return result
+            
+            # Generate meta description if not provided
+            if not meta_description:
+                content = post.get('content', {}).get('rendered', '')
+                from bs4 import BeautifulSoup
+                soup = BeautifulSoup(content, 'html.parser')
+                text = soup.get_text()
+                
+                # Extract first paragraph or first 155 characters
+                paragraphs = text.split('\n\n')
+                if paragraphs and len(paragraphs[0]) > 50:
+                    meta_description = paragraphs[0][:155].strip()
+                else:
+                    meta_description = text[:155].strip()
+                
+                # Add ellipsis if truncated
+                if len(text) > 155:
+                    meta_description += '...'
+            
+            # Validate the meta description
+            validation = self.validate_meta_description(meta_description)
+            if validation['issues']:
+                meta_description = meta_description[:160]  # Truncate if too long
+            
+            result['new_meta_description'] = meta_description
+            
+            if dry_run:
+                result['message'] = f'Would set meta description: {meta_description[:50]}...'
+                return result
+            
+            # Update post meta
+            meta_updates = {
+                '_yoast_wpseo_metadesc': meta_description
+            }
+            
+            update_data = {'meta': meta_updates}
+            self.wp.update_post(post_id, update_data)
+            
+            result.update({
+                'success': True,
+                'message': 'Successfully added meta description'
+            })
+            
+            return result
+            
+        except Exception as e:
+            return {
+                'post_id': post_id,
+                'success': False,
+                'error': str(e)
+            }
+
+    def add_social_meta_tags(self, post_id: int, dry_run: bool = False) -> Dict[str, Any]:
+        """Add social media meta tags (Open Graph, Twitter) to a post."""
+        try:
+            post = self.wp.get_post(post_id, context='edit')
+            
+            result = {
+                'post_id': post_id,
+                'post_title': post.get('title', {}).get('rendered', 'Untitled')
+            }
+            
+            current_meta = post.get('meta', {})
+            
+            # Prepare social meta updates
+            meta_updates = {}
+            
+            # Open Graph tags
+            og_title = current_meta.get('_yoast_wpseo_opengraph-title', '')
+            if not og_title:
+                meta_updates['_yoast_wpseo_opengraph-title'] = post.get('title', {}).get('rendered', '')
+            
+            og_description = current_meta.get('_yoast_wpseo_opengraph-description', '')
+            if not og_description:
+                meta_desc = current_meta.get('_yoast_wpseo_metadesc', '')
+                if meta_desc:
+                    meta_updates['_yoast_wpseo_opengraph-description'] = meta_desc
+                else:
+                    # Generate from content
+                    content = post.get('content', {}).get('rendered', '')
+                    from bs4 import BeautifulSoup
+                    soup = BeautifulSoup(content, 'html.parser')
+                    text = soup.get_text()[:155].strip()
+                    meta_updates['_yoast_wpseo_opengraph-description'] = text
+            
+            # Twitter Card tags
+            twitter_title = current_meta.get('_yoast_wpseo_twitter-title', '')
+            if not twitter_title:
+                meta_updates['_yoast_wpseo_twitter-title'] = post.get('title', {}).get('rendered', '')
+            
+            twitter_description = current_meta.get('_yoast_wpseo_twitter-description', '')
+            if not twitter_description:
+                meta_desc = current_meta.get('_yoast_wpseo_metadesc', '')
+                if meta_desc:
+                    meta_updates['_yoast_wpseo_twitter-description'] = meta_desc
+                else:
+                    meta_updates['_yoast_wpseo_twitter-description'] = meta_updates.get('_yoast_wpseo_opengraph-description', '')
+            
+            result['meta_updates'] = meta_updates
+            
+            if not meta_updates:
+                result['message'] = 'Social meta tags already exist'
+                return result
+            
+            if dry_run:
+                result['message'] = f'Would add {len(meta_updates)} social meta tags'
+                return result
+            
+            # Update post
+            update_data = {'meta': meta_updates}
+            self.wp.update_post(post_id, update_data)
+            
+            result.update({
+                'success': True,
+                'message': f'Added {len(meta_updates)} social meta tags'
+            })
+            
+            return result
+            
+        except Exception as e:
+            return {
+                'post_id': post_id,
+                'success': False,
+                'error': str(e)
+            }
+
+    def add_schema_markup(self, post_id: int, schema_type: str = 'Article', dry_run: bool = False) -> Dict[str, Any]:
+        """Add structured data (schema.org) markup to a post."""
+        try:
+            post = self.wp.get_post(post_id, context='edit')
+            
+            result = {
+                'post_id': post_id,
+                'post_title': post.get('title', {}).get('rendered', 'Untitled'),
+                'schema_type': schema_type
+            }
+            
+            current_meta = post.get('meta', {})
+            
+            # Check if schema already exists
+            existing_schema = current_meta.get('_yoast_wpseo_schema_article_type', '')
+            if existing_schema:
+                result['message'] = f'Schema markup already exists: {existing_schema}'
+                return result
+            
+            # Prepare schema updates
+            meta_updates = {
+                '_yoast_wpseo_schema_article_type': schema_type,
+                '_yoast_wpseo_schema_page_type': 'WebPage'
+            }
+            
+            # Add author schema if available
+            author_id = post.get('author', 0)
+            if author_id:
+                meta_updates['_yoast_wpseo_schema_author'] = str(author_id)
+            
+            result['meta_updates'] = meta_updates
+            
+            if dry_run:
+                result['message'] = f'Would add {schema_type} schema markup'
+                return result
+            
+            # Update post
+            update_data = {'meta': meta_updates}
+            self.wp.update_post(post_id, update_data)
+            
+            result.update({
+                'success': True,
+                'message': f'Added {schema_type} schema markup'
+            })
+            
+            return result
+            
+        except Exception as e:
+            return {
+                'post_id': post_id,
+                'success': False,
+                'error': str(e)
+            }
+
+    def bulk_seo_fixes(self, post_ids: List[int] = None, per_page: int = 10, dry_run: bool = False) -> Dict[str, Any]:
+        """Apply comprehensive SEO fixes to multiple posts."""
+        try:
+            if post_ids:
+                posts_to_check = [{'id': pid} for pid in post_ids]
+            else:
+                # Get all published posts
+                posts_to_check = self.wp.get_posts(
+                    status='publish',
+                    per_page=per_page,
+                    orderby='date',
+                    order='desc'
+                )
+            
+            results = {
+                'total_posts': len(posts_to_check),
+                'posts_processed': [],
+                'posts_fixed': [],
+                'fixes_applied': [],
+                'errors': []
+            }
+            
+            for post in posts_to_check:
+                post_id = post['id']
+                post_fixes = []
+                
+                try:
+                    # Fix meta description
+                    meta_result = self.add_meta_description(post_id, dry_run=dry_run)
+                    if meta_result.get('success', False):
+                        post_fixes.append('meta_description')
+                    
+                    # Fix social meta tags
+                    social_result = self.add_social_meta_tags(post_id, dry_run=dry_run)
+                    if social_result.get('success', False):
+                        post_fixes.append('social_meta')
+                    
+                    # Fix schema markup
+                    schema_result = self.add_schema_markup(post_id, dry_run=dry_run)
+                    if schema_result.get('success', False):
+                        post_fixes.append('schema_markup')
+                    
+                    # Optimize existing SEO
+                    seo_result = self.optimize_post_seo(post_id, dry_run=dry_run)
+                    if seo_result.get('success', False):
+                        post_fixes.append('seo_optimization')
+                    
+                    results['posts_processed'].append({
+                        'post_id': post_id,
+                        'fixes': post_fixes,
+                        'meta_result': meta_result,
+                        'social_result': social_result,
+                        'schema_result': schema_result,
+                        'seo_result': seo_result
+                    })
+                    
+                    if post_fixes:
+                        results['posts_fixed'].append(post_id)
+                        results['fixes_applied'].extend(post_fixes)
+                    
+                except Exception as e:
+                    results['errors'].append({
+                        'post_id': post_id,
+                        'error': str(e)
+                    })
+            
+            results.update({
+                'posts_fixed_count': len(results['posts_fixed']),
+                'total_fixes': len(results['fixes_applied']),
+                'errors_count': len(results['errors'])
+            })
+            
+            if dry_run:
+                results['message'] = f'Dry run: Would apply {results["total_fixes"]} SEO fixes to {results["posts_fixed_count"]} posts'
+            else:
+                results['message'] = f'Applied {results["total_fixes"]} SEO fixes to {results["posts_fixed_count"]} posts'
+            
+            return results
+            
+        except Exception as e:
+            return {
+                'success': False,
+                'error': str(e)
+            }
             return 'F'

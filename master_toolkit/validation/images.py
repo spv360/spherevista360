@@ -318,3 +318,270 @@ class ImageValidator:
                 'success': False,
                 'error': str(e)
             }
+
+    def check_featured_image(self, post_id: int) -> Dict[str, Any]:
+        """Check if post has a featured image."""
+        try:
+            post = self.wp.get_post(post_id)
+            has_featured_image = post.get('featured_media', 0) > 0
+            
+            result = {
+                'post_id': post_id,
+                'post_title': post.get('title', {}).get('rendered', 'Untitled'),
+                'has_featured_image': has_featured_image,
+                'featured_media_id': post.get('featured_media', 0)
+            }
+            
+            if has_featured_image:
+                # Get featured image details
+                try:
+                    media = self.wp.get_media(post['featured_media'])
+                    result['featured_image'] = {
+                        'id': media['id'],
+                        'url': media['source_url'],
+                        'alt_text': media.get('alt_text', ''),
+                        'title': media.get('title', {}).get('rendered', ''),
+                        'caption': media.get('caption', {}).get('rendered', '')
+                    }
+                except Exception:
+                    result['featured_image_error'] = 'Failed to get featured image details'
+            
+            return result
+            
+        except Exception as e:
+            return {
+                'post_id': post_id,
+                'error': str(e)
+            }
+
+    def set_featured_image_from_content(self, post_id: int, dry_run: bool = False) -> Dict[str, Any]:
+        """Set featured image from the first image found in post content."""
+        try:
+            post = self.wp.get_post(post_id, context='edit')
+            
+            # Check if already has featured image
+            if post.get('featured_media', 0) > 0:
+                return {
+                    'post_id': post_id,
+                    'message': 'Post already has a featured image',
+                    'featured_media_id': post['featured_media']
+                }
+            
+            # Get content and extract images
+            if 'raw' in post.get('content', {}):
+                content = post['content']['raw']
+            else:
+                content = post['content']['rendered']
+            
+            images = self.extract_images_from_content(content)
+            
+            if not images:
+                return {
+                    'post_id': post_id,
+                    'message': 'No images found in post content to use as featured image'
+                }
+            
+            # Use the first valid image
+            first_image = images[0]
+            image_url = first_image['src']
+            
+            result = {
+                'post_id': post_id,
+                'post_title': post.get('title', {}).get('rendered', 'Untitled'),
+                'image_url': image_url,
+                'image_alt': first_image.get('alt', '')
+            }
+            
+            if dry_run:
+                result['message'] = f'Would set featured image from: {image_url}'
+                return result
+            
+            # Upload image to WordPress media library
+            try:
+                # Download image
+                response = requests.get(image_url, timeout=30)
+                response.raise_for_status()
+                
+                # Extract filename
+                import os
+                from urllib.parse import urlparse
+                parsed_url = urlparse(image_url)
+                filename = os.path.basename(parsed_url.path) or f'featured_image_{post_id}.jpg'
+                
+                # Upload to WordPress
+                media_response = self.wp.upload_media(
+                    file_content=response.content,
+                    filename=filename,
+                    alt_text=first_image.get('alt', ''),
+                    caption=f'Featured image for post {post_id}'
+                )
+                
+                media_id = media_response['id']
+                
+                # Set as featured image
+                self.wp.update_post(post_id, {'featured_media': media_id})
+                
+                result.update({
+                    'success': True,
+                    'media_id': media_id,
+                    'message': f'Successfully set featured image from content'
+                })
+                
+                return result
+                
+            except requests.RequestException as e:
+                result.update({
+                    'success': False,
+                    'error': f'Failed to download image: {str(e)}'
+                })
+                return result
+            except Exception as e:
+                result.update({
+                    'success': False,
+                    'error': f'Failed to upload image: {str(e)}'
+                })
+                return result
+            
+        except Exception as e:
+            return {
+                'post_id': post_id,
+                'success': False,
+                'error': str(e)
+            }
+
+    def download_and_set_featured_image(self, post_id: int, image_url: str, dry_run: bool = False) -> Dict[str, Any]:
+        """Download an external image and set it as featured image."""
+        try:
+            post = self.wp.get_post(post_id)
+            
+            result = {
+                'post_id': post_id,
+                'post_title': post.get('title', {}).get('rendered', 'Untitled'),
+                'image_url': image_url
+            }
+            
+            # Check if already has featured image
+            if post.get('featured_media', 0) > 0:
+                result['message'] = 'Post already has a featured image'
+                result['featured_media_id'] = post['featured_media']
+                return result
+            
+            if dry_run:
+                result['message'] = f'Would download and set featured image: {image_url}'
+                return result
+            
+            # Download image
+            response = requests.get(image_url, timeout=30)
+            response.raise_for_status()
+            
+            # Extract filename
+            import os
+            from urllib.parse import urlparse
+            parsed_url = urlparse(image_url)
+            filename = os.path.basename(parsed_url.path) or f'featured_image_{post_id}.jpg'
+            
+            # Upload to WordPress
+            media_response = self.wp.upload_media(
+                file_content=response.content,
+                filename=filename,
+                alt_text=f'Featured image for {post.get("title", {}).get("rendered", "post")}',
+                caption=f'Featured image for post {post_id}'
+            )
+            
+            media_id = media_response['id']
+            
+            # Set as featured image
+            self.wp.update_post(post_id, {'featured_media': media_id})
+            
+            result.update({
+                'success': True,
+                'media_id': media_id,
+                'message': 'Successfully downloaded and set featured image'
+            })
+            
+            return result
+            
+        except requests.RequestException as e:
+            return {
+                'post_id': post_id,
+                'success': False,
+                'error': f'Failed to download image: {str(e)}'
+            }
+        except Exception as e:
+            return {
+                'post_id': post_id,
+                'success': False,
+                'error': str(e)
+            }
+
+    def bulk_fix_featured_images(self, post_ids: List[int] = None, per_page: int = 10, dry_run: bool = False) -> Dict[str, Any]:
+        """Bulk fix missing featured images for multiple posts."""
+        try:
+            if post_ids:
+                posts_to_check = [{'id': pid} for pid in post_ids]
+            else:
+                # Get all published posts
+                posts_to_check = self.wp.get_posts(
+                    status='publish',
+                    per_page=per_page,
+                    orderby='date',
+                    order='desc'
+                )
+            
+            results = {
+                'total_posts': len(posts_to_check),
+                'posts_processed': [],
+                'posts_fixed': [],
+                'posts_skipped': [],
+                'errors': []
+            }
+            
+            for post in posts_to_check:
+                post_id = post['id']
+                
+                try:
+                    # Check if post needs featured image
+                    check_result = self.check_featured_image(post_id)
+                    
+                    if check_result.get('has_featured_image', False):
+                        results['posts_skipped'].append({
+                            'post_id': post_id,
+                            'reason': 'Already has featured image'
+                        })
+                        continue
+                    
+                    # Try to set featured image from content
+                    fix_result = self.set_featured_image_from_content(post_id, dry_run=dry_run)
+                    
+                    results['posts_processed'].append({
+                        'post_id': post_id,
+                        'result': fix_result
+                    })
+                    
+                    if fix_result.get('success', False):
+                        results['posts_fixed'].append(post_id)
+                    
+                except Exception as e:
+                    results['errors'].append({
+                        'post_id': post_id,
+                        'error': str(e)
+                    })
+            
+            results.update({
+                'posts_fixed_count': len(results['posts_fixed']),
+                'posts_skipped_count': len(results['posts_skipped']),
+                'errors_count': len(results['errors'])
+            })
+            
+            if dry_run:
+                results['message'] = f'Dry run: Would fix {results["posts_fixed_count"]} posts'
+            else:
+                results['message'] = f'Fixed featured images for {results["posts_fixed_count"]} posts'
+            
+            return results
+            
+        except Exception as e:
+            return {
+                'success': False,
+                'error': str(e)
+            }

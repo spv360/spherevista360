@@ -19,5 +19,5 @@ The bottleneck shifts to review and integration—not hand work.
 - New roles for tool orchestration
 
 **Related reading:**  
-- [On-Device AI vs Cloud AI](https://spherevista360.com/on-device-vs-cloud-ai-2025/)  
+- [On-Device AI vs Cloud AI](https://spherevista360.com/on-device-ai-vs-cloud-ai-where-each-wins-in-2025/)  
 - [Open-Source AI in the Enterprise](https://spherevista360.com/open-source-models-2025/)

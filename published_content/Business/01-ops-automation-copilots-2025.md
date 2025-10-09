@@ -20,4 +20,4 @@ Start with one lane, measure cycle time, and expand.
 
 **Related reading:**  
 - [Open-Source AI in the Enterprise](https://spherevista360.com/open-source-models-2025/)  
-- [Product Analytics in 2025](https://spherevista360.com/product-analytics-2025/)
+- [Product Analytics in 2025](https://spherevista360.com/product-analytics-in-2025-from-dashboards-to-decisions/)
