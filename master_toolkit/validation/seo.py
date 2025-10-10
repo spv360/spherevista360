@@ -645,4 +645,202 @@ class SEOValidator:
                 'success': False,
                 'error': str(e)
             }
+    
+    def validate_structured_data(self, post_id: int) -> Dict[str, Any]:
+        """Validate structured data (JSON-LD) for a post."""
+        try:
+            post = self.wp.get_post(post_id)
+            post_title = post.get('title', {}).get('rendered', 'Untitled')
+            content = post.get('content', {}).get('rendered', '')
+            
+            result = {
+                'post_id': post_id,
+                'post_title': post_title,
+                'structured_data': {
+                    'json_ld_present': False,
+                    'article_schema': False,
+                    'breadcrumb_schema': False,
+                    'organization_schema': False,
+                    'schema_valid': False
+                },
+                'issues': [],
+                'recommendations': [],
+                'score': 0
+            }
+            
+            if not content:
+                result['issues'].append('No content to analyze')
+                return result
+            
+            # Parse HTML content
+            soup = BeautifulSoup(content, 'html.parser')
+            
+            # Check for JSON-LD script tags
+            json_ld_scripts = soup.find_all('script', type='application/ld+json')
+            
+            if not json_ld_scripts:
+                result['issues'].append('No JSON-LD structured data found')
+                result['recommendations'].append('Add Article schema markup for better search visibility')
+                return result
+            
+            result['structured_data']['json_ld_present'] = True
+            result['score'] += 25
+            
+            # Validate each JSON-LD script
+            schema_types_found = set()
+            
+            for script in json_ld_scripts:
+                try:
+                    import json
+                    schema_data = json.loads(script.string)
+                    
+                    # Handle single schema or array of schemas
+                    schemas = schema_data if isinstance(schema_data, list) else [schema_data]
+                    
+                    for schema in schemas:
+                        schema_type = schema.get('@type', '').lower()
+                        schema_types_found.add(schema_type)
+                        
+                        # Validate Article schema
+                        if schema_type == 'article':
+                            result['structured_data']['article_schema'] = True
+                            result['score'] += 30
+                            
+                            # Check required Article properties
+                            required_props = ['headline', 'author', 'datePublished']
+                            missing_props = []
+                            
+                            for prop in required_props:
+                                if prop not in schema:
+                                    missing_props.append(prop)
+                            
+                            if missing_props:
+                                result['issues'].append(f'Article schema missing properties: {", ".join(missing_props)}')
+                            else:
+                                result['score'] += 20
+                                result['structured_data']['schema_valid'] = True
+                        
+                        # Check for Breadcrumb schema
+                        elif schema_type == 'breadcrumblist':
+                            result['structured_data']['breadcrumb_schema'] = True
+                            result['score'] += 15
+                        
+                        # Check for Organization schema
+                        elif schema_type == 'organization':
+                            result['structured_data']['organization_schema'] = True
+                            result['score'] += 10
+                
+                except json.JSONDecodeError:
+                    result['issues'].append('Invalid JSON-LD format detected')
+                except Exception as e:
+                    result['issues'].append(f'Error parsing structured data: {str(e)}')
+            
+            # Generate recommendations based on findings
+            if not result['structured_data']['article_schema']:
+                result['recommendations'].append('Add Article schema for blog posts to enhance search results')
+            
+            if not result['structured_data']['breadcrumb_schema']:
+                result['recommendations'].append('Consider adding Breadcrumb schema for navigation context')
+            
+            if result['score'] >= 80:
+                result['status'] = 'excellent'
+                result['message'] = 'Excellent structured data implementation'
+            elif result['score'] >= 60:
+                result['status'] = 'good'
+                result['message'] = 'Good structured data with room for improvement'
+            elif result['score'] >= 40:
+                result['status'] = 'fair'
+                result['message'] = 'Basic structured data present, needs enhancement'
+            else:
+                result['status'] = 'poor'
+                result['message'] = 'Poor or missing structured data implementation'
+            
+            return result
+            
+        except Exception as e:
+            return {
+                'post_id': post_id,
+                'success': False,
+                'error': f'Error validating structured data: {str(e)}'
+            }
+    
+    def validate_canonical_tags(self, post_id: int) -> Dict[str, Any]:
+        """Validate canonical tag implementation for a post."""
+        try:
+            post = self.wp.get_post(post_id)
+            post_title = post.get('title', {}).get('rendered', 'Untitled')
+            post_url = post.get('link', '')
+            content = post.get('content', {}).get('rendered', '')
+            
+            result = {
+                'post_id': post_id,
+                'post_title': post_title,
+                'post_url': post_url,
+                'canonical': {
+                    'tag_present': False,
+                    'url_correct': False,
+                    'self_referencing': False
+                },
+                'issues': [],
+                'recommendations': [],
+                'score': 0
+            }
+            
+            if not content:
+                result['issues'].append('No content to analyze')
+                return result
+            
+            # Parse HTML content for canonical tag
+            soup = BeautifulSoup(content, 'html.parser')
+            canonical_tags = soup.find_all('link', rel='canonical')
+            
+            if not canonical_tags:
+                result['issues'].append('No canonical tag found')
+                result['recommendations'].append('Add canonical tag to prevent duplicate content issues')
+                return result
+            
+            result['canonical']['tag_present'] = True
+            result['score'] += 40
+            
+            if len(canonical_tags) > 1:
+                result['issues'].append(f'Multiple canonical tags found ({len(canonical_tags)})')
+                result['recommendations'].append('Remove duplicate canonical tags, keep only one')
+            
+            # Validate canonical URL
+            canonical_url = canonical_tags[0].get('href', '')
+            
+            if canonical_url:
+                result['canonical']['url_correct'] = True
+                result['score'] += 30
+                
+                # Check if canonical points to self (best practice)
+                if canonical_url == post_url or canonical_url.endswith(post.get('slug', '')):
+                    result['canonical']['self_referencing'] = True
+                    result['score'] += 30
+                    result['message'] = 'Canonical tag correctly implemented'
+                else:
+                    result['issues'].append('Canonical URL does not point to current page')
+                    result['recommendations'].append('Ensure canonical URL points to the current page URL')
+            else:
+                result['issues'].append('Canonical tag has no href attribute')
+                result['recommendations'].append('Add proper URL to canonical tag href attribute')
+            
+            # Grade the implementation
+            if result['score'] >= 90:
+                result['status'] = 'excellent'
+            elif result['score'] >= 70:
+                result['status'] = 'good'
+            elif result['score'] >= 40:
+                result['status'] = 'fair'
+            else:
+                result['status'] = 'poor'
+            
+            return result
+            
+        except Exception as e:
+            return {
+                'post_id': post_id,
+                'success': False,
+                'error': f'Error validating canonical tags: {str(e)}'
+            }
             return 'F'
