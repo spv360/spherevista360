@@ -316,29 +316,48 @@ python3 master_toolkit_cli.py seo-enhance  # Meta tag optimization
 
 ## 🛠️ **SphereVista360 Validation Tools**
 
-### **Available Commands**
+### **✅ Fully Supported by Our Tools**
 ```bash
-# Comprehensive site verification
-python3 master_toolkit_cli.py verify
-
-# SEO and content enhancement
-python3 master_toolkit_cli.py seo-enhance
-
-# Image management and optimization
-python3 master_toolkit_cli.py set-images
-
-# Full site validation
+# ✅ 1. Broken Links - LinkValidator
 python3 master_toolkit_cli.py validate
 
-# Help and available tools
-python3 master_toolkit_cli.py help
+# ✅ 2. Images Working & Relevant - ImageValidator  
+python3 master_toolkit_cli.py verify
+python3 master_toolkit_cli.py set-images
+
+# ✅ 3. Content Quality - ContentQualityEnhancer
+python3 master_toolkit_cli.py seo-enhance
+
+# ✅ 4. Meta Titles & Descriptions - SEOValidator
+python3 master_toolkit_cli.py seo-enhance
+
+# ✅ 5. Internal Linking - LinkValidator
+python3 master_toolkit_cli.py validate
 ```
 
-### **Master Toolkit Modules**
-- **Image Validator**: Checks image coverage, alt text, optimization
-- **SEO Validator**: Meta tags, titles, descriptions, structured data
-- **Link Validator**: Broken links, internal linking, redirects
-- **Content Quality Enhancer**: Content relevance, readability, structure
+### **🟡 Partially Supported**
+```bash
+# 🟡 6. Duplicate Content - Basic analysis available
+# 🟡 7. Canonical URLs - Basic URL validation  
+# 🟡 8. Indexation - Basic SEO validation
+```
+
+### **❌ External Tools Required**
+For these validations, use external tools:
+- **9. Sitemap & Robots.txt** - Manual check or SEO tools
+- **10. Mobile Friendliness** - Google Mobile-Friendly Test
+- **11. Page Speed** - PageSpeed Insights, Lighthouse  
+- **12. Structured Data** - Google Rich Results Test
+- **13. HTTPS Security** - SSL checker tools
+- **14. Navigation** - Manual UX review
+- **15. Pagination** - Manual technical review
+
+### **📊 Coverage Summary**
+- **✅ Fully Supported**: 5/15 (33%) - Core content and SEO
+- **🟡 Partially Supported**: 3/15 (20%) - Advanced SEO features  
+- **❌ Requires External Tools**: 7/15 (47%) - Technical validation
+
+> **📋 See [TOOLKIT_VALIDATION_ANALYSIS.md](TOOLKIT_VALIDATION_ANALYSIS.md) for detailed capability analysis**
 
 ---
 

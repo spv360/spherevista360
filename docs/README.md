@@ -8,6 +8,7 @@
 
 ### 🔧 **Implementation Guides**
 - **[WEBSITE_VALIDATION_CHECKLIST.md](WEBSITE_VALIDATION_CHECKLIST.md)** - Complete website health & SEO validation guide
+- **[TOOLKIT_VALIDATION_ANALYSIS.md](TOOLKIT_VALIDATION_ANALYSIS.md)** - Analysis of our tool capabilities vs validation requirements
 - **[REDIRECT_IMPLEMENTATION_GUIDE.md](REDIRECT_IMPLEMENTATION_GUIDE.md)** - Guide for implementing redirects
 - **[REFACTORING_SUMMARY.md](REFACTORING_SUMMARY.md)** - Code organization and refactoring details
 - **[CLEANUP_SUMMARY.md](CLEANUP_SUMMARY.md)** - File cleanup and organization summary
@@ -49,6 +50,7 @@ docs/
 - **Setup & Installation**: [../README.md](../README.md)
 - **Quick Commands**: [QUICK_USAGE.md](QUICK_USAGE.md)
 - **Website Validation**: [WEBSITE_VALIDATION_CHECKLIST.md](WEBSITE_VALIDATION_CHECKLIST.md)
+- **Tool Capabilities**: [TOOLKIT_VALIDATION_ANALYSIS.md](TOOLKIT_VALIDATION_ANALYSIS.md)
 - **Code Structure**: [REFACTORING_SUMMARY.md](REFACTORING_SUMMARY.md)
 - **File Organization**: [CLEANUP_SUMMARY.md](CLEANUP_SUMMARY.md)
 - **Historical Changes**: [historical/](historical/)
