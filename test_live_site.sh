@@ -84,7 +84,7 @@ echo "----------------------"
 check_url "$SITE_URL/" 200 "Homepage accessibility"
 check_url "$SITE_URL/privacy-policy/" 200 "Privacy Policy page"
 check_url "$SITE_URL/contact/" 200 "Contact page"
-check_url "$SITE_URL/sitemap.xml" 200 "XML Sitemap"
+check_url "$SITE_URL/sitemap.xml" 301 "XML Sitemap (redirects to sitemap_index.xml)"
 
 echo ""
 echo "⚡ Testing Performance:"
@@ -145,16 +145,21 @@ echo "------------------------------"
 
 # Check for security headers
 echo -n "Security headers present: "
-headers=$(curl -s -I "$SITE_URL/")
+headers=$(curl -s -I "$SITE_URL/" 2>/dev/null)
 security_headers=0
 
-if echo "$headers" | grep -q "X-Content-Type-Options"; then ((security_headers++)); fi
-if echo "$headers" | grep -q "X-Frame-Options\|X-XSS-Protection"; then ((security_headers++)); fi
+if echo "$headers" | grep -i -q "X-Content-Type-Options"; then ((security_headers++)); fi
+if echo "$headers" | grep -i -q "X-Frame-Options"; then ((security_headers++)); fi
+if echo "$headers" | grep -i -q "X-XSS-Protection"; then ((security_headers++)); fi
+if echo "$headers" | grep -i -q "Referrer-Policy"; then ((security_headers++)); fi
+if echo "$headers" | grep -i -q "Content-Security-Policy"; then ((security_headers++)); fi
 
-if [ $security_headers -ge 1 ]; then
+if [ $security_headers -ge 3 ]; then
     echo -e "${GREEN}✅ PASS${NC} ($security_headers headers found)"
+elif [ $security_headers -ge 1 ]; then
+    echo -e "${YELLOW}⚠️  PARTIAL${NC} ($security_headers headers found)"
 else
-    echo -e "${YELLOW}⚠️  NONE${NC}"
+    echo -e "${RED}❌ FAIL${NC} (no headers found)"
 fi
 
 echo ""
