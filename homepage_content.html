@@ -1,0 +1,478 @@
+<div class="homepage-wrapper">
+    <!-- If layout breaks, ensure Custom HTML block is the only Category Carousel -->
+    <style>
+    .category-carousel-container {
+        width: 100%;
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 0 20px;
+        overflow: hidden;
+    }
+    
+    .category-carousel-wrapper {
+        position: relative;
+        padding: 20px 0;
+        overflow: hidden;
+    }
+    
+    .category-carousel {
+        display: flex;
+        gap: 20px;
+        animation: scroll 35s linear infinite;
+        width: fit-content;
+    }
+    
+    .category-carousel:hover {
+        animation-play-state: paused;
+    }
+    
+    @keyframes scroll {
+        0% { transform: translateX(0); }
+        100% { transform: translateX(-50%); }
+    }
+    
+    .category-card {
+        position: relative;
+        min-width: 280px;
+        height: 200px;
+        border-radius: 12px;
+        overflow: hidden;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+    
+    .category-card:hover {
+        transform: translateY(-5px) scale(1.02);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+    }
+    
+    .category-card img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.4s ease;
+        display: block;
+    }
+    
+    .category-card:hover img { transform: scale(1.08); }
+    
+    .category-overlay {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.3) 70%, transparent 100%);
+        padding: 45px 15px 15px;
+        transition: all 0.3s ease;
+    }
+    
+    .category-card:hover .category-overlay {
+        background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.5) 80%, rgba(0,0,0,0.2) 100%);
+    }
+    
+    .category-name {
+        font-size: 20px;
+        font-weight: 700;
+        color: #ffffff;
+        margin: 0;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
+    }
+    
+    .category-description {
+        font-size: 12px;
+        color: #e8e8e8;
+        margin: 3px 0 0 0;
+        opacity: 0;
+        transform: translateY(8px);
+        transition: all 0.3s ease;
+    }
+    
+    .category-card:hover .category-description {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    
+    .category-fallback {
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 36px;
+    }
+    
+    @media (max-width: 768px) {
+        .category-card { min-width: 220px; height: 160px; }
+        .category-name { font-size: 16px; }
+        .category-carousel { gap: 15px; }
+    }
+    </style>
+    
+    <div class="category-carousel-container">
+        <div class="category-carousel-wrapper">
+            <div class="category-carousel" id="categoryCarousel">
+                <a href="/category/finance/" class="category-card">
+                    <img src="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=800&h=600&fit=crop&auto=format" alt="Finance" loading="lazy">
+                    <div class="category-fallback" style="display: none;">💰<div style="font-size: 14px; margin-top: 8px;">Finance</div></div>
+                    <div class="category-overlay"><h3 class="category-name">Finance</h3><p class="category-description">Banking & Markets</p></div>
+                </a>
+                <a href="/category/technology/" class="category-card">
+                    <img src="https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=800&h=600&fit=crop&auto=format" alt="Technology" loading="lazy" >
+                    <div class="category-fallback" style="display: none;">💻<div style="font-size: 14px; margin-top: 8px;">Technology</div></div>
+                    <div class="category-overlay"><h3 class="category-name">Technology</h3><p class="category-description">AI & Innovation</p></div>
+                </a>
+                <a href="/category/business/" class="category-card">
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&h=600&fit=crop&auto=format" alt="Business" loading="lazy" >
+                    <div class="category-fallback" style="display: none;">📊<div style="font-size: 14px; margin-top: 8px;">Business</div></div>
+                    <div class="category-overlay"><h3 class="category-name">Business</h3><p class="category-description">Strategy & Growth</p></div>
+                </a>
+                <a href="/category/economy/" class="category-card">
+                    <img src="https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=800&h=600&fit=crop&auto=format" alt="Economy" loading="lazy" >
+                    <div class="category-fallback" style="display: none;">📈<div style="font-size: 14px; margin-top: 8px;">Economy</div></div>
+                    <div class="category-overlay"><h3 class="category-name">Economy</h3><p class="category-description">Markets & Trade</p></div>
+                </a>
+                <a href="/category/entertainment/" class="category-card">
+                    <img src="https://images.unsplash.com/photo-1489599735734-79b4dfe3b22a?w=800&h=600&fit=crop&auto=format" alt="Entertainment" loading="lazy" >
+                    <div class="category-fallback" style="display: none;">🎬<div style="font-size: 14px; margin-top: 8px;">Entertainment</div></div>
+                    <div class="category-overlay"><h3 class="category-name">Entertainment</h3><p class="category-description">Media & Culture</p></div>
+                </a>
+                <a href="/category/politics/" class="category-card">
+                    <img src="https://images.unsplash.com/photo-1529107386315-e1a2ed48a620?w=800&h=600&fit=crop&auto=format" alt="Politics" loading="lazy" >
+                    <div class="category-fallback" style="display: none;">🏛️<div style="font-size: 14px; margin-top: 8px;">Politics</div></div>
+                    <div class="category-overlay"><h3 class="category-name">Politics</h3><p class="category-description">Policy & Affairs</p></div>
+                </a>
+                <a href="/category/travel/" class="category-card">
+                    <img src="https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=800&h=600&fit=crop&auto=format" alt="Travel" loading="lazy" >
+                    <div class="category-fallback" style="display: none;">✈️<div style="font-size: 14px; margin-top: 8px;">Travel</div></div>
+                    <div class="category-overlay"><h3 class="category-name">Travel</h3><p class="category-description">Adventures</p></div>
+                </a>
+                <a href="/category/world-news/" class="category-card">
+                    <img src="https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&h=600&fit=crop&auto=format" alt="World News" loading="lazy" >
+                    <div class="category-fallback" style="display: none;">🌍<div style="font-size: 14px; margin-top: 8px;">World News</div></div>
+                    <div class="category-overlay"><h3 class="category-name">World News</h3><p class="category-description">Global Updates</p></div>
+                </a>
+                <!-- If layout breaks, ensure Custom HTML block is the only Duplicates for smooth scroll -->
+                <a href="/category/finance/" class="category-card">
+                    <img src="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=800&h=600&fit=crop&auto=format" alt="Finance" loading="lazy" >
+                    <div class="category-fallback" style="display: none;">💰<div style="font-size: 14px; margin-top: 8px;">Finance</div></div>
+                    <div class="category-overlay"><h3 class="category-name">Finance</h3><p class="category-description">Banking & Markets</p></div>
+                </a>
+                <a href="/category/technology/" class="category-card">
+                    <img src="https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=800&h=600&fit=crop&auto=format" alt="Technology" loading="lazy" >
+                    <div class="category-fallback" style="display: none;">💻<div style="font-size: 14px; margin-top: 8px;">Technology</div></div>
+                    <div class="category-overlay"><h3 class="category-name">Technology</h3><p class="category-description">AI & Innovation</p></div>
+                </a>
+                <a href="/category/business/" class="category-card">
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&h=600&fit=crop&auto=format" alt="Business" loading="lazy">
+                    <div class="category-fallback" style="display: none;">📊<div style="font-size: 14px; margin-top: 8px;">Business</div></div>
+                    <div class="category-overlay"><h3 class="category-name">Business</h3><p class="category-description">Strategy & Growth</p></div>
+                </a>
+                <a href="/category/economy/" class="category-card">
+                    <img src="https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=800&h=600&fit=crop&auto=format" alt="Economy" loading="lazy" >
+                    <div class="category-fallback" style="display: none;">📈<div style="font-size: 14px; margin-top: 8px;">Economy</div></div>
+                    <div class="category-overlay"><h3 class="category-name">Economy</h3><p class="category-description">Markets & Trade</p></div>
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const carousel = document.getElementById('categoryCarousel');
+        if (!carousel) return;
+        
+        carousel.addEventListener('mouseenter', function() {
+            this.style.animationPlayState = 'paused';
+        });
+        
+        carousel.addEventListener('mouseleave', function() {
+            this.style.animationPlayState = 'running';
+        });
+        
+        // More robust image error handling
+        const images = carousel.querySelectorAll('img');
+        images.forEach((img) => {
+            // Check if image loads successfully
+            img.addEventListener('load', function() {
+                // Image loaded successfully, ensure it's visible
+                this.style.display = 'block';
+                const fallback = this.nextElementSibling;
+                if (fallback && fallback.classList.contains('category-fallback')) {
+                    fallback.style.display = 'none';
+                }
+            });
+            
+            // Handle image load errors
+            img.addEventListener('error', function() {
+                console.log('Image failed to load:', this.src);
+                this.style.display = 'none';
+                const fallback = this.nextElementSibling;
+                if (fallback && fallback.classList.contains('category-fallback')) {
+                    fallback.style.display = 'flex';
+                }
+            });
+            
+            // If image is already loaded (cached), trigger load event
+            if (img.complete && img.naturalHeight !== 0) {
+                img.dispatchEvent(new Event('load'));
+            } else if (img.complete && img.naturalHeight === 0) {
+                // Image failed to load before page load
+                img.dispatchEvent(new Event('error'));
+            }
+        });
+    });
+    </script>
+    
+    <!-- If layout breaks, ensure Custom HTML block is the only Header Section -->
+    <style>
+    .home-header-section {
+        max-width: 1400px;
+        margin: 40px auto 40px;
+        padding: 0 20px;
+        text-align: center;
+    }
+    
+    .home-main-title {
+        font-family: 'Georgia', 'Times New Roman', serif;
+        font-size: 42px;
+        font-weight: 700;
+        color: #111827;
+        margin: 0 0 16px 0;
+        letter-spacing: -0.03em;
+    }
+    
+    .home-subtitle {
+        font-family: 'Inter', 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+        font-size: 17px;
+        color: #6b7280;
+        max-width: 700px;
+        margin: 0 auto;
+        line-height: 1.6;
+    }
+    </style>
+    
+    <div class="home-header-section">
+        <h1 class="home-main-title">SphereVista360: Tech Finance World</h1>
+        <p class="home-subtitle"><em>"Your gateway to technology, finance, and global insights"</em></p>
+    </div>
+    
+    <!-- If layout breaks, ensure Custom HTML block is the only Main Content Layout -->
+    <style>
+    .home-content-wrapper {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 0 20px;
+        display: grid;
+        grid-template-columns: 1fr 370px;
+        gap: 50px;
+        align-items: start;
+    }
+    
+    .main-content-area { min-width: 0; }
+    
+    .sidebar-area {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        gap: 40px;
+    }
+    
+    .sidebar-title {
+        font-size: 18px;
+        font-weight: 700;
+        color: #111827;
+        margin: 0 0 16px 0;
+        padding-bottom: 12px;
+        border-bottom: 2px solid #667eea;
+    }
+    
+    .rolling-posts {
+        position: relative;
+        height: 120px;
+        overflow: hidden;
+    }
+    
+    .post-item {
+        position: absolute;
+        width: 100%;
+        opacity: 0;
+        transform: translateY(20px);
+        animation: rollPosts 15s infinite linear;
+    }
+    
+    .post-item:nth-child(1) { animation-delay: 0s; }
+    .post-item:nth-child(2) { animation-delay: 3s; }
+    .post-item:nth-child(3) { animation-delay: 6s; }
+    .post-item:nth-child(4) { animation-delay: 9s; }
+    .post-item:nth-child(5) { animation-delay: 12s; }
+    
+    @keyframes rollPosts {
+        0% { opacity: 0; transform: translateY(20px); }
+        10% { opacity: 1; transform: translateY(0); }
+        18% { opacity: 1; transform: translateY(0); }
+        20% { opacity: 0; transform: translateY(-20px); }
+        100% { opacity: 0; transform: translateY(-20px); }
+    }
+    
+    .post-link {
+        display: block;
+        color: #374151;
+        text-decoration: none;
+        font-size: 14px;
+        line-height: 1.4;
+        padding: 8px 0;
+        transition: color 0.2s ease;
+        font-weight: 500;
+    }
+    
+    .post-link:hover { color: #667eea; }
+    
+    .topics-list { display: flex; flex-direction: column; gap: 12px; }
+    
+    .topic-item {
+        border-bottom: 1px solid #f3f4f6;
+        padding-bottom: 8px;
+    }
+    
+    .topic-item:last-child {
+        border-bottom: none;
+        padding-bottom: 0;
+    }
+    
+    .topic-link {
+        display: flex;
+        align-items: center;
+        color: #374151;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 500;
+        transition: color 0.2s ease;
+    }
+    
+    .topic-link:hover { color: #667eea; }
+    
+    .topic-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 24px;
+        height: 24px;
+        margin-right: 10px;
+        font-size: 14px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border-radius: 6px;
+        flex-shrink: 0;
+    }
+    
+    @media (max-width: 1024px) {
+        .home-content-wrapper {
+            grid-template-columns: 1fr;
+            gap: 40px;
+        }
+    }
+    </style>
+    
+    <div class="home-content-wrapper">
+        <div class="main-content-area">
+            [latest_posts posts_per_page="12"]
+        </div>
+        <aside class="sidebar-area">
+            <div class="most-viewed-sidebar">
+                <h3 class="sidebar-title">Most Viewed Posts</h3>
+                <div class="rolling-posts">
+                    <div class="post-item post-color-1">
+                        <a class="post-link" href="#"><span class="post-icon">🔥</span>Latest Tech Innovations in 2025</a>
+                    </div>
+                    <div class="post-item post-color-2">
+                        <a class="post-link" href="#"><span class="post-icon">💹</span>Global Finance Market Trends</a>
+                    </div>
+                    <div class="post-item post-color-3">
+                        <a class="post-link" href="#"><span class="post-icon">🤖</span>AI Revolution in Business</a>
+                    </div>
+                    <div class="post-item post-color-4">
+                        <a class="post-link" href="#"><span class="post-icon">₿</span>Cryptocurrency Investment Guide</a>
+                    </div>
+                    <div class="post-item post-color-5">
+                        <a class="post-link" href="#"><span class="post-icon">🌱</span>Sustainable Energy Solutions</a>
+                    </div>
+                </div>
+            </div>
+            
+            [trending_topics count="5"]
+            
+        </aside>
+    </div>
+    
+    <!-- Categories - Simple Text Layout -->
+    <style>
+    .bottom-categories-section {
+        max-width: 1400px;
+        margin: 60px auto 20px;
+        padding: 0 20px;
+        text-align: center;
+    }
+
+    .bottom-categories-title {
+        font-size: 24px;
+        font-weight: 700;
+        color: #111827;
+        text-align: center;
+        margin: 0 0 30px 0;
+        padding-bottom: 15px;
+        border-bottom: 3px solid #667eea;
+    }
+
+    .bottom-categories-list {
+        font-size: 16px;
+        color: #374151;
+        line-height: 1.6;
+        font-weight: 500;
+    }
+
+    .bottom-categories-list a {
+        color: #667eea;
+        text-decoration: none;
+        transition: color 0.2s ease;
+    }
+
+    .bottom-categories-list a:hover {
+        color: #5a67d8;
+        text-decoration: underline;
+    }
+
+    .category-separator {
+        color: #9ca3af;
+        margin: 0 8px;
+    }
+    </style>
+
+    <div class="bottom-categories-section">
+        <h2 class="bottom-categories-title">Discover Topics</h2>
+        <div class="bottom-categories-list">
+            <a href="/category/technology/">💻 Technology</a>
+            <span class="category-separator">|</span>
+            <a href="/category/finance/">💰 Finance</a>
+            <span class="category-separator">|</span>
+            <a href="/category/business/">📊 Business</a>
+            <span class="category-separator">|</span>
+            <a href="/category/entertainment/">🎬 Entertainment</a>
+            <span class="category-separator">|</span>
+            <a href="/category/politics/">🏛️ Politics</a>
+            <span class="category-separator">|</span>
+            <a href="/category/travel/">✈️ Travel</a>
+            <span class="category-separator">|</span>
+            <a href="/category/world/">🌍 World</a>
+            <span class="category-separator">|</span>
+            <a href="/category/world-news/">📰 World News</a>
+        </div>
+    </div>
+</div>
+<!-- /wp:html -->
