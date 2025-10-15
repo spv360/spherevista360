@@ -10,7 +10,7 @@ import os
 from pathlib import Path
 
 # Add the master toolkit to path
-sys.path.append(str(Path(__file__).parent / 'master_toolkit'))
+sys.path.append(str(Path(__file__).parent.parent))
 
 try:
     from master_toolkit.core import create_client, WordPressAPIError
