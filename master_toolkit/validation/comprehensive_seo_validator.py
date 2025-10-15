@@ -384,7 +384,7 @@ class ComprehensiveSiteValidator:
         print("📊 CONTENT SUMMARY")
         print("=" * 60)
         print(f"   📰 Total Posts: {self.results['content'].get('total_posts', 0)}")
-        print(f("   🖼️  Posts with Images: {self.results['content'].get('posts_with_images', 0)}")
+        print(f"   🖼️  Posts with Images: {self.results['content'].get('posts_with_images', 0)}")
         print(f"   📂 Active Categories: {self.results['content'].get('active_categories', 0)}")
         
         # Technical Summary

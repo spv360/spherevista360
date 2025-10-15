@@ -13,16 +13,16 @@ PASSWORD = 'R8sj tOZG 8ORr ntSZ XlPt qTE9'
 
 # Mapping of category slugs to their uploaded media IDs
 CATEGORY_IMAGES = {
-    'business': 2741,
-    'economy': 2742,
-    'entertainment': 2743,
-    'finance': 2744,
-    'politics': 2745,
-    'technology': 2746,
-    'top-stories': 2747,
-    'travel': 2748,
-    'world': 2749,
-    'world-news': 2750,
+    'business': 2967,
+    'economy': 2973,
+    'entertainment': 2968,
+    'finance': 2966,
+    'politics': 2970,
+    'technology': 2965,
+    'top-stories': 2974,
+    'travel': 2969,
+    'world': 2971,
+    'world-news': 2972,
 }
 
 def set_category_meta(cat_id, meta_key, meta_value):
