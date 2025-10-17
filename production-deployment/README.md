@@ -2,6 +2,8 @@
 
 A complete WordPress monetization toolkit with AdSense optimization, newsletter integration, and content management system.
 
+<!-- CI/CD Test Trigger - Testing automated workflows -->
+
 ## 📁 Production Structure
 
 ```
