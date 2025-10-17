@@ -1,0 +1,17 @@
+# .htaccess Redirect Rules for Broken URLs
+# Add these rules to your WordPress .htaccess file
+
+# Fix broken URLs with 301 redirects
+Redirect 301 /product-analytics-2025/ https://spherevista360.com/product-analytics-in-2025-from-dashboards-to-decisions/
+Redirect 301 /on-device-vs-cloud-ai-2025/ https://spherevista360.com/on-device-ai-vs-cloud-ai-where-each-wins-in-2025/
+Redirect 301 /tech-innovation-2025/ https://spherevista360.com/generative-ai-tools-shaping-tech-in-2025/
+Redirect 301 /data-privacy-future/ https://spherevista360.com/digital-banking-revolution-the-future-of-fintech/
+Redirect 301 /cloud-computing-evolution/ https://spherevista360.com/on-device-ai-vs-cloud-ai-where-each-wins-in-2025/
+
+# Alternative RewriteRule format (use one method or the other, not both)
+# RewriteEngine On
+# RewriteRule ^product-analytics-2025/?$ /product-analytics-in-2025-from-dashboards-to-decisions/ [R=301,L]
+# RewriteRule ^on-device-vs-cloud-ai-2025/?$ /on-device-ai-vs-cloud-ai-where-each-wins-in-2025/ [R=301,L]
+# RewriteRule ^tech-innovation-2025/?$ /generative-ai-tools-shaping-tech-in-2025/ [R=301,L]
+# RewriteRule ^data-privacy-future/?$ /digital-banking-revolution-the-future-of-fintech/ [R=301,L]
+# RewriteRule ^cloud-computing-evolution/?$ /on-device-ai-vs-cloud-ai-where-each-wins-in-2025/ [R=301,L]

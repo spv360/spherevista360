@@ -1,0 +1,41 @@
+User-agent: *
+Allow: /
+
+# Disallow empty date archives
+Disallow: /20*/
+Disallow: /*/20*/
+Disallow: /*/*/20*/
+
+# Disallow WordPress admin and login areas
+Disallow: /wp-admin/
+Disallow: /wp-login.php
+Disallow: /wp-register.php
+
+# Disallow WordPress includes and uploads (optional - remove if you want images indexed)
+Disallow: /wp-includes/
+Disallow: /wp-content/uploads/ (optional)
+
+# Disallow plugin and theme directories (optional)
+Disallow: /wp-content/plugins/
+Disallow: /wp-content/themes/
+
+# Disallow search results and feeds
+Disallow: /search/
+Disallow: /*?*
+Disallow: /*?s=*
+Disallow: /feed/
+Disallow: /comments/feed/
+
+# Disallow author archives (if not using them)
+Disallow: /author/
+
+# Disallow category/tag archives if they're not valuable (optional)
+# Disallow: /category/
+# Disallow: /tag/
+
+# Allow access to sitemap
+Allow: /sitemap.xml
+Allow: /sitemap_index.xml
+
+# Sitemap
+Sitemap: https://spherevista360.com/sitemap.xml
