@@ -55,7 +55,7 @@ class WordPressAPI:
                 return page
         return None
     
-    def update_page(self, page_id: int, content: str, title: Optional[str] = None) -> bool:
+    def update_page(self, page_id: int, content: str, title: Optional[str] = None) -> Optional[Dict]:
         """Update page content and optionally title"""
         update_data = {"content": content, "status": "publish"}
         if title:
@@ -68,11 +68,11 @@ class WordPressAPI:
         )
         
         if response.status_code == 200:
-            return True
+            return response.json()
         else:
             print(f"❌ Error updating page: {response.status_code}")
             print(response.text)
-            return False
+            return None
     
     def create_page(self, title: str, content: str, slug: Optional[str] = None) -> Optional[int]:
         """Create a new page"""
@@ -115,6 +115,42 @@ class WordPressAPI:
             params={"per_page": per_page, "page": page}
         )
         return response.json() if response.status_code == 200 else []
+    
+    def get_post(self, post_id: int) -> Optional[Dict]:
+        """Get a post by ID"""
+        response = requests.get(
+            f"{self.url}/wp-json/wp/v2/posts/{post_id}",
+            headers=self._headers
+        )
+        return response.json() if response.status_code == 200 else None
+    
+    def list_posts(self, per_page: int = 100, page: int = 1) -> List[Dict]:
+        """List all posts"""
+        response = requests.get(
+            f"{self.url}/wp-json/wp/v2/posts",
+            headers=self._headers,
+            params={"per_page": per_page, "page": page}
+        )
+        return response.json() if response.status_code == 200 else []
+    
+    def update_post(self, post_id: int, content: str, title: Optional[str] = None) -> Optional[Dict]:
+        """Update post content and optionally title"""
+        update_data = {"content": content, "status": "publish"}
+        if title:
+            update_data["title"] = title
+        
+        response = requests.post(
+            f"{self.url}/wp-json/wp/v2/posts/{post_id}",
+            headers=self._headers,
+            json=update_data
+        )
+        
+        if response.status_code == 200:
+            return response.json()
+        else:
+            print(f"❌ Error updating post: {response.status_code}")
+            print(response.text)
+            return None
 
 
 def read_content_file(filepath: str) -> str:
