@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Tracker Header Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
+    </style>
+</head>
+<body>
+    <!-- Live Stock Tracker Header -->
+    <div style="background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); color: white; padding: 20px 0; position: relative; overflow: hidden;">
+        <div style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
+            <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 20px;">
+                <div style="display: flex; align-items: center; gap: 15px;">
+                    <div style="font-size: 2em;">📈</div>
+                    <div>
+                        <h2 style="margin: 0; font-size: 1.5em; font-weight: 600;">Live Stock Tracker</h2>
+                        <div id="stock-last-update-header" style="font-size: 0.8em; opacity: 0.8; margin-top: 2px;">Loading market data...</div>
+                    </div>
+                </div>
+
+                <div id="stock-header-content" style="display: flex; gap: 20px; flex-wrap: wrap;">
+                    <div style="text-align: center; padding: 10px 15px; background: rgba(255,255,255,0.1); border-radius: 8px; backdrop-filter: blur(10px);">
+                        <div style="display: inline-block; width: 16px; height: 16px; border: 2px solid rgba(255,255,255,0.3); border-top: 2px solid white; border-radius: 50%; animation: spin 1s linear infinite;"></div>
+                        <div style="font-size: 0.8em; margin-top: 5px; opacity: 0.8;">Loading...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Animated background elements -->
+        <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; pointer-events: none;">
+            <div style="position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px); background-size: 50px 50px; animation: float 20s linear infinite;"></div>
+        </div>
+
+        <style>
+            @keyframes spin {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+            }
+
+            @keyframes float {
+                0% { transform: translate(0, 0) rotate(0deg); }
+                100% { transform: translate(-50px, -50px) rotate(360deg); }
+            }
+
+            .stock-header-item {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                padding: 8px 12px;
+                background: rgba(255,255,255,0.1);
+                border-radius: 6px;
+                backdrop-filter: blur(10px);
+                min-width: 80px;
+            }
+
+            .stock-header-symbol {
+                font-weight: 600;
+                font-size: 0.8em;
+                margin-bottom: 2px;
+            }
+
+            .stock-header-price {
+                font-size: 0.9em;
+                font-weight: 500;
+            }
+
+            .stock-header-change {
+                font-size: 0.7em;
+                margin-top: 1px;
+            }
+
+            .stock-header-change.positive {
+                color: #4ade80;
+            }
+
+            .stock-header-change.negative {
+                color: #f87171;
+            }
+
+            .stock-header-change.neutral {
+                color: rgba(255,255,255,0.7);
+            }
+
+            @media (max-width: 768px) {
+                .stock-header-item {
+                    min-width: 60px;
+                    padding: 6px 8px;
+                }
+
+                .stock-header-symbol {
+                    font-size: 0.7em;
+                }
+
+                .stock-header-price {
+                    font-size: 0.8em;
+                }
+
+                .stock-header-change {
+                    font-size: 0.6em;
+                }
+            }
+        </style>
+    </div>
+
+    <div style="padding: 20px; text-align: center;">
+        <h1>Stock Tracker Header Test</h1>
+        <p>This demonstrates the live stock tracker header that will appear at the top of your homepage.</p>
+    </div>
+
+    <style>
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .stock-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #f8f9fa;
+            transition: background-color 0.2s ease;
+        }
+
+        .stock-item:hover {
+            background-color: #f8f9fa;
+        }
+
+        .stock-item:last-child {
+            border-bottom: none;
+        }
+
+        .stock-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .stock-symbol {
+            font-weight: 600;
+            font-size: 0.9em;
+            color: #2c3e50;
+            margin-bottom: 2px;
+        }
+
+        .stock-name {
+            font-size: 0.8em;
+            color: #7f8c8d;
+        }
+
+        .stock-price {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+
+        .current-price {
+            font-weight: 600;
+            font-size: 1em;
+            color: #2c3e50;
+        }
+
+        .price-change.positive {
+            color: #27ae60;
+        }
+
+        .price-change.negative {
+            color: #e74c3c;
+        }
+
+        .price-change.neutral {
+            color: #7f8c8d;
+        }
+
+        .market-status {
+            text-align: center;
+            padding: 8px;
+            border-radius: 6px;
+            font-size: 0.8em;
+            font-weight: 500;
+            margin-top: 15px;
+        }
+
+        .market-open {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .market-closed {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+    </style>
+
+    <script>
+    class StockTracker {
+        constructor() {
+            this.stocks = [
+                { symbol: 'SPY', name: 'S&P 500 ETF' },
+                { symbol: 'QQQ', name: 'Nasdaq 100 ETF' },
+                { symbol: 'AAPL', name: 'Apple Inc.' },
+                { symbol: 'MSFT', name: 'Microsoft Corp.' }
+            ];
+            this.updateInterval = 5 * 60 * 1000; // 5 minutes
+            this.init();
+        }
+
+        async init() {
+            await this.updateStocks();
+            setInterval(() => this.updateStocks(), this.updateInterval);
+        }
+
+    async updateStocks() {
+        const headerContentDiv = document.getElementById('stock-header-content');
+        const headerLastUpdateDiv = document.getElementById('stock-last-update-header');
+
+        try {
+            // First try to get real data with timeout protection
+            const stockPromises = this.stocks.map(stock => this.fetchStockData(stock.symbol));
+            const stockData = await Promise.allSettled(stockPromises);
+
+            // Process results - use real data if available, fallback to mock
+            const processedData = stockData.map((result, index) => {
+                if (result.status === 'fulfilled') {
+                    return result.value;
+                } else {
+                    console.log(`API failed for ${this.stocks[index].symbol}, using mock data`);
+                    return this.getMockData(this.stocks[index].symbol);
+                }
+            });
+
+            const now = new Date();
+            const timeString = `Updated: ${now.toLocaleTimeString()}`;
+
+            if (headerLastUpdateDiv) headerLastUpdateDiv.textContent = timeString;
+
+            if (headerContentDiv) headerContentDiv.innerHTML = this.renderHeaderStocks(processedData);
+        } catch (error) {
+            console.error('Error updating stocks:', error);
+            // Fallback to all mock data
+            const mockData = this.stocks.map(stock => this.getMockData(stock.symbol));
+
+            const now = new Date();
+            const timeString = `Updated: ${now.toLocaleTimeString()} (Demo)`;
+
+            if (headerLastUpdateDiv) headerLastUpdateDiv.textContent = timeString;
+
+            if (headerContentDiv) headerContentDiv.innerHTML = this.renderHeaderStocks(mockData);
+        }
+    }        async fetchStockData(symbol) {
+            try {
+                // Add timeout to prevent hanging requests
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 second timeout
+
+                const response = await fetch(`https://query1.finance.yahoo.com/v8/finance/chart/${symbol}?range=1d&interval=1m`, {
+                    signal: controller.signal
+                });
+                clearTimeout(timeoutId);
+
+                const data = await response.json();
+
+                if (data.chart.result && data.chart.result[0]) {
+                    const result = data.chart.result[0];
+                    const meta = result.meta;
+
+                    // Get latest price and previous close
+                    const latestPrice = meta.regularMarketPrice;
+                    const previousClose = meta.previousClose || meta.chartPreviousClose;
+                    const change = latestPrice - previousClose;
+                    const changePercent = (change / previousClose) * 100;
+
+                    return {
+                        symbol: symbol,
+                        name: this.stocks.find(s => s.symbol === symbol).name,
+                        price: latestPrice,
+                        change: change,
+                        changePercent: changePercent,
+                        marketState: meta.marketState || 'CLOSED'
+                    };
+                }
+            } catch (error) {
+                console.log(`API request failed for ${symbol}:`, error.message);
+            }
+
+            // Fallback mock data
+            return this.getMockData(symbol);
+        }
+
+        getMockData(symbol) {
+            const basePrices = {
+                'SPY': 450, 'QQQ': 380, 'AAPL': 180, 'MSFT': 380
+            };
+
+            const basePrice = basePrices[symbol] || 100;
+            const change = (Math.random() - 0.5) * 10;
+            const changePercent = (change / basePrice) * 100;
+
+            return {
+                symbol: symbol,
+                name: this.stocks.find(s => s.symbol === symbol).name,
+                price: basePrice + change,
+                change: change,
+                changePercent: changePercent,
+                marketState: 'CLOSED'
+            };
+        }
+
+        renderStocks(stockData) {
+        const isMarketOpen = stockData.some(stock => stock.marketState === 'REGULAR');
+
+        let html = stockData.map(stock => {
+            const changeClass = stock.change > 0 ? 'positive' : stock.change < 0 ? 'negative' : 'neutral';
+            const changeSymbol = stock.change > 0 ? '↗' : stock.change < 0 ? '↘' : '→';
+
+            return `
+                <div class="stock-item">
+                    <div class="stock-info">
+                        <div class="stock-symbol">${stock.symbol}</div>
+                        <div class="stock-name">${stock.name}</div>
+                    </div>
+                    <div class="stock-price">
+                        <div class="current-price">$${stock.price.toFixed(2)}</div>
+                        <div class="price-change ${changeClass}">
+                            ${changeSymbol} ${Math.abs(stock.changePercent).toFixed(2)}%
+                        </div>
+                    </div>
+                </div>
+            `;
+        }).join('');
+
+        html += `<div class="market-status ${isMarketOpen ? 'market-open' : 'market-closed'}">
+            ${isMarketOpen ? '🟢 Markets Open' : '🔴 Markets Closed'}
+        </div>`;
+
+        return html;
+    }
+
+    renderHeaderStocks(stockData) {
+        const isMarketOpen = stockData.some(stock => stock.marketState === 'REGULAR');
+
+        let html = stockData.map(stock => {
+            const changeClass = stock.change > 0 ? 'positive' : stock.change < 0 ? 'negative' : 'neutral';
+            const changeSymbol = stock.change > 0 ? '+' : stock.change < 0 ? '' : '';
+
+            return `
+                <div class="stock-header-item">
+                    <div class="stock-header-symbol">${stock.symbol}</div>
+                    <div class="stock-header-price">$${stock.price.toFixed(2)}</div>
+                    <div class="stock-header-change ${changeClass}">
+                        ${changeSymbol}${stock.changePercent.toFixed(2)}%
+                    </div>
+                </div>
+            `;
+        }).join('');
+
+        // Add market status indicator
+        html += `<div class="stock-header-item" style="background: ${isMarketOpen ? 'rgba(74, 222, 128, 0.2)' : 'rgba(248, 113, 113, 0.2)'}; border: 1px solid ${isMarketOpen ? '#4ade80' : '#f87171'};">
+            <div style="font-size: 1.2em;">${isMarketOpen ? '🟢' : '🔴'}</div>
+            <div style="font-size: 0.7em; margin-top: 2px;">${isMarketOpen ? 'Open' : 'Closed'}</div>
+        </div>`;
+
+        return html;
+    }
+
+    renderError() {
+        return `
+            <div style="text-align: center; padding: 20px; color: #7f8c8d;">
+                <div style="font-size: 2em; margin-bottom: 10px;">📊</div>
+                <p>Unable to load stock data</p>
+                <p style="font-size: 0.9em;">Please check your connection</p>
+            </div>
+        `;
+    }
+
+    renderHeaderError() {
+        return `
+            <div class="stock-header-item" style="background: rgba(248, 113, 113, 0.2); border: 1px solid #f87171;">
+                <div style="font-size: 1.2em;">⚠️</div>
+                <div style="font-size: 0.7em; margin-top: 2px;">Error</div>
+            </div>
+        `;
+    }
+    }
+
+    // Initialize stock tracker when page loads
+    document.addEventListener('DOMContentLoaded', () => {
+        new StockTracker();
+    });
+    </script>
+</body>
+</html>

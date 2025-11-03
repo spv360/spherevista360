@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>State Income Tax Calculator - US Tax Calculator Suite</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../design-system.css">
+</head>
+<body>
+    <div class="container">
+        <div class="tool-container">
+            <div class="tool-header">
+                <h1>🏛️ State Income Tax Calculator</h1>
+                <p class="subtitle">Compare state income tax burdens across all 50 states and DC</p>
+                <div class="badge-container">
+                    <span class="badge">📊 State Comparison</span>
+                    <span class="badge">🗺️ All 50 States</span>
+                    <span class="badge">💰 Tax Savings</span>
+                    <span class="badge">📈 Rate Analysis</span>
+                </div>
+            </div>
+
+            <div class="tool-content">
+                <div class="calculator-grid">
+                    <div class="input-section">
+                        <h3>State Tax Calculation Inputs</h3>
+
+                        <div class="input-grid">
+                            <div class="input-group">
+                                <h4>🏛️ Select State</h4>
+                                <select id="state" class="input-field">
+                                    <option value="">Choose a state...</option>
+                                    <option value="AL">Alabama</option>
+                                    <option value="AK">Alaska</option>
+                                    <option value="AZ">Arizona</option>
+                                    <option value="AR">Arkansas</option>
+                                    <option value="CA">California</option>
+                                    <option value="CO">Colorado</option>
+                                    <option value="CT">Connecticut</option>
+                                    <option value="DE">Delaware</option>
+                                    <option value="DC">District of Columbia</option>
+                                    <option value="FL">Florida</option>
+                                    <option value="GA">Georgia</option>
+                                    <option value="HI">Hawaii</option>
+                                    <option value="ID">Idaho</option>
+                                    <option value="IL">Illinois</option>
+                                    <option value="IN">Indiana</option>
+                                    <option value="IA">Iowa</option>
+                                    <option value="KS">Kansas</option>
+                                    <option value="KY">Kentucky</option>
+                                    <option value="LA">Louisiana</option>
+                                    <option value="ME">Maine</option>
+                                    <option value="MD">Maryland</option>
+                                    <option value="MA">Massachusetts</option>
+                                    <option value="MI">Michigan</option>
+                                    <option value="MN">Minnesota</option>
+                                    <option value="MS">Mississippi</option>
+                                    <option value="MO">Missouri</option>
+                                    <option value="MT">Montana</option>
+                                    <option value="NE">Nebraska</option>
+                                    <option value="NV">Nevada</option>
+                                    <option value="NH">New Hampshire</option>
+                                    <option value="NJ">New Jersey</option>
+                                    <option value="NM">New Mexico</option>
+                                    <option value="NY">New York</option>
+                                    <option value="NC">North Carolina</option>
+                                    <option value="ND">North Dakota</option>
+                                    <option value="OH">Ohio</option>
+                                    <option value="OK">Oklahoma</option>
+                                    <option value="OR">Oregon</option>
+                                    <option value="PA">Pennsylvania</option>
+                                    <option value="RI">Rhode Island</option>
+                                    <option value="SC">South Carolina</option>
+                                    <option value="SD">South Dakota</option>
+                                    <option value="TN">Tennessee</option>
+                                    <option value="TX">Texas</option>
+                                    <option value="UT">Utah</option>
+                                    <option value="VT">Vermont</option>
+                                    <option value="VA">Virginia</option>
+                                    <option value="WA">Washington</option>
+                                    <option value="WV">West Virginia</option>
+                                    <option value="WI">Wisconsin</option>
+                                    <option value="WY">Wyoming</option>
+                                </select>
+                                <p class="input-description">Choose the state for tax calculation</p>
+                            </div>
+
+                            <div class="input-group">
+                                <h4>👤 Filing Status</h4>
+                                <select id="filing-status" class="input-field">
+                                    <option value="single">Single</option>
+                                    <option value="married-joint">Married Filing Jointly</option>
+                                    <option value="married-separate">Married Filing Separately</option>
+                                    <option value="head-household">Head of Household</option>
+                                </select>
+                                <p class="input-description">Your federal tax filing status</p>
+                            </div>
+
+                            <div class="input-group">
+                                <h4>💰 Federal AGI</h4>
+                                <input type="number" id="taxable-income" class="input-field" placeholder="75000" min="0" step="0.01">
+                                <p class="input-description">Your federal adjusted gross income</p>
+                            </div>
+
+                            <div class="input-group">
+                                <h4>📝 State Deductions</h4>
+                                <input type="number" id="deductions" class="input-field" placeholder="5000" min="0" step="0.01">
+                                <p class="input-description">State-specific deductions and exemptions</p>
+                            </div>
+                        </div>
+
+                        <div style="text-align: center; margin: 40px 0;">
+                            <button id="calculate-state-tax-btn" class="btn-primary">Calculate State Tax</button>
+                            <button id="reset-state-tax-btn" class="btn-secondary">Reset Calculator</button>
+                        </div>
+                    </div>
+
+                    <div class="results-section">
+                        <h3>State Tax Results</h3>
+
+                        <div id="results-container" class="results-content">
+                            <div class="results-grid">
+                                <div class="result-card">
+                                    <div class="result-label">Selected State</div>
+                                    <div class="result-value" id="selected-state">Not selected</div>
+                                </div>
+
+                                <div class="result-card">
+                                    <div class="result-label">Federal AGI</div>
+                                    <div class="result-value" id="federal-agi-result">$0</div>
+                                </div>
+
+                                <div class="result-card">
+                                    <div class="result-label">State Taxable Income</div>
+                                    <div class="result-value" id="state-taxable-result">$0</div>
+                                </div>
+
+                                <div class="result-card">
+                                    <div class="result-label">State Income Tax</div>
+                                    <div class="result-value" id="state-tax-result">$0</div>
+                                </div>
+
+                                <div class="result-card">
+                                    <div class="result-label">Effective State Tax Rate</div>
+                                    <div class="result-value" id="effective-rate-result">0.00%</div>
+                                </div>
+
+                                <div class="result-card">
+                                    <div class="result-label">After State Tax Income</div>
+                                    <div class="result-value" id="after-tax-result">$0</div>
+                                </div>
+                            </div>
+
+                            <div class="data-table-section">
+                                <h3>State Tax Comparison</h3>
+                                <p>Compare your tax burden across major states</p>
+                                <div class="data-table-container">
+                                    <table class="data-table" id="state-comparison-table">
+                                        <thead>
+                                            <tr>
+                                                <th>State</th>
+                                                <th>Tax Amount</th>
+                                                <th>Effective Rate</th>
+                                                <th>Tax Savings vs. Selected</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="state-comparison-body">
+                                            <tr>
+                                                <td colspan="4" class="empty-row">Calculate to see state comparison</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="export-section">
+                                <h3 style="margin-bottom: 16px;">Export Your State Tax Analysis</h3>
+                                <div class="export-buttons">
+                                    <button id="export-state-tax-json" class="export-btn">📄 Export JSON</button>
+                                    <button id="export-state-tax-pdf" class="export-btn">📊 Export PDF</button>
+                                    <button id="share-state-tax-results" class="export-btn">📤 Share Results</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="no-results" class="empty-state">
+                            <div class="empty-state-icon">📊</div>
+                            <h3>Ready to Compare State Taxes</h3>
+                            <p>Select a state and enter your federal AGI, then click "Calculate State Tax" to see how your tax burden compares across different states</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-section">
+                    <h3>Understanding State Income Taxes</h3>
+                    <p class="info-description">
+                        State income taxes vary significantly across the United States, with some states having no income tax at all.
+                        Understanding state tax rates can help with relocation decisions and tax planning.
+                    </p>
+
+                    <div class="features-grid">
+                        <div class="feature-card">
+                            <div class="feature-icon">🆓</div>
+                            <h4 class="feature-title">No Income Tax States</h4>
+                            <p class="feature-description">Nine states (Texas, Florida, Nevada, Washington, Wyoming, South Dakota, Alaska, Tennessee, and New Hampshire) have no state income tax.</p>
+                        </div>
+
+                        <div class="feature-card">
+                            <div class="feature-icon">📊</div>
+                            <h4 class="feature-title">Progressive vs. Flat Rates</h4>
+                            <p class="feature-description">Most states use progressive tax systems with multiple brackets, while others like Pennsylvania and Illinois use flat rates.</p>
+                        </div>
+
+                        <div class="feature-card">
+                            <div class="feature-icon">🏛️</div>
+                            <h4 class="feature-title">State-Specific Rules</h4>
+                            <p class="feature-description">Each state has unique deduction rules, credits, and special circumstances that can affect your tax liability.</p>
+                        </div>
+
+                        <div class="feature-card">
+                            <div class="feature-icon">💡</div>
+                            <h4 class="feature-title">Tax Planning Opportunities</h4>
+                            <p class="feature-description">Understanding state tax differences can help optimize your overall tax strategy, especially for high-income earners.</p>
+                        </div>
+                    </div>
+
+                    <div class="alert alert-info" style="margin-top: 24px;">
+                        <span class="alert-icon">ℹ️</span>
+                        <span>
+                            <strong>Disclaimer:</strong> This calculator provides estimates based on 2024 state income tax rates and brackets. State tax laws can be complex and may include additional taxes, credits, or special rules not covered here. This is not tax advice. Please consult a qualified tax professional for personalized advice. Rates and brackets may change.
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../../utilities.js"></script>
+    <script>
+        class StateTaxCalculator {
+            constructor() {
+                this.results = null;
+                this.tools = new SphereVistaTools();
+                this.initializeEventListeners();
+                this.setDefaultValues();
+            }
+
+            initializeEventListeners() {
+                const calculateBtn = document.getElementById('calculate-state-tax-btn');
+                const resetBtn = document.getElementById('reset-state-tax-btn');
+                const exportJsonBtn = document.getElementById('export-state-tax-json');
+                const exportPdfBtn = document.getElementById('export-state-tax-pdf');
+                const shareBtn = document.getElementById('share-state-tax-results');
+
+                calculateBtn.addEventListener('click', () => this.calculateStateTax());
+                resetBtn.addEventListener('click', () => this.resetCalculator());
+                exportJsonBtn.addEventListener('click', () => this.exportStateTaxJSON());
+                exportPdfBtn.addEventListener('click', () => this.exportStateTaxPDF());
+                shareBtn.addEventListener('click', () => this.shareStateTaxResults());
+            }
+
+            setDefaultValues() {
+                document.getElementById('taxable-income').value = '75000';
+                document.getElementById('deductions').value = '5000';
+            }
+
+            // State tax information (simplified for 2024)
+            getStateTaxInfo() {
+                return {
+                    AL: { name: "Alabama", rate: 0.05, brackets: [{ min: 0, max: Infinity, rate: 0.05 }] },
+                    AK: { name: "Alaska", rate: 0.00, brackets: [{ min: 0, max: Infinity, rate: 0.00 }] },
+                    AZ: { name: "Arizona", rate: 0.0259, brackets: [
+                        { min: 0, max: 29304, rate: 0.0259 },
+                        { min: 29304, max: 58609, rate: 0.0334 },
+                        { min: 58609, max: 87313, rate: 0.0417 },
+                        { min: 87313, max: 116037, rate: 0.0450 },
+                        { min: 116037, max: Infinity, rate: 0.0497 }
+                    ]},
+                    AR: { name: "Arkansas", rate: 0.037, brackets: [
+                        { min: 0, max: 23000, rate: 0.02 },
+                        { min: 23000, max: 45000, rate: 0.04 },
+                        { min: 45000, max: Infinity, rate: 0.047 }
+                    ]},
+                    CA: { name: "California", rate: 0.0797, brackets: [
+                        { min: 0, max: 10099, rate: 0.01 },
+                        { min: 10099, max: 23942, rate: 0.02 },
+                        { min: 23942, max: 37788, rate: 0.04 },
+                        { min: 37788, max: 52455, rate: 0.06 },
+                        { min: 52455, max: 66295, rate: 0.08 },
+                        { min: 66295, max: 349137, rate: 0.09 },
+                        { min: 349137, max: 698274, rate: 0.10 },
+                        { min: 698274, max: Infinity, rate: 0.11 }
+                    ]},
+                    CO: { name: "Colorado", rate: 0.044, brackets: [{ min: 0, max: Infinity, rate: 0.044 }] },
+                    CT: { name: "Connecticut", rate: 0.05, brackets: [
+                        { min: 0, max: 20000, rate: 0.03 },
+                        { min: 20000, max: 100000, rate: 0.05 },
+                        { min: 100000, max: 200000, rate: 0.055 },
+                        { min: 200000, max: Infinity, rate: 0.0699 }
+                    ]},
+                    DE: { name: "Delaware", rate: 0.0483, brackets: [
+                        { min: 0, max: 20000, rate: 0.022 },
+                        { min: 20000, max: 35000, rate: 0.039 },
+                        { min: 35000, max: 60000, rate: 0.048 },
+                        { min: 60000, max: 350000, rate: 0.052 },
+                        { min: 350000, max: Infinity, rate: 0.055 }
+                    ]},
+                    DC: { name: "District of Columbia", rate: 0.0575, brackets: [
+                        { min: 0, max: 10000, rate: 0.04 },
+                        { min: 10000, max: 40000, rate: 0.05 },
+                        { min: 40000, max: 60000, rate: 0.0525 },
+                        { min: 60000, max: Infinity, rate: 0.0575 }
+                    ]},
+                    FL: { name: "Florida", rate: 0.00, brackets: [{ min: 0, max: Infinity, rate: 0.00 }] },
+                    GA: { name: "Georgia", rate: 0.0575, brackets: [
+                        { min: 0, max: 1000, rate: 0.01 },
+                        { min: 1000, max: 3000, rate: 0.02 },
+                        { min: 3000, max: 5000, rate: 0.03 },
+                        { min: 5000, max: 7000, rate: 0.04 },
+                        { min: 7000, max: Infinity, rate: 0.0575 }
+                    ]},
+                    HI: { name: "Hawaii", rate: 0.055, brackets: [
+                        { min: 0, max: 2400, rate: 0.014 },
+                        { min: 2400, max: 4800, rate: 0.032 },
+                        { min: 4800, max: 9600, rate: 0.055 },
+                        { min: 9600, max: 144000, rate: 0.064 },
+                        { min: 144000, max: Infinity, rate: 0.068 }
+                    ]},
+                    ID: { name: "Idaho", rate: 0.058, brackets: [
+                        { min: 0, max: 1678, rate: 0.01 },
+                        { min: 1678, max: 4196, rate: 0.03 },
+                        { min: 4196, max: 6289, rate: 0.045 },
+                        { min: 6289, max: Infinity, rate: 0.058 }
+                    ]},
+                    IL: { name: "Illinois", rate: 0.0495, brackets: [{ min: 0, max: Infinity, rate: 0.0495 }] },
+                    IN: { name: "Indiana", rate: 0.0323, brackets: [{ min: 0, max: Infinity, rate: 0.0323 }] },
+                    IA: { name: "Iowa", rate: 0.0482, brackets: [
+                        { min: 0, max: 1743, rate: 0.0033 },
+                        { min: 1743, max: 6960, rate: 0.0067 },
+                        { min: 6960, max: 13926, rate: 0.0233 },
+                        { min: 13926, max: 23210, rate: 0.0283 },
+                        { min: 23210, max: 34815, rate: 0.0338 },
+                        { min: 34815, max: Infinity, rate: 0.0482 }
+                    ]},
+                    KS: { name: "Kansas", rate: 0.045, brackets: [
+                        { min: 0, max: 15000, rate: 0.031 },
+                        { min: 15000, max: 30000, rate: 0.0525 },
+                        { min: 30000, max: Infinity, rate: 0.057 }
+                    ]},
+                    KY: { name: "Kentucky", rate: 0.045, brackets: [{ min: 0, max: Infinity, rate: 0.045 }] },
+                    LA: { name: "Louisiana", rate: 0.0425, brackets: [
+                        { min: 0, max: 12500, rate: 0.0185 },
+                        { min: 12500, max: 50000, rate: 0.035 },
+                        { min: 50000, max: Infinity, rate: 0.0425 }
+                    ]},
+                    ME: { name: "Maine", rate: 0.057, brackets: [
+                        { min: 0, max: 24500, rate: 0.058 },
+                        { min: 24500, max: 58050, rate: 0.0675 },
+                        { min: 58050, max: Infinity, rate: 0.0715 }
+                    ]},
+                    MD: { name: "Maryland", rate: 0.05, brackets: [
+                        { min: 0, max: 100000, rate: 0.02 },
+                        { min: 100000, max: 125000, rate: 0.03 },
+                        { min: 125000, max: 150000, rate: 0.04 },
+                        { min: 150000, max: Infinity, rate: 0.0475 }
+                    ]},
+                    MA: { name: "Massachusetts", rate: 0.05, brackets: [{ min: 0, max: Infinity, rate: 0.05 }] },
+                    MI: { name: "Michigan", rate: 0.0425, brackets: [{ min: 0, max: Infinity, rate: 0.0425 }] },
+                    MN: { name: "Minnesota", rate: 0.0535, brackets: [
+                        { min: 0, max: 31040, rate: 0.0535 },
+                        { min: 31040, max: 105040, rate: 0.068 },
+                        { min: 105040, max: 182700, rate: 0.0785 },
+                        { min: 182700, max: Infinity, rate: 0.0985 }
+                    ]},
+                    MS: { name: "Mississippi", rate: 0.05, brackets: [
+                        { min: 0, max: 5000, rate: 0.00 },
+                        { min: 5000, max: 10000, rate: 0.03 },
+                        { min: 10000, max: Infinity, rate: 0.05 }
+                    ]},
+                    MO: { name: "Missouri", rate: 0.049, brackets: [
+                        { min: 0, max: 111, rate: 0.00 },
+                        { min: 111, max: 2222, rate: 0.015 },
+                        { min: 2222, max: 3333, rate: 0.02 },
+                        { min: 3333, max: 4444, rate: 0.025 },
+                        { min: 4444, max: 5555, rate: 0.03 },
+                        { min: 5555, max: 6666, rate: 0.035 },
+                        { min: 6666, max: 7777, rate: 0.04 },
+                        { min: 7777, max: 8888, rate: 0.045 },
+                        { min: 8888, max: Infinity, rate: 0.049 }
+                    ]},
+                    MT: { name: "Montana", rate: 0.059, brackets: [
+                        { min: 0, max: 3600, rate: 0.01 },
+                        { min: 3600, max: 6300, rate: 0.02 },
+                        { min: 6300, max: 9600, rate: 0.03 },
+                        { min: 9600, max: 12900, rate: 0.04 },
+                        { min: 12900, max: 16200, rate: 0.05 },
+                        { min: 16200, max: Infinity, rate: 0.059 }
+                    ]},
+                    NE: { name: "Nebraska", rate: 0.0501, brackets: [
+                        { min: 0, max: 3700, rate: 0.0246 },
+                        { min: 3700, max: 22170, rate: 0.0321 },
+                        { min: 22170, max: 35920, rate: 0.0351 },
+                        { min: 35920, max: Infinity, rate: 0.0501 }
+                    ]},
+                    NV: { name: "Nevada", rate: 0.00, brackets: [{ min: 0, max: Infinity, rate: 0.00 }] },
+                    NH: { name: "New Hampshire", rate: 0.00, brackets: [{ min: 0, max: Infinity, rate: 0.00 }] },
+                    NJ: { name: "New Jersey", rate: 0.0553, brackets: [
+                        { min: 0, max: 20000, rate: 0.014 },
+                        { min: 20000, max: 35000, rate: 0.0175 },
+                        { min: 35000, max: 40000, rate: 0.035 },
+                        { min: 40000, max: 75000, rate: 0.0553 },
+                        { min: 75000, max: 500000, rate: 0.0637 },
+                        { min: 500000, max: 1000000, rate: 0.0897 },
+                        { min: 1000000, max: Infinity, rate: 0.1075 }
+                    ]},
+                    NM: { name: "New Mexico", rate: 0.049, brackets: [
+                        { min: 0, max: 5500, rate: 0.017 },
+                        { min: 5500, max: 11000, rate: 0.032 },
+                        { min: 11000, max: 16000, rate: 0.047 },
+                        { min: 16000, max: Infinity, rate: 0.049 }
+                    ]},
+                    NY: { name: "New York", rate: 0.0641, brackets: [
+                        { min: 0, max: 8500, rate: 0.04 },
+                        { min: 8500, max: 11700, rate: 0.045 },
+                        { min: 11700, max: 13900, rate: 0.0525 },
+                        { min: 13900, max: 80650, rate: 0.055 },
+                        { min: 80650, max: 215400, rate: 0.06 },
+                        { min: 215400, max: 1077550, rate: 0.0685 },
+                        { min: 1077550, max: 5000000, rate: 0.0965 },
+                        { min: 5000000, max: Infinity, rate: 0.103 }
+                    ]},
+                    NC: { name: "North Carolina", rate: 0.0525, brackets: [{ min: 0, max: Infinity, rate: 0.0525 }] },
+                    ND: { name: "North Dakota", rate: 0.029, brackets: [
+                        { min: 0, max: 41775, rate: 0.011 },
+                        { min: 41775, max: 101050, rate: 0.0204 },
+                        { min: 101050, max: 210825, rate: 0.0227 },
+                        { min: 210825, max: 458350, rate: 0.0264 },
+                        { min: 458350, max: Infinity, rate: 0.029 }
+                    ]},
+                    OH: { name: "Ohio", rate: 0.0399, brackets: [
+                        { min: 0, max: 25000, rate: 0.0285 },
+                        { min: 25000, max: 44250, rate: 0.0333 },
+                        { min: 44250, max: 88450, rate: 0.0368 },
+                        { min: 88450, max: 110650, rate: 0.0399 },
+                        { min: 110650, max: Infinity, rate: 0.0473 }
+                    ]},
+                    OK: { name: "Oklahoma", rate: 0.0475, brackets: [
+                        { min: 0, max: 1000, rate: 0.0025 },
+                        { min: 1000, max: 2500, rate: 0.0075 },
+                        { min: 2500, max: 3750, rate: 0.0113 },
+                        { min: 3750, max: 4900, rate: 0.015 },
+                        { min: 4900, max: 7200, rate: 0.0193 },
+                        { min: 7200, max: Infinity, rate: 0.0475 }
+                    ]},
+                    OR: { name: "Oregon", rate: 0.099, brackets: [{ min: 0, max: Infinity, rate: 0.099 }] },
+                    PA: { name: "Pennsylvania", rate: 0.0307, brackets: [{ min: 0, max: Infinity, rate: 0.0307 }] },
+                    RI: { name: "Rhode Island", rate: 0.0599, brackets: [
+                        { min: 0, max: 68200, rate: 0.0375 },
+                        { min: 68200, max: 155050, rate: 0.0475 },
+                        { min: 155050, max: Infinity, rate: 0.0599 }
+                    ]},
+                    SC: { name: "South Carolina", rate: 0.07, brackets: [
+                        { min: 0, max: 3200, rate: 0.00 },
+                        { min: 3200, max: 6410, rate: 0.03 },
+                        { min: 6410, max: 9620, rate: 0.04 },
+                        { min: 9620, max: 12820, rate: 0.05 },
+                        { min: 12820, max: 16040, rate: 0.06 },
+                        { min: 16040, max: Infinity, rate: 0.07 }
+                    ]},
+                    SD: { name: "South Dakota", rate: 0.00, brackets: [{ min: 0, max: Infinity, rate: 0.00 }] },
+                    TN: { name: "Tennessee", rate: 0.00, brackets: [{ min: 0, max: Infinity, rate: 0.00 }] },
+                    TX: { name: "Texas", rate: 0.00, brackets: [{ min: 0, max: Infinity, rate: 0.00 }] },
+                    UT: { name: "Utah", rate: 0.0495, brackets: [{ min: 0, max: Infinity, rate: 0.0495 }] },
+                    VT: { name: "Vermont", rate: 0.066, brackets: [
+                        { min: 0, max: 42150, rate: 0.0335 },
+                        { min: 42150, max: 102200, rate: 0.066 },
+                        { min: 102200, max: 213150, rate: 0.076 },
+                        { min: 213150, max: Infinity, rate: 0.0875 }
+                    ]},
+                    VA: { name: "Virginia", rate: 0.0575, brackets: [
+                        { min: 0, max: 3000, rate: 0.02 },
+                        { min: 3000, max: 5000, rate: 0.03 },
+                        { min: 5000, max: 17000, rate: 0.05 },
+                        { min: 17000, max: Infinity, rate: 0.0575 }
+                    ]},
+                    WA: { name: "Washington", rate: 0.00, brackets: [{ min: 0, max: Infinity, rate: 0.00 }] },
+                    WV: { name: "West Virginia", rate: 0.045, brackets: [
+                        { min: 0, max: 10000, rate: 0.03 },
+                        { min: 10000, max: 25000, rate: 0.04 },
+                        { min: 25000, max: 40000, rate: 0.045 },
+                        { min: 40000, max: 60000, rate: 0.06 },
+                        { min: 60000, max: Infinity, rate: 0.065 }
+                    ]},
+                    WI: { name: "Wisconsin", rate: 0.053, brackets: [
+                        { min: 0, max: 13810, rate: 0.0354 },
+                        { min: 13810, max: 27630, rate: 0.0465 },
+                        { min: 27630, max: 30470, rate: 0.053 },
+                        { min: 30470, max: Infinity, rate: 0.0765 }
+                    ]},
+                    WY: { name: "Wyoming", rate: 0.00, brackets: [{ min: 0, max: Infinity, rate: 0.00 }] }
+                };
+            }
+
+            calculateStateTax() {
+                const stateCode = document.getElementById('state').value;
+                const filingStatus = document.getElementById('filing-status').value;
+                const federalAGI = parseFloat(document.getElementById('taxable-income').value) || 0;
+                const deductions = parseFloat(document.getElementById('deductions').value) || 0;
+
+                if (!stateCode) {
+                    this.tools.ui.showAlert('Please select a state.', 'error');
+                    return;
+                }
+
+                if (federalAGI <= 0) {
+                    this.tools.ui.showAlert('Please enter a valid federal AGI.', 'error');
+                    return;
+                }
+
+                const stateTaxInfo = this.getStateTaxInfo();
+                const stateInfo = stateTaxInfo[stateCode];
+                const taxableIncome = Math.max(0, federalAGI - deductions);
+
+                // Calculate state tax
+                const stateTax = this.calculateTaxForState(taxableIncome, stateInfo.brackets);
+                const effectiveRate = taxableIncome > 0 ? (stateTax / taxableIncome) * 100 : 0;
+
+                // Store results
+                this.results = {
+                    stateCode,
+                    stateName: stateInfo.name,
+                    federalAGI,
+                    deductions,
+                    taxableIncome,
+                    stateTax,
+                    effectiveRate,
+                    afterTaxIncome: federalAGI - stateTax
+                };
+
+                // Display results
+                this.displayResults();
+
+                // Show state comparison
+                this.showStateComparison();
+
+                // Save to local storage
+                this.tools.storage.saveCalculatorState('state-income-tax', this.results);
+            }
+
+            calculateTaxForState(taxableIncome, brackets) {
+                let totalTax = 0;
+                let remainingIncome = taxableIncome;
+
+                for (let bracket of brackets) {
+                    if (remainingIncome <= 0) break;
+
+                    const taxableInBracket = Math.min(remainingIncome, bracket.max - bracket.min);
+                    const taxInBracket = taxableInBracket * bracket.rate;
+
+                    totalTax += taxInBracket;
+                    remainingIncome -= taxableInBracket;
+                }
+
+                return totalTax;
+            }
+
+            displayResults() {
+                const results = this.results;
+                const resultsContainer = document.getElementById('results-container');
+                const noResults = document.getElementById('no-results');
+
+                // Show results section with animation
+                resultsContainer.style.display = 'block';
+                noResults.style.display = 'none';
+                this.tools.animations.slideInUp(resultsContainer);
+
+                // Animate result values
+                document.getElementById('selected-state').textContent = results.stateName;
+
+                this.tools.animations.animateNumber(
+                    document.getElementById('federal-agi-result'),
+                    0,
+                    results.federalAGI,
+                    1000,
+                    (num) => NumberFormatter.formatCurrency(num)
+                );
+
+                this.tools.animations.animateNumber(
+                    document.getElementById('state-taxable-result'),
+                    0,
+                    results.taxableIncome,
+                    1000,
+                    (num) => NumberFormatter.formatCurrency(num)
+                );
+
+                this.tools.animations.animateNumber(
+                    document.getElementById('state-tax-result'),
+                    0,
+                    results.stateTax,
+                    1000,
+                    (num) => NumberFormatter.formatCurrency(num)
+                );
+
+                this.tools.animations.animateNumber(
+                    document.getElementById('effective-rate-result'),
+                    0,
+                    results.effectiveRate,
+                    1000,
+                    (num) => num.toFixed(2) + '%'
+                );
+
+                this.tools.animations.animateNumber(
+                    document.getElementById('after-tax-result'),
+                    0,
+                    results.afterTaxIncome,
+                    1000,
+                    (num) => NumberFormatter.formatCurrency(num)
+                );
+
+                // Scroll to results
+                setTimeout(() => {
+                    this.tools.animations.scrollTo(resultsContainer, 100);
+                }, 300);
+            }
+
+            showStateComparison() {
+                const comparisonBody = document.getElementById('state-comparison-body');
+                const results = this.results;
+
+                const stateTaxInfo = this.getStateTaxInfo();
+                const comparisonStates = ['CA', 'TX', 'NY', 'FL', 'IL', results.stateCode];
+
+                let html = '';
+                comparisonStates.forEach(stateCode => {
+                    if (stateTaxInfo[stateCode]) {
+                        const stateInfo = stateTaxInfo[stateCode];
+                        const tax = this.calculateTaxForState(results.taxableIncome, stateInfo.brackets);
+                        const rate = results.taxableIncome > 0 ? (tax / results.taxableIncome) * 100 : 0;
+                        const savings = tax - results.stateTax;
+
+                        html += `
+                            <tr>
+                                <td>${stateInfo.name}</td>
+                                <td>${NumberFormatter.formatCurrency(tax)}</td>
+                                <td>${rate.toFixed(2)}%</td>
+                                <td class="${savings > 0 ? 'positive' : savings < 0 ? 'negative' : ''}">${savings === 0 ? '-' : (savings > 0 ? '+' : '') + NumberFormatter.formatCurrency(savings)}</td>
+                            </tr>
+                        `;
+                    }
+                });
+
+                comparisonBody.innerHTML = html;
+            }
+
+            resetCalculator() {
+                document.getElementById('state').value = '';
+                document.getElementById('taxable-income').value = '75000';
+                document.getElementById('deductions').value = '5000';
+                document.getElementById('results-container').style.display = 'none';
+                document.getElementById('no-results').style.display = 'block';
+                this.results = null;
+            }
+
+            exportStateTaxJSON() {
+                if (!this.results) return;
+
+                try {
+                    this.tools.export.export(this.results, 'json', 'state_income_tax_calculation');
+                    this.tools.ui.showAlert('State tax calculation exported as JSON successfully!', 'success');
+                } catch (error) {
+                    this.tools.ui.showAlert('Export failed. Please try again.', 'error');
+                }
+            }
+
+            exportStateTaxPDF() {
+                if (!this.results) return;
+
+                try {
+                    // For PDF export, we'd need a more complex implementation
+                    // For now, just export as JSON with a note
+                    this.tools.ui.showAlert('PDF export coming soon. Use JSON export for now.', 'info');
+                } catch (error) {
+                    this.tools.ui.showAlert('Export failed. Please try again.', 'error');
+                }
+            }
+
+            async shareStateTaxResults() {
+                if (!this.results) return;
+
+                const shared = await this.tools.export.share(this.results, 'State Income Tax Results');
+                if (!shared) {
+                    this.tools.ui.showAlert('Sharing not supported on this device. Try exporting instead.', 'info');
+                }
+            }
+        }
+
+        // Initialize calculator when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            new StateTaxCalculator();
+        });
+    </script>
+</body>
+</html>

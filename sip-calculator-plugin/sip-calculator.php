@@ -1,0 +1,317 @@
+<?php
+/**
+ * Plugin Name: SIP Calculator
+ * Plugin URI: https://spherevista360.com
+ * Description: US Stock Market SIP Calculator for WordPress
+ * Version: 1.0.0
+ * Author: SphereVista360
+ * License: GPL v2 or later
+ * License URI: https://www.gnu.org/licenses/gpl-2.0.html
+ */
+
+// Prevent direct access
+if (!defined('ABSPATH')) {
+    exit;
+}
+
+class SIP_Calculator_Plugin {
+
+    public function __construct() {
+        add_action('init', array($this, 'init'));
+        add_shortcode('sip_calculator', array($this, 'sip_calculator_shortcode'));
+        add_action('wp_enqueue_scripts', array($this, 'enqueue_scripts'));
+    }
+
+    public function init() {
+        // Plugin initialization
+    }
+
+    public function enqueue_scripts() {
+        // Only enqueue on pages that have the shortcode
+        global $post;
+        if (is_a($post, 'WP_Post') && has_shortcode($post->post_content, 'sip_calculator')) {
+            wp_enqueue_style('sip-calculator-css', plugins_url('css/sip-calculator.css', __FILE__));
+            wp_enqueue_script('sip-calculator-js', plugins_url('js/sip-calculator.js', __FILE__), array('jquery'), '1.0.0', true);
+        }
+    }
+
+    public function sip_calculator_shortcode($atts) {
+        $atts = shortcode_atts(array(
+            'monthly_investment' => '500',
+            'return_rate' => '10',
+            'investment_period' => '10',
+            'initial_investment' => '0',
+            'step_up' => '0'
+        ), $atts);
+
+        ob_start();
+        ?>
+        <div class="sip-calculator-container" style="max-width: 1200px; margin: 0 auto; padding: 20px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+            <div class="sip-header" style="text-align: center; margin-bottom: 30px;">
+                <h1 style="color: #2c3e50; margin-bottom: 10px; font-size: 2.5em;">📈 US Stock Market SIP Calculator</h1>
+                <p style="color: #7f8c8d; font-size: 1.1em; margin-bottom: 20px;">
+                    Calculate returns on your Systematic Investment Plan in US stocks
+                </p>
+                <div class="sip-badges" style="display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-bottom: 20px;">
+                    <span style="background: #3498db; color: white; padding: 5px 12px; border-radius: 15px; font-size: 0.9em;">Free Tool</span>
+                    <span style="background: #27ae60; color: white; padding: 5px 12px; border-radius: 15px; font-size: 0.9em;">No Registration</span>
+                    <span style="background: #e74c3c; color: white; padding: 5px 12px; border-radius: 15px; font-size: 0.9em;">Instant Results</span>
+                </div>
+            </div>
+
+            <div class="sip-calculator-wrapper" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 15px; padding: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.2);">
+                <div class="sip-form-section" style="background: white; padding: 25px; border-radius: 10px; margin-bottom: 25px; border-left: 5px solid #3498db;">
+                    <h2 style="margin-top: 0; color: #3498db; font-size: 1.4em;">Investment Parameters</h2>
+
+                    <div class="sip-form-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
+                        <div class="sip-form-group">
+                            <label for="sip-monthly-investment" style="display: block; margin-bottom: 8px; font-weight: 600; color: #2c3e50;">Monthly Investment Amount:</label>
+                            <div class="sip-input-group" style="display: flex; align-items: center;">
+                                <input type="number" id="sip-monthly-investment" placeholder="500" min="50" value="<?php echo esc_attr($atts['monthly_investment']); ?>" style="flex: 1; padding: 12px; border: 2px solid #ddd; border-radius: 8px 0 0 8px; font-size: 16px; border-right: none;">
+                                <span class="sip-unit" style="padding: 12px 15px; background: #ecf0f1; border: 2px solid #ddd; border-left: none; border-radius: 0 8px 8px 0; color: #7f8c8d; font-weight: 600;">$</span>
+                            </div>
+                        </div>
+
+                        <div class="sip-form-group">
+                            <label for="sip-return-rate" style="display: block; margin-bottom: 8px; font-weight: 600; color: #2c3e50;">Expected Annual Return Rate:</label>
+                            <div class="sip-input-group" style="display: flex; align-items: center;">
+                                <input type="number" id="sip-return-rate" placeholder="10" min="0" max="50" step="0.1" value="<?php echo esc_attr($atts['return_rate']); ?>" style="flex: 1; padding: 12px; border: 2px solid #ddd; border-radius: 8px 0 0 8px; font-size: 16px; border-right: none;">
+                                <span class="sip-unit" style="padding: 12px 15px; background: #ecf0f1; border: 2px solid #ddd; border-left: none; border-radius: 0 8px 8px 0; color: #7f8c8d; font-weight: 600;">%</span>
+                            </div>
+                        </div>
+
+                        <div class="sip-form-group">
+                            <label for="sip-investment-period" style="display: block; margin-bottom: 8px; font-weight: 600; color: #2c3e50;">Investment Period:</label>
+                            <div class="sip-input-group" style="display: flex; align-items: center;">
+                                <input type="number" id="sip-investment-period" placeholder="10" min="1" max="50" value="<?php echo esc_attr($atts['investment_period']); ?>" style="flex: 1; padding: 12px; border: 2px solid #ddd; border-radius: 8px 0 0 8px; font-size: 16px; border-right: none;">
+                                <span class="sip-unit" style="padding: 12px 15px; background: #ecf0f1; border: 2px solid #ddd; border-left: none; border-radius: 0 8px 8px 0; color: #7f8c8d; font-weight: 600;">Years</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="sip-advanced-toggle" style="margin-top: 20px;">
+                        <button onclick="toggleAdvanced()" style="background: #ecf0f1; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: 600; color: #2c3e50;">🔧 Advanced Options</button>
+                    </div>
+
+                    <div class="sip-advanced-options" id="sip-advanced-options" style="display: none; margin-top: 15px; padding: 15px; background: #f8f9fa; border-radius: 8px; border: 1px solid #dee2e6;">
+                        <div class="sip-form-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
+                            <div class="sip-form-group">
+                                <label for="sip-initial-investment" style="display: block; margin-bottom: 8px; font-weight: 600; color: #2c3e50;">Initial Investment (Optional):</label>
+                                <div class="sip-input-group" style="display: flex; align-items: center;">
+                                    <input type="number" id="sip-initial-investment" placeholder="5000" min="0" value="<?php echo esc_attr($atts['initial_investment']); ?>" style="flex: 1; padding: 12px; border: 2px solid #ddd; border-radius: 8px 0 0 8px; font-size: 16px; border-right: none;">
+                                    <span class="sip-unit" style="padding: 12px 15px; background: #ecf0f1; border: 2px solid #ddd; border-left: none; border-radius: 0 8px 8px 0; color: #7f8c8d; font-weight: 600;">$</span>
+                                </div>
+                            </div>
+
+                            <div class="sip-form-group">
+                                <label for="sip-step-up" style="display: block; margin-bottom: 8px; font-weight: 600; color: #2c3e50;">Annual Step-up in Investment:</label>
+                                <div class="sip-input-group" style="display: flex; align-items: center;">
+                                    <input type="number" id="sip-step-up" placeholder="0" min="0" max="20" step="0.1" value="<?php echo esc_attr($atts['step_up']); ?>" style="flex: 1; padding: 12px; border: 2px solid #ddd; border-radius: 8px 0 0 8px; font-size: 16px; border-right: none;">
+                                    <span class="sip-unit" style="padding: 12px 15px; background: #ecf0f1; border: 2px solid #ddd; border-left: none; border-radius: 0 8px 8px 0; color: #7f8c8d; font-weight: 600;">%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sip-actions" style="text-align: center; margin: 30px 0;">
+                    <button onclick="calculateSIP()" style="background: linear-gradient(135deg, #3498db, #2980b9); color: white; padding: 15px 30px; border: none; border-radius: 8px; cursor: pointer; font-size: 16px; font-weight: 600; margin: 5px; box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);">📊 Calculate Returns</button>
+                    <button onclick="exportResults()" style="background: linear-gradient(135deg, #95a5a6, #7f8c8d); color: white; padding: 15px 30px; border: none; border-radius: 8px; cursor: pointer; font-size: 16px; font-weight: 600; margin: 5px;">💾 Export Results</button>
+                    <button onclick="resetForm()" style="background: linear-gradient(135deg, #e74c3c, #c0392b); color: white; padding: 15px 30px; border: none; border-radius: 8px; cursor: pointer; font-size: 16px; font-weight: 600; margin: 5px;">🔄 Reset</button>
+                </div>
+
+                <div class="sip-results" id="sip-results" style="background: #f8f9fa; padding: 25px; border-radius: 10px; border-left: 5px solid #27ae60; display: none;">
+                    <h2 style="color: #27ae60; margin-bottom: 20px; font-size: 1.8em;">Investment Summary</h2>
+
+                    <div class="sip-result-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 25px;">
+                        <div class="sip-result-item" style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); text-align: center;">
+                            <div class="sip-result-label" style="font-size: 14px; color: #7f8c8d; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px;">Total Invested</div>
+                            <div class="sip-result-value" id="sip-total-invested" style="font-size: 24px; font-weight: bold; color: #27ae60;">$0</div>
+                        </div>
+                        <div class="sip-result-item" style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); text-align: center;">
+                            <div class="sip-result-label" style="font-size: 14px; color: #7f8c8d; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px;">Final Portfolio Value</div>
+                            <div class="sip-result-value" id="sip-final-value" style="font-size: 24px; font-weight: bold; color: #27ae60;">$0</div>
+                        </div>
+                        <div class="sip-result-item" style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); text-align: center;">
+                            <div class="sip-result-label" style="font-size: 14px; color: #7f8c8d; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px;">Total Returns</div>
+                            <div class="sip-result-value" id="sip-total-returns" style="font-size: 24px; font-weight: bold; color: #27ae60;">$0</div>
+                        </div>
+                        <div class="sip-result-item" style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); text-align: center;">
+                            <div class="sip-result-label" style="font-size: 14px; color: #7f8c8d; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px;">Return Percentage</div>
+                            <div class="sip-result-value" id="sip-return-percentage" style="font-size: 24px; font-weight: bold; color: #27ae60;">0%</div>
+                        </div>
+                    </div>
+
+                    <div class="sip-yearly-breakdown" style="background: #34495e; color: white; padding: 20px; border-radius: 8px; font-family: 'Courier New', monospace; white-space: pre-line; overflow-x: auto;">
+                        <h3 style="margin-top: 0; color: #3498db;">Yearly Breakdown:</h3>
+                        <div id="sip-yearly-breakdown">Calculate to see yearly breakdown...</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sip-info-section" style="margin-top: 30px; background: white; padding: 25px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+                <h3 style="color: #2c3e50; margin-bottom: 15px;">About This Calculator</h3>
+                <p style="color: #555; line-height: 1.6; margin-bottom: 15px;">
+                    This US Stock Market SIP Calculator helps you estimate returns from systematic monthly investments in stocks. Based on historical S&P 500 performance and compound interest calculations.
+                </p>
+                <div class="sip-features" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin-top: 20px;">
+                    <div class="sip-feature" style="padding: 15px; background: #f8f9fa; border-radius: 8px; border-left: 4px solid #3498db;">
+                        <h4 style="margin: 0 0 8px 0; color: #2c3e50;">📊 Accurate Calculations</h4>
+                        <p style="margin: 0; color: #7f8c8d; font-size: 0.9em;">Uses compound interest formulas with monthly compounding</p>
+                    </div>
+                    <div class="sip-feature" style="padding: 15px; background: #f8f9fa; border-radius: 8px; border-left: 4px solid #27ae60;">
+                        <h4 style="margin: 0 0 8px 0; color: #2c3e50;">🚀 Advanced Options</h4>
+                        <p style="margin: 0; color: #7f8c8d; font-size: 0.9em;">Step-up investments, initial lumpsum, inflation adjustments</p>
+                    </div>
+                    <div class="sip-feature" style="padding: 15px; background: #f8f9fa; border-radius: 8px; border-left: 4px solid #e74c3c;">
+                        <h4 style="margin: 0 0 8px 0; color: #2c3e50;">💾 Export Ready</h4>
+                        <p style="margin: 0; color: #7f8c8d; font-size: 0.9em;">Download results as JSON for further analysis</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sip-disclaimer" style="margin-top: 20px; padding: 15px; background: #fff3cd; border: 1px solid #ffeaa7; border-radius: 8px;">
+                <p style="margin: 0; color: #856404; font-size: 0.9em;">
+                    <strong>⚠️ Disclaimer:</strong> This calculator provides estimates based on historical market performance and should not be considered as financial advice. Past performance does not guarantee future results. Always consult with qualified financial advisors before making investment decisions.
+                </p>
+            </div>
+        </div>
+
+        <script>
+            let currentResults = null;
+
+            function toggleAdvanced() {
+                const advanced = document.getElementById('sip-advanced-options');
+                advanced.style.display = advanced.style.display === 'none' ? 'block' : 'none';
+            }
+
+            function formatCurrency(amount) {
+                return '$' + Math.round(amount).toLocaleString('en-US');
+            }
+
+            function formatPercentage(value) {
+                return value.toFixed(1) + '%';
+            }
+
+            function calculateSIP() {
+                // Get input values
+                const monthlyInvestment = parseFloat(document.getElementById('sip-monthly-investment').value) || 0;
+                const returnRate = parseFloat(document.getElementById('sip-return-rate').value) / 100 || 0;
+                const investmentPeriod = parseInt(document.getElementById('sip-investment-period').value) || 0;
+                const initialInvestment = parseFloat(document.getElementById('sip-initial-investment').value) || 0;
+                const stepUp = parseFloat(document.getElementById('sip-step-up').value) / 100 || 0;
+
+                if (monthlyInvestment <= 0 || returnRate < 0 || investmentPeriod <= 0) {
+                    alert('Please enter valid values for monthly investment, return rate, and investment period.');
+                    return;
+                }
+
+                // Calculate SIP returns
+                let totalInvested = initialInvestment;
+                let currentValue = initialInvestment;
+                let currentMonthlyInvestment = monthlyInvestment;
+                const yearlyBreakdown = [];
+
+                for (let year = 1; year <= investmentPeriod; year++) {
+                    const yearlyStartValue = currentValue;
+                    let yearlyInvested = 0;
+
+                    for (let month = 1; month <= 12; month++) {
+                        currentValue += currentMonthlyInvestment;
+                        totalInvested += currentMonthlyInvestment;
+                        yearlyInvested += currentMonthlyInvestment;
+
+                        // Apply monthly returns
+                        currentValue *= (1 + returnRate / 12);
+                    }
+
+                    const yearlyReturn = currentValue - yearlyStartValue - yearlyInvested;
+                    const yearlyReturnPct = yearlyStartValue > 0 ? (yearlyReturn / yearlyStartValue) * 100 : 0;
+
+                    yearlyBreakdown.push({
+                        year,
+                        investment: yearlyInvested,
+                        cumulativeInvestment: totalInvested,
+                        portfolioValue: currentValue,
+                        yearlyReturn,
+                        yearlyReturnPct
+                    });
+
+                    // Apply step-up for next year
+                    currentMonthlyInvestment *= (1 + stepUp);
+                }
+
+                const totalReturns = currentValue - totalInvested;
+                const totalReturnPct = totalInvested > 0 ? (totalReturns / totalInvested) * 100 : 0;
+                const avgAnnualReturn = totalInvested > 0 ? ((currentValue / totalInvested) ** (1 / investmentPeriod) - 1) * 100 : 0;
+
+                // Store results
+                currentResults = {
+                    inputs: { monthlyInvestment, returnRate: returnRate * 100, investmentPeriod, initialInvestment, stepUp: stepUp * 100 },
+                    summary: { totalInvested, currentValue, totalReturns, totalReturnPct, avgAnnualReturn, currentMonthlyInvestment },
+                    yearlyBreakdown
+                };
+
+                // Display results
+                displayResults(currentResults);
+            }
+
+            function displayResults(results) {
+                document.getElementById('sip-results').style.display = 'block';
+
+                // Update summary values
+                document.getElementById('sip-total-invested').textContent = formatCurrency(results.summary.totalInvested);
+                document.getElementById('sip-final-value').textContent = formatCurrency(results.summary.currentValue);
+                document.getElementById('sip-total-returns').textContent = formatCurrency(results.summary.totalReturns);
+                document.getElementById('sip-return-percentage').textContent = formatPercentage(results.summary.totalReturnPct);
+
+                // Update yearly breakdown
+                let breakdownText = 'Year  Investment  Cumulative  Portfolio  Yearly Return  Return %\n';
+                breakdownText += '----  ----------  ----------  ---------  -------------  --------\n';
+
+                results.yearlyBreakdown.forEach(row => {
+                    breakdownText += `${row.year.toString().padStart(4)}  ${formatCurrency(row.investment).padStart(10)}  ${formatCurrency(row.cumulativeInvestment).padStart(10)}  ${formatCurrency(row.portfolioValue).padStart(9)}  ${formatCurrency(row.yearlyReturn).padStart(13)}  ${formatPercentage(row.yearlyReturnPct).padStart(8)}\n`;
+                });
+
+                document.getElementById('sip-yearly-breakdown').textContent = breakdownText;
+
+                // Scroll to results
+                document.getElementById('sip-results').scrollIntoView({ behavior: 'smooth' });
+            }
+
+            function exportResults() {
+                if (!currentResults) {
+                    alert('Please calculate results first.');
+                    return;
+                }
+
+                const dataStr = JSON.stringify(currentResults, null, 2);
+                const dataBlob = new Blob([dataStr], { type: 'application/json' });
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(dataBlob);
+                link.download = `sip-calculation-${new Date().toISOString().split('T')[0]}.json`;
+                link.click();
+            }
+
+            function resetForm() {
+                document.getElementById('sip-monthly-investment').value = '500';
+                document.getElementById('sip-return-rate').value = '10';
+                document.getElementById('sip-investment-period').value = '10';
+                document.getElementById('sip-initial-investment').value = '0';
+                document.getElementById('sip-step-up').value = '0';
+                document.getElementById('sip-results').style.display = 'none';
+                currentResults = null;
+            }
+
+            // Initialize with default calculation
+            document.addEventListener('DOMContentLoaded', function() {
+                calculateSIP();
+            });
+        </script>
+        <?php
+        return ob_get_clean();
+    }
+}
+
+// Initialize the plugin
+new SIP_Calculator_Plugin();

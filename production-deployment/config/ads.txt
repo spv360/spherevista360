@@ -1,9 +1,0 @@
-# ads.txt for Google AdSense
-# Publisher ID: pub-1542284739923981
-# Place this file in your WordPress root directory (public_html or equivalent)
-
-# Google AdSense entry
-google.com, pub-1542284739923981, DIRECT, f08c47fec0942fa0
-
-# Add other authorized sellers below as needed
-# For more info: https://support.google.com/adsense/answer/7532444?hl=en

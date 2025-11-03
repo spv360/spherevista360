@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lump Sum Investment Calculator - US Tax Calculator Suite</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../design-system.css">
+</head>
+<body>
+    <div class="container">
+        <div class="tool-container">
+            <div class="tool-header">
+                <h1>💰 Lump Sum Investment Calculator</h1>
+                <p class="subtitle">Calculate returns on a one-time investment with compound interest</p>
+                <div class="badge-container">
+                    <span class="badge">💸 One-Time Investment</span>
+                    <span class="badge">📈 Compound Growth</span>
+                    <span class="badge">⏰ Long-Term Planning</span>
+                    <span class="badge">📊 Return Analysis</span>
+                </div>
+            </div>
+
+            <div class="tool-content">
+                <div class="calculator-grid">
+                    <div class="input-section">
+                        <h3>Investment Parameters</h3>
+
+                        <div class="input-grid">
+                            <div class="input-group">
+                                <h4>💵 Initial Investment</h4>
+                                <input type="number" id="initial-investment" class="input-field" placeholder="10000" min="1" step="0.01">
+                                <p class="input-description">Amount you're investing today</p>
+                            </div>
+
+                            <div class="input-group">
+                                <h4>📈 Expected Annual Return</h4>
+                                <input type="number" id="annual-return" class="input-field" placeholder="7" step="0.1" min="0" max="50">
+                                <p class="input-description">Expected rate of return per year (%)</p>
+                            </div>
+
+                            <div class="input-group">
+                                <h4>⏱️ Investment Period</h4>
+                                <input type="number" id="investment-period" class="input-field" placeholder="10" min="1" max="50">
+                                <p class="input-description">Number of years to invest</p>
+                            </div>
+
+                            <div class="input-group">
+                                <h4>🔄 Compounding Frequency</h4>
+                                <select id="compounding-frequency" class="input-field">
+                                    <option value="1">Annually</option>
+                                    <option value="2">Semi-Annually</option>
+                                    <option value="4">Quarterly</option>
+                                    <option value="12">Monthly</option>
+                                    <option value="365">Daily</option>
+                                </select>
+                                <p class="input-description">How often interest is compounded</p>
+                            </div>
+
+                            <div class="input-group">
+                                <h4>📊 Inflation Rate (Optional)</h4>
+                                <input type="number" id="inflation-rate" class="input-field" placeholder="3" step="0.1" min="0" max="20">
+                                <p class="input-description">Annual inflation rate for real returns (%)</p>
+                            </div>
+                        </div>
+
+                        <div style="text-align: center; margin: 40px 0;">
+                            <button id="calculate-investment-btn" class="btn-primary">Calculate Investment Returns</button>
+                            <button id="reset-investment-btn" class="btn-secondary">Reset Calculator</button>
+                        </div>
+                    </div>
+
+                    <div class="results-section">
+                        <h3>Investment Results</h3>
+
+                        <div id="results-container" class="results-content">
+                            <div class="results-grid">
+                                <div class="result-card">
+                                    <div class="result-label">Initial Investment</div>
+                                    <div class="result-value" id="initial-amount-result">$0</div>
+                                </div>
+
+                                <div class="result-card">
+                                    <div class="result-label">Final Portfolio Value</div>
+                                    <div class="result-value" id="final-value-result">$0</div>
+                                </div>
+
+                                <div class="result-card">
+                                    <div class="result-label">Total Returns</div>
+                                    <div class="result-value" id="total-returns-result">$0</div>
+                                </div>
+
+                                <div class="result-card">
+                                    <div class="result-label">Total Return Percentage</div>
+                                    <div class="result-value" id="return-percentage-result">0%</div>
+                                </div>
+
+                                <div class="result-card">
+                                    <div class="result-label">Annualized Return</div>
+                                    <div class="result-value" id="annualized-return-result">0%</div>
+                                </div>
+
+                                <div class="result-card">
+                                    <div class="result-label">Real Return (After Inflation)</div>
+                                    <div class="result-value" id="real-return-result">0%</div>
+                                </div>
+                            </div>
+
+                            <div class="data-table-section">
+                                <h3>Year-by-Year Growth Breakdown</h3>
+                                <p>Track your investment growth year over year</p>
+                                <div class="data-table-container">
+                                    <table class="data-table" id="yearly-breakdown-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Year</th>
+                                                <th>Portfolio Value</th>
+                                                <th>Annual Return</th>
+                                                <th>Return %</th>
+                                                <th>Real Value</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="yearly-breakdown-body">
+                                            <tr>
+                                                <td colspan="5" class="empty-row">Calculate to see yearly breakdown</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="export-section">
+                                <h3 style="margin-bottom: 16px;">Export Your Investment Analysis</h3>
+                                <div class="export-buttons">
+                                    <button id="export-investment-json" class="export-btn">📄 Export JSON</button>
+                                    <button id="export-investment-pdf" class="export-btn">📊 Export PDF</button>
+                                    <button id="share-investment-results" class="export-btn">📤 Share Results</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="no-results" class="empty-state">
+                            <div class="empty-state-icon">💰</div>
+                            <h3>Ready to Calculate Your Investment</h3>
+                            <p>Enter your investment details and click "Calculate Investment Returns" to see how your money can grow over time</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-section">
+                    <h3>Understanding Lump Sum Investments</h3>
+                    <p class="info-description">
+                        A lump sum investment involves putting a large amount of money into an investment vehicle all at once,
+                        allowing it to grow through compound interest over time.
+                    </p>
+
+                    <div class="features-grid">
+                        <div class="feature-card">
+                            <div class="feature-icon">💡</div>
+                            <h4 class="feature-title">Power of Compounding</h4>
+                            <p class="feature-description">Compound interest allows your investment to grow exponentially over time. The earlier you invest, the more time your money has to compound.</p>
+                        </div>
+
+                        <div class="feature-card">
+                            <div class="feature-icon">📈</div>
+                            <h4 class="feature-title">Compounding Frequency</h4>
+                            <p class="feature-description">More frequent compounding (monthly vs annually) can significantly increase your returns. Even small differences in compounding frequency add up over time.</p>
+                        </div>
+
+                        <div class="feature-card">
+                            <div class="feature-icon">⏰</div>
+                            <h4 class="feature-title">Time Horizon</h4>
+                            <p class="feature-description">The longer your investment horizon, the more powerful compounding becomes. Starting early gives your investments decades to grow.</p>
+                        </div>
+
+                        <div class="feature-card">
+                            <div class="feature-icon">🎯</div>
+                            <h4 class="feature-title">Risk vs Return</h4>
+                            <p class="feature-description">Higher expected returns typically come with higher risk. Consider your risk tolerance and investment timeline when setting return expectations.</p>
+                        </div>
+                    </div>
+
+                    <div class="alert alert-info" style="margin-top: 24px;">
+                        <span class="alert-icon">💰</span>
+                        <span>
+                            <strong>Investment Tip:</strong> Consider dollar-cost averaging (investing smaller amounts regularly) vs. lump sum investing.
+                            While lump sum can benefit from immediate market exposure, dollar-cost averaging reduces timing risk.
+                        </span>
+                    </div>
+
+                    <div class="alert alert-warning" style="margin-top: 16px;">
+                        <span class="alert-icon">⚠️</span>
+                        <span>
+                            <strong>Disclaimer:</strong> This calculator provides estimates based on the inputs provided. Actual investment returns may vary significantly due to market conditions, fees, taxes, and other factors. Past performance does not guarantee future results. This is not financial advice - consult with a qualified financial advisor before making investment decisions.
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../../utilities.js"></script>
+    <script>
+        class LumpSumInvestmentCalculator {
+            constructor() {
+                this.results = null;
+                this.tools = new SphereVistaTools();
+                this.initializeEventListeners();
+                this.setDefaultValues();
+            }
+
+            initializeEventListeners() {
+                const calculateBtn = document.getElementById('calculate-investment-btn');
+                const resetBtn = document.getElementById('reset-investment-btn');
+                const exportJsonBtn = document.getElementById('export-investment-json');
+                const exportPdfBtn = document.getElementById('export-investment-pdf');
+                const shareBtn = document.getElementById('share-investment-results');
+
+                calculateBtn.addEventListener('click', () => this.calculateInvestment());
+                resetBtn.addEventListener('click', () => this.resetCalculator());
+                exportJsonBtn.addEventListener('click', () => this.exportInvestmentJSON());
+                exportPdfBtn.addEventListener('click', () => this.exportInvestmentPDF());
+                shareBtn.addEventListener('click', () => this.shareInvestmentResults());
+            }
+
+            setDefaultValues() {
+                document.getElementById('initial-investment').value = '10000';
+                document.getElementById('annual-return').value = '7';
+                document.getElementById('investment-period').value = '10';
+                document.getElementById('inflation-rate').value = '3';
+            }
+
+            calculateInvestment() {
+                const initialInvestment = parseFloat(document.getElementById('initial-investment').value) || 0;
+                const annualReturnRate = parseFloat(document.getElementById('annual-return').value) / 100 || 0;
+                const investmentPeriod = parseInt(document.getElementById('investment-period').value) || 0;
+                const compoundingFrequency = parseInt(document.getElementById('compounding-frequency').value) || 12;
+                const inflationRate = parseFloat(document.getElementById('inflation-rate').value) / 100 || 0;
+
+                if (initialInvestment <= 0 || annualReturnRate < 0 || investmentPeriod <= 0) {
+                    this.tools.ui.showAlert('Please enter valid values for all required fields.', 'error');
+                    return;
+                }
+
+                // Calculate compound interest
+                const periodicRate = annualReturnRate / compoundingFrequency;
+                const totalPeriods = investmentPeriod * compoundingFrequency;
+
+                const finalValue = initialInvestment * Math.pow(1 + periodicRate, totalPeriods);
+                const totalReturns = finalValue - initialInvestment;
+                const totalReturnPercentage = (totalReturns / initialInvestment) * 100;
+                const annualizedReturn = (Math.pow(finalValue / initialInvestment, 1 / investmentPeriod) - 1) * 100;
+
+                // Calculate real return (after inflation)
+                const realReturnRate = ((1 + annualReturnRate) / (1 + inflationRate)) - 1;
+                const realFinalValue = initialInvestment * Math.pow(1 + realReturnRate, investmentPeriod);
+                const realReturnPercentage = ((realFinalValue - initialInvestment) / initialInvestment) * 100;
+
+                // Generate yearly breakdown
+                const yearlyBreakdown = this.generateYearlyBreakdown(
+                    initialInvestment,
+                    annualReturnRate,
+                    compoundingFrequency,
+                    investmentPeriod,
+                    inflationRate
+                );
+
+                // Store results
+                this.results = {
+                    initialInvestment,
+                    annualReturnRate: annualReturnRate * 100,
+                    investmentPeriod,
+                    compoundingFrequency,
+                    inflationRate: inflationRate * 100,
+                    finalValue,
+                    totalReturns,
+                    totalReturnPercentage,
+                    annualizedReturn,
+                    realReturnPercentage,
+                    yearlyBreakdown
+                };
+
+                // Display results
+                this.displayResults();
+
+                // Show yearly breakdown table
+                this.showYearlyBreakdown();
+
+                // Save to local storage
+                this.tools.storage.saveCalculatorState('lump-sum-investment', this.results);
+            }
+
+            generateYearlyBreakdown(initialInvestment, annualReturnRate, compoundingFrequency, investmentPeriod, inflationRate) {
+                const breakdown = [];
+                let currentValue = initialInvestment;
+
+                for (let year = 1; year <= investmentPeriod; year++) {
+                    const yearStartValue = currentValue;
+                    currentValue = initialInvestment * Math.pow(1 + (annualReturnRate / compoundingFrequency), year * compoundingFrequency);
+                    const yearReturn = currentValue - yearStartValue;
+                    const yearReturnPct = yearStartValue > 0 ? (yearReturn / yearStartValue) * 100 : 0;
+
+                    // Calculate real value (inflation-adjusted)
+                    const realValue = currentValue / Math.pow(1 + inflationRate, year);
+
+                    breakdown.push({
+                        year,
+                        portfolioValue: currentValue,
+                        annualReturn: yearReturn,
+                        returnPercentage: yearReturnPct,
+                        realValue
+                    });
+                }
+
+                return breakdown;
+            }
+
+            displayResults() {
+                const results = this.results;
+                const resultsContainer = document.getElementById('results-container');
+                const noResults = document.getElementById('no-results');
+
+                // Show results section with animation
+                resultsContainer.style.display = 'block';
+                noResults.style.display = 'none';
+                this.tools.animations.slideInUp(resultsContainer);
+
+                // Animate result values
+                this.tools.animations.animateNumber(
+                    document.getElementById('initial-amount-result'),
+                    0,
+                    results.initialInvestment,
+                    1000,
+                    (num) => NumberFormatter.formatCurrency(num)
+                );
+
+                this.tools.animations.animateNumber(
+                    document.getElementById('final-value-result'),
+                    0,
+                    results.finalValue,
+                    1000,
+                    (num) => NumberFormatter.formatCurrency(num)
+                );
+
+                this.tools.animations.animateNumber(
+                    document.getElementById('total-returns-result'),
+                    0,
+                    results.totalReturns,
+                    1000,
+                    (num) => NumberFormatter.formatCurrency(num)
+                );
+
+                this.tools.animations.animateNumber(
+                    document.getElementById('return-percentage-result'),
+                    0,
+                    results.totalReturnPercentage,
+                    1000,
+                    (num) => num.toFixed(1) + '%'
+                );
+
+                this.tools.animations.animateNumber(
+                    document.getElementById('annualized-return-result'),
+                    0,
+                    results.annualizedReturn,
+                    1000,
+                    (num) => num.toFixed(1) + '%'
+                );
+
+                this.tools.animations.animateNumber(
+                    document.getElementById('real-return-result'),
+                    0,
+                    results.realReturnPercentage,
+                    1000,
+                    (num) => num.toFixed(1) + '%'
+                );
+
+                // Scroll to results
+                setTimeout(() => {
+                    this.tools.animations.scrollTo(resultsContainer, 100);
+                }, 300);
+            }
+
+            showYearlyBreakdown() {
+                const breakdownBody = document.getElementById('yearly-breakdown-body');
+                const breakdown = this.results.yearlyBreakdown;
+
+                const html = breakdown.map(item => `
+                    <tr>
+                        <td>${item.year}</td>
+                        <td>${NumberFormatter.formatCurrency(item.portfolioValue)}</td>
+                        <td>${NumberFormatter.formatCurrency(item.annualReturn)}</td>
+                        <td>${item.returnPercentage.toFixed(1)}%</td>
+                        <td>${NumberFormatter.formatCurrency(item.realValue)}</td>
+                    </tr>
+                `).join('');
+
+                breakdownBody.innerHTML = html;
+            }
+
+            resetCalculator() {
+                document.getElementById('initial-investment').value = '10000';
+                document.getElementById('annual-return').value = '7';
+                document.getElementById('investment-period').value = '10';
+                document.getElementById('inflation-rate').value = '3';
+                document.getElementById('results-container').style.display = 'none';
+                document.getElementById('no-results').style.display = 'block';
+                this.results = null;
+            }
+
+            exportInvestmentJSON() {
+                if (!this.results) return;
+
+                try {
+                    this.tools.export.export(this.results, 'json', 'lump_sum_investment_analysis');
+                    this.tools.ui.showAlert('Investment analysis exported as JSON successfully!', 'success');
+                } catch (error) {
+                    this.tools.ui.showAlert('Export failed. Please try again.', 'error');
+                }
+            }
+
+            exportInvestmentPDF() {
+                if (!this.results) return;
+
+                try {
+                    // For PDF export, we'd need a more complex implementation
+                    // For now, just export as JSON with a note
+                    this.tools.ui.showAlert('PDF export coming soon. Use JSON export for now.', 'info');
+                } catch (error) {
+                    this.tools.ui.showAlert('Export failed. Please try again.', 'error');
+                }
+            }
+
+            async shareInvestmentResults() {
+                if (!this.results) return;
+
+                const shared = await this.tools.export.share(this.results, 'Lump Sum Investment Analysis');
+                if (!shared) {
+                    this.tools.ui.showAlert('Sharing not supported on this device. Try exporting instead.', 'info');
+                }
+            }
+        }
+
+        // Initialize calculator when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            new LumpSumInvestmentCalculator();
+        });
+    </script>
+</body>
+</html>

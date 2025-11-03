@@ -1,0 +1,10 @@
+# US Stock Market SIP Calculator Requirements
+# Core dependencies for the SIP calculator tool
+
+# No external dependencies required for basic functionality
+# The calculator uses only Python standard library
+
+# Optional: For future enhancements
+# matplotlib>=3.5.0  # For charts
+# pandas>=1.5.0      # For data analysis
+# numpy>=1.21.0      # For calculations

@@ -1,0 +1,37 @@
+{
+  "name": "us-stock-market-sip-calculator",
+  "version": "1.0.0",
+  "description": "US Stock Market Systematic Investment Plan (SIP) Calculator",
+  "main": "sip_calculator.py",
+  "scripts": {
+    "start": "python3 run_server.py",
+    "test": "python3 test_sip_calculator.py",
+    "build": "./build_standalone.sh",
+    "setup": "./setup.sh"
+  },
+  "keywords": [
+    "sip",
+    "calculator",
+    "investment",
+    "stocks",
+    "us-market",
+    "finance",
+    "retirement"
+  ],
+  "author": "SphereVista360",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/spv360/spherevista360"
+  },
+  "homepage": "https://spherevista360.com",
+  "engines": {
+    "node": ">=14.0.0",
+    "python": ">=3.6.0"
+  },
+  "os": [
+    "linux",
+    "darwin",
+    "win32"
+  ]
+}

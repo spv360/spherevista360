@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>US Tax Calculator Suite - SphereVista360</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 3em;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #7f8c8d;
+            font-size: 1.2em;
+            margin-bottom: 40px;
+        }
+
+        .calculator-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .calculator-card {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            text-decoration: none;
+            display: block;
+            box-shadow: 0 8px 25px rgba(245, 87, 108, 0.3);
+        }
+
+        .calculator-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(245, 87, 108, 0.4);
+        }
+
+        .calculator-card h3 {
+            margin-bottom: 15px;
+            font-size: 1.5em;
+            font-weight: 600;
+        }
+
+        .calculator-card p {
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+
+        .features {
+            background: #f8f9fa;
+            padding: 40px;
+            border-radius: 15px;
+            margin-bottom: 40px;
+        }
+
+        .features h2 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.2em;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .feature-item {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .feature-item .icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+
+        .feature-item h4 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .feature-item p {
+            color: #7f8c8d;
+            line-height: 1.6;
+        }
+
+        .cta-section {
+            text-align: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 15px;
+        }
+
+        .cta-section h2 {
+            margin-bottom: 20px;
+            font-size: 2em;
+        }
+
+        .cta-section p {
+            margin-bottom: 30px;
+            opacity: 0.9;
+            font-size: 1.1em;
+        }
+
+        .btn {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            padding: 15px 30px;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            border: 2px solid rgba(255,255,255,0.3);
+            transition: all 0.3s ease;
+            display: inline-block;
+            margin: 10px;
+        }
+
+        .btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧾 US Tax & Investment Calculator Suite</h1>
+        <p class="subtitle">Comprehensive tax and investment calculation tools for individuals, businesses, and investors in the United States</p>
+
+        <div class="calculator-grid">
+            <a href="federal-income-tax.html" class="calculator-card">
+                <h3>🏛️ Federal Income Tax Calculator</h3>
+                <p>Calculate your federal income tax liability based on filing status, income, and deductions for the current tax year.</p>
+            </a>
+
+            <a href="state-income-tax.html" class="calculator-card">
+                <h3>🏛️ State Income Tax Calculator</h3>
+                <p>Estimate state income tax for all 50 states plus DC. Compare tax burdens across different locations.</p>
+            </a>
+
+            <a href="capital-gains-tax.html" class="calculator-card">
+                <h3>📈 Capital Gains Tax Calculator</h3>
+                <p>Calculate long-term and short-term capital gains tax on investments, real estate, and other assets.</p>
+            </a>
+
+            <a href="tax-withholding.html" class="calculator-card">
+                <h3>💼 Tax Withholding Calculator</h3>
+                <p>Determine optimal W-4 withholding to avoid underpayment penalties or large refunds.</p>
+            </a>
+
+            <a href="self-employment-tax.html" class="calculator-card">
+                <h3>💼 Self-Employment Tax Calculator</h3>
+                <p>Calculate self-employment tax (Social Security and Medicare) for freelancers and business owners.</p>
+            </a>
+
+            <a href="retirement-tax.html" class="calculator-card">
+                <h3>🏖️ Retirement Account Tax Calculator</h3>
+                <p>Estimate taxes on 401(k), IRA, and other retirement account withdrawals and contributions.</p>
+            </a>
+
+            <a href="lump-sum-investment.html" class="calculator-card">
+                <h3>💰 Lump Sum Investment Calculator</h3>
+                <p>Calculate returns on a one-time investment with compound interest over time.</p>
+            </a>
+
+            <a href="retirement-planner-estimator.html" class="calculator-card">
+                <h3>🏖️ Retirement Planner and Estimator</h3>
+                <p>Plan your retirement with comprehensive savings projections and income estimates.</p>
+            </a>
+        </div>
+
+        <div class="features">
+            <h2>Why Use Our Tax Calculators?</h2>
+            <div class="features-grid">
+                <div class="feature-item">
+                    <div class="icon">📊</div>
+                    <h4>Accurate Calculations</h4>
+                    <p>Based on current IRS tax brackets, rates, and regulations for maximum accuracy.</p>
+                </div>
+                <div class="feature-item">
+                    <div class="icon">⚡</div>
+                    <h4>Instant Results</h4>
+                    <p>Get immediate tax estimates with detailed breakdowns and explanations.</p>
+                </div>
+                <div class="feature-item">
+                    <div class="icon">🎯</div>
+                    <h4>Tax Planning</h4>
+                    <p>Use our tools to optimize your tax strategy and minimize your tax liability.</p>
+                </div>
+                <div class="feature-item">
+                    <div class="icon">🔒</div>
+                    <h4>Privacy First</h4>
+                    <p>All calculations are performed locally in your browser. Your data never leaves your device.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="cta-section">
+            <h2>Ready to Calculate Your Taxes?</h2>
+            <p>Choose a calculator above to get started with your tax calculations.</p>
+            <a href="/tools/" class="btn">🔙 Back to All Tools</a>
+            <a href="/" class="btn">🏠 Back to Homepage</a>
+        </div>
+    </div>
+</body>
+</html>

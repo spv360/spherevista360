@@ -1,0 +1,57 @@
+WordPress Calculator Cleanup Report
+Generated: Sun Nov  2 11:44:37 EST 2025
+
+Files Moved to Backup:
+=====================
+
+Root Level Duplicates:
+- clean_calculator.html (Old version)
+- improved_calculator.html (Development version)
+- sip_calculator_wordpress_page.html (Old version)
+
+Superseded Versions:
+- tools/calculators/sip_calculator.html (Old version)
+- tools/calculators/us_tax_calculator/tax-withholding.html (Old version)
+- tools/calculators/us_tax_calculator/retirement-planner-estimator.html (Broken version)
+
+Upload Package:
+- upload_package/loan_emi_calculator.html (Backup copy)
+
+Total Files Backed Up: 7
+
+Files Kept in Production:
+=========================
+
+US Tax Calculator Suite (8 files):
+- federal-income-tax.html
+- state-income-tax.html
+- capital-gains-tax.html
+- self-employment-tax.html
+- retirement-tax.html
+- tax-withholding-new.html
+- lump-sum-investment.html
+- index.html
+
+Investment Calculators (2 files):
+- sip_calculator_new.html
+- compound_interest_calculator.html
+
+Loan Calculator (1 file):
+- loan_emi_calculator.html
+
+Retirement Planner (1 file):
+- retirement-planner-fixed.html
+
+Total Production Files: 12
+
+Backup Location: backup_old_versions_20251102_114437
+Backup Archive: backup_old_versions_20251102_114437.tar.gz
+
+Next Steps:
+===========
+1. Verify remaining files work correctly
+2. Clean up WordPress admin pages (see WORDPRESS_CLEANUP_PLAN.md)
+3. Deploy updated calculators
+4. Test all functionality
+5. Clear caches
+

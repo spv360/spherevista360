@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIP Calculator - US Stock Market Investment</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../design-system.css">
+</head>
+<body>
+    <div class="container">
+        <div class="tool-container">
+            <div class="tool-header">
+                <h1>📈 US Stock Market SIP Calculator</h1>
+                <p class="subtitle">Calculate returns on your Systematic Investment Plan in US stocks with advanced analytics</p>
+                <div class="badge-container">
+                    <span class="badge">🎯 Professional Grade</span>
+                    <span class="badge">📊 Advanced Analytics</span>
+                    <span class="badge">⚡ Real-time Results</span>
+                    <span class="badge">💾 Export Ready</span>
+                </div>
+            </div>
+
+            <div class="tool-content">
+                <div class="input-grid">
+                    <div class="input-group">
+                        <h3>💰 Monthly Investment</h3>
+                        <input type="number" id="monthly-investment" class="input-field" placeholder="500" min="50" value="500">
+                        <p class="input-description">Your monthly investment amount in USD</p>
+                    </div>
+
+                    <div class="input-group">
+                        <h3>📊 Expected Annual Return</h3>
+                        <input type="number" id="return-rate" class="input-field" placeholder="10" min="0" max="50" step="0.1" value="8.5">
+                        <p class="input-description">Expected annual return percentage (7-12% is realistic for stocks)</p>
+                    </div>
+
+                    <div class="input-group">
+                        <h3>⏰ Investment Period</h3>
+                        <input type="number" id="investment-period" class="input-field" placeholder="10" min="1" max="50" value="10">
+                        <p class="input-description">Number of years you plan to invest</p>
+                    </div>
+
+                    <div class="input-group">
+                        <h3>🔄 Compounding Frequency</h3>
+                        <select id="compounding-frequency" class="select-field">
+                            <option value="12" selected>Monthly</option>
+                            <option value="4">Quarterly</option>
+                            <option value="2">Semi-annually</option>
+                            <option value="1">Annually</option>
+                        </select>
+                        <p class="input-description">How often your returns are compounded</p>
+                    </div>
+                </div>
+
+                <div class="tab-navigation">
+                    <div class="tab-buttons">
+                        <button class="tab-btn active" data-tab="basic-tab">Basic Settings</button>
+                        <button class="tab-btn" data-tab="advanced-tab">Advanced Options</button>
+                    </div>
+                </div>
+
+                <div id="basic-tab" class="tab-content active">
+                    <p style="text-align: center; color: #64748b; margin: 20px 0;">
+                        Use the basic settings above for standard SIP calculations
+                    </p>
+                </div>
+
+                <div id="advanced-tab" class="tab-content">
+                    <div class="input-grid">
+                        <div class="input-group">
+                            <h3>💵 Initial Investment</h3>
+                            <input type="number" id="initial-investment" class="input-field" placeholder="5000" min="0" value="0">
+                            <p class="input-description">One-time initial investment amount</p>
+                        </div>
+
+                        <div class="input-group">
+                            <h3>📈 Annual Step-up</h3>
+                            <input type="number" id="step-up" class="input-field" placeholder="0" min="0" max="20" step="0.1" value="0">
+                            <p class="input-description">Increase monthly investment by this percentage each year</p>
+                        </div>
+
+                        <div class="input-group">
+                            <h3>📉 Inflation Rate</h3>
+                            <input type="number" id="inflation" class="input-field" placeholder="3.0" min="0" max="10" step="0.1" value="3">
+                            <p class="input-description">Expected annual inflation rate</p>
+                        </div>
+
+                        <div class="input-group">
+                            <h3>🎯 Risk Profile</h3>
+                            <select id="risk-profile" class="select-field">
+                                <option value="conservative">Conservative (4-6% returns)</option>
+                                <option value="moderate" selected>Moderate (7-10% returns)</option>
+                                <option value="aggressive">Aggressive (10-15% returns)</option>
+                            </select>
+                            <p class="input-description">Adjusts return expectations based on risk tolerance</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="text-align: center; margin: 40px 0;">
+                    <button class="btn-primary" id="calculate-btn" onclick="calculateSIP()">
+                        📊 Calculate SIP Returns
+                    </button>
+                </div>
+
+                <div class="results-section" id="results" style="display: none;">
+                    <div class="results-header">
+                        <h2>Investment Summary</h2>
+                        <p>Your SIP investment projection results</p>
+                    </div>
+
+                    <div class="results-grid">
+                        <div class="result-card">
+                            <div class="result-label">Total Invested</div>
+                            <div class="result-value" id="total-invested">$0</div>
+                        </div>
+                        <div class="result-card">
+                            <div class="result-label">Final Portfolio Value</div>
+                            <div class="result-value" id="final-value">$0</div>
+                        </div>
+                        <div class="result-card">
+                            <div class="result-label">Total Returns</div>
+                            <div class="result-value" id="total-returns">$0</div>
+                        </div>
+                        <div class="result-card">
+                            <div class="result-label">Return Percentage</div>
+                            <div class="result-value" id="return-percentage">0%</div>
+                        </div>
+                        <div class="result-card">
+                            <div class="result-label">Average Annual Return</div>
+                            <div class="result-value" id="avg-annual-return">0%</div>
+                        </div>
+                        <div class="result-card">
+                            <div class="result-label">Final Monthly Investment</div>
+                            <div class="result-value" id="final-monthly">$0</div>
+                        </div>
+                    </div>
+
+                    <div class="chart-container">
+                        <div class="chart-header">
+                            <h3>Growth Projection Over Time</h3>
+                            <p>Visual representation of your investment growth</p>
+                        </div>
+                        <div id="growth-chart"></div>
+                    </div>
+
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Year</th>
+                                    <th>Investment</th>
+                                    <th>Cumulative Investment</th>
+                                    <th>Portfolio Value</th>
+                                    <th>Yearly Return</th>
+                                    <th>Return %</th>
+                                </tr>
+                            </thead>
+                            <tbody id="yearly-breakdown">
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="export-section">
+                        <h3 style="margin-bottom: 16px;">Export Your Results</h3>
+                        <div class="export-buttons">
+                            <button class="export-btn" onclick="exportResults('json')">
+                                📄 Export JSON
+                            </button>
+                            <button class="export-btn" onclick="exportResults('csv')">
+                                📊 Export CSV
+                            </button>
+                            <button class="export-btn" onclick="shareResults()">
+                                📤 Share Results
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-section">
+                    <h3>Understanding SIP Investments</h3>
+                    <p class="info-description">
+                        Systematic Investment Plans (SIPs) help you invest regularly in the stock market, benefiting from rupee-cost averaging and compounding returns.
+                    </p>
+
+                    <div class="features-grid">
+                        <div class="feature-card">
+                            <div class="feature-icon">📊</div>
+                            <h4 class="feature-title">Rupee Cost Averaging</h4>
+                            <p class="feature-description">
+                                Invest fixed amounts regularly, buying more shares when prices are low and fewer when prices are high.
+                            </p>
+                        </div>
+
+                        <div class="feature-card">
+                            <div class="feature-icon">💰</div>
+                            <h4 class="feature-title">Power of Compounding</h4>
+                            <p class="feature-description">
+                                Your returns generate returns, creating exponential growth over time through compound interest.
+                            </p>
+                        </div>
+
+                        <div class="feature-card">
+                            <div class="feature-icon">🎯</div>
+                            <h4 class="feature-title">Disciplined Investing</h4>
+                            <p class="feature-description">
+                                Regular investments help you stay disciplined and avoid emotional decision-making based on market volatility.
+                            </p>
+                        </div>
+
+                        <div class="feature-card">
+                            <div class="feature-icon">📈</div>
+                            <h4 class="feature-title">Long-term Wealth Creation</h4>
+                            <p class="feature-description">
+                                SIPs are ideal for long-term goals like retirement planning and wealth accumulation.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="alert alert-info" style="margin-top: 24px;">
+                        <span class="alert-icon">ℹ️</span>
+                        <span>
+                            <strong>Important:</strong> Past performance doesn't guarantee future returns.
+                            Stock market investments are subject to market risks. Consider your risk tolerance and investment horizon before investing.
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../utilities.js"></script>
+    <script>
+        // Initialize tools
+        const tools = new SphereVistaTools();
+        let currentResults = null;
+
+        // Risk profile return rates
+        const riskProfiles = {
+            conservative: 5.5,
+            moderate: 8.5,
+            aggressive: 12.5
+        };
+
+        // Update return rate when risk profile changes
+        document.getElementById('risk-profile').addEventListener('change', function() {
+            const profile = this.value;
+            const returnRate = riskProfiles[profile];
+            document.getElementById('return-rate').value = returnRate;
+        });
+
+        // Set initial return rate based on default risk profile
+        document.addEventListener('DOMContentLoaded', function() {
+            const defaultProfile = document.getElementById('risk-profile').value;
+            document.getElementById('return-rate').value = riskProfiles[defaultProfile];
+        });
+
+        async function calculateSIP() {
+            const button = document.getElementById('calculate-btn');
+            const originalText = button.textContent;
+
+            // Show loading state
+            tools.animations.setLoading(button, true);
+
+            try {
+                // Get input values
+                const monthlyInvestment = parseFloat(document.getElementById('monthly-investment').value);
+                const returnRate = parseFloat(document.getElementById('return-rate').value) / 100;
+                const investmentPeriod = parseInt(document.getElementById('investment-period').value);
+                const compoundingFreq = parseInt(document.getElementById('compounding-frequency').value);
+                const initialInvestment = parseFloat(document.getElementById('initial-investment').value) || 0;
+                const stepUp = parseFloat(document.getElementById('step-up').value) / 100 || 0;
+                const inflation = parseFloat(document.getElementById('inflation').value) / 100 || 0;
+
+                // Validation
+                const validationRules = {
+                    'monthly-investment': ['required', 'number', 'positive'],
+                    'return-rate': ['required', 'number', 'range:0:0.5'],
+                    'investment-period': ['required', 'number', 'integer', 'range:1:50']
+                };
+
+                const { isValid, errors } = tools.validation.validateForm(document.querySelector('.tool-content'), validationRules);
+
+                if (!isValid) {
+                    tools.ui.showAlert('Please correct the errors above and try again.', 'error');
+                    return;
+                }
+
+                // Calculate SIP returns
+                const results = calculateSIPReturns({
+                    monthlyInvestment,
+                    returnRate,
+                    investmentPeriod,
+                    compoundingFreq,
+                    initialInvestment,
+                    stepUp,
+                    inflation
+                });
+
+                currentResults = results;
+
+                // Display results with animation
+                displayResults(results);
+
+                // Scroll to results
+                setTimeout(() => {
+                    tools.animations.scrollTo(document.getElementById('results'), 100);
+                }, 300);
+
+            } catch (error) {
+                console.error('Calculation error:', error);
+                tools.ui.showAlert('An error occurred during calculation. Please check your inputs.', 'error');
+            } finally {
+                // Hide loading state
+                tools.animations.setLoading(button, false);
+            }
+        }
+
+        function calculateSIPReturns(params) {
+            const {
+                monthlyInvestment,
+                returnRate,
+                investmentPeriod,
+                compoundingFreq,
+                initialInvestment,
+                stepUp,
+                inflation
+            } = params;
+
+            let totalInvested = initialInvestment;
+            let currentValue = initialInvestment;
+            let currentMonthlyInvestment = monthlyInvestment;
+            const yearlyBreakdown = [];
+            const periodicRate = returnRate / compoundingFreq;
+
+            for (let year = 1; year <= investmentPeriod; year++) {
+                const yearStartValue = currentValue;
+                let yearlyInvested = 0;
+
+                // Calculate investment for this year
+                for (let month = 1; month <= 12; month++) {
+                    currentValue += currentMonthlyInvestment;
+                    totalInvested += currentMonthlyInvestment;
+                    yearlyInvested += currentMonthlyInvestment;
+
+                    // Apply periodic compounding
+                    for (let i = 0; i < compoundingFreq / 12; i++) {
+                        currentValue *= (1 + periodicRate);
+                    }
+                }
+
+                const yearEndValue = currentValue;
+                const yearlyReturn = yearEndValue - yearStartValue - yearlyInvested;
+                const yearlyReturnPct = yearlyStartValue > 0 ? (yearlyReturn / yearlyStartValue) * 100 : 0;
+
+                yearlyBreakdown.push({
+                    year,
+                    investment: yearlyInvested,
+                    cumulativeInvestment: totalInvested,
+                    portfolioValue: yearEndValue,
+                    yearlyReturn,
+                    yearlyReturnPct
+                });
+
+                // Apply step-up for next year
+                currentMonthlyInvestment *= (1 + stepUp);
+            }
+
+            const totalReturns = currentValue - totalInvested;
+            const totalReturnPct = totalInvested > 0 ? (totalReturns / totalInvested) * 100 : 0;
+            const avgAnnualReturn = totalInvested > 0 ? ((currentValue / totalInvested) ** (1 / investmentPeriod) - 1) * 100 : 0;
+
+            return {
+                inputs: params,
+                summary: {
+                    totalInvested,
+                    currentValue,
+                    totalReturns,
+                    totalReturnPct,
+                    avgAnnualReturn,
+                    currentMonthlyInvestment
+                },
+                yearlyBreakdown,
+                calculatedAt: new Date().toISOString()
+            };
+        }
+
+        function displayResults(results) {
+            const resultsSection = document.getElementById('results');
+
+            // Show results section with animation
+            resultsSection.style.display = 'block';
+            tools.animations.slideInUp(resultsSection);
+
+            // Animate result values
+            const summary = results.summary;
+
+            tools.animations.animateNumber(
+                document.getElementById('total-invested'),
+                0,
+                summary.totalInvested,
+                1000,
+                (num) => NumberFormatter.formatCurrency(num)
+            );
+
+            tools.animations.animateNumber(
+                document.getElementById('final-value'),
+                0,
+                summary.currentValue,
+                1000,
+                (num) => NumberFormatter.formatCurrency(num)
+            );
+
+            tools.animations.animateNumber(
+                document.getElementById('total-returns'),
+                0,
+                summary.totalReturns,
+                1000,
+                (num) => NumberFormatter.formatCurrency(num)
+            );
+
+            tools.animations.animateNumber(
+                document.getElementById('return-percentage'),
+                0,
+                summary.totalReturnPct,
+                1000,
+                (num) => NumberFormatter.formatPercent(num / 100)
+            );
+
+            tools.animations.animateNumber(
+                document.getElementById('avg-annual-return'),
+                0,
+                summary.avgAnnualReturn,
+                1000,
+                (num) => NumberFormatter.formatPercent(num / 100)
+            );
+
+            tools.animations.animateNumber(
+                document.getElementById('final-monthly'),
+                0,
+                summary.currentMonthlyInvestment,
+                1000,
+                (num) => NumberFormatter.formatCurrency(num)
+            );
+
+            // Display yearly breakdown table
+            displayYearlyBreakdown(results.yearlyBreakdown);
+
+            // Create chart placeholder
+            tools.charts.createPlaceholderChart('growth-chart', 'Investment Growth Visualization');
+
+            // Save results to local storage
+            tools.storage.saveCalculatorState('sip', results);
+        }
+
+        function displayYearlyBreakdown(breakdown) {
+            const tbody = document.getElementById('yearly-breakdown');
+            tbody.innerHTML = '';
+
+            breakdown.forEach(row => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${row.year}</td>
+                    <td>${NumberFormatter.formatCurrency(row.investment)}</td>
+                    <td>${NumberFormatter.formatCurrency(row.cumulativeInvestment)}</td>
+                    <td>${NumberFormatter.formatCurrency(row.portfolioValue)}</td>
+                    <td>${NumberFormatter.formatCurrency(row.yearlyReturn)}</td>
+                    <td>${NumberFormatter.formatPercent(row.yearlyReturnPct / 100)}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function exportResults(format) {
+            if (!currentResults) {
+                tools.ui.showAlert('Please calculate results first.', 'warning');
+                return;
+            }
+
+            try {
+                tools.export.export(currentResults, format, `sip-calculation-${Date.now()}`);
+                tools.ui.showAlert(`Results exported as ${format.toUpperCase()} successfully!`, 'success');
+            } catch (error) {
+                tools.ui.showAlert('Export failed. Please try again.', 'error');
+            }
+        }
+
+        async function shareResults() {
+            if (!currentResults) {
+                tools.ui.showAlert('Please calculate results first.', 'warning');
+                return;
+            }
+
+            const shared = await tools.export.share(currentResults, 'SIP Calculator Results');
+            if (!shared) {
+                tools.ui.showAlert('Sharing not supported on this device. Try exporting instead.', 'info');
+            }
+        }
+
+        function resetForm() {
+            document.getElementById('monthly-investment').value = '500';
+            document.getElementById('return-rate').value = riskProfiles.moderate;
+            document.getElementById('investment-period').value = '10';
+            document.getElementById('compounding-frequency').value = '12';
+            document.getElementById('initial-investment').value = '0';
+            document.getElementById('step-up').value = '0';
+            document.getElementById('inflation').value = '3';
+            document.getElementById('results').style.display = 'none';
+            currentResults = null;
+            tools.validation.clearErrors(document.querySelector('.tool-content'));
+        }
+
+        // Load saved state on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedState = tools.storage.loadCalculatorState('sip');
+            if (savedState) {
+                // Could populate form with saved values if desired
+                console.log('Previous calculation loaded:', savedState);
+            }
+        });
+
+        // Add keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey || e.metaKey) {
+                switch(e.key) {
+                    case 'Enter':
+                        e.preventDefault();
+                        calculateSIP();
+                        break;
+                    case 'r':
+                        e.preventDefault();
+                        resetForm();
+                        break;
+                }
+            }
+        });
+    </script>
+</body>
+</html>

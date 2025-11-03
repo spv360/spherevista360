@@ -1,0 +1,89 @@
+<!-- Stock Ticker - Simple Version (No Template Literals) -->
+<script>
+(function() {
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initTicker);
+    } else {
+        initTicker();
+    }
+    
+    function initTicker() {
+        // Create ticker container
+        var ticker = document.createElement('div');
+        ticker.id = 'spherevista-stock-ticker';
+        ticker.style.cssText = 'background: #1a1a2e; color: white; padding: 10px 0; overflow: hidden; border-bottom: 2px solid #0f3460; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); position: relative; z-index: 50;';
+        
+        // Create inner wrapper
+        var wrapper = document.createElement('div');
+        wrapper.style.cssText = 'max-width: 100%; overflow: hidden;';
+        
+        // Create scroll container
+        var scrollContainer = document.createElement('div');
+        scrollContainer.className = 'ticker-scroll';
+        scrollContainer.style.cssText = 'display: flex; animation: tickerScroll 30s linear infinite;';
+        
+        // Stock data
+        var stocks = [
+            {symbol: 'SPY', price: '$452.34', change: '+0.54%', positive: true},
+            {symbol: 'QQQ', price: '$382.67', change: '-0.32%', positive: false},
+            {symbol: 'AAPL', price: '$182.45', change: '+1.79%', positive: true},
+            {symbol: 'MSFT', price: '$378.85', change: '+0.52%', positive: true},
+            {symbol: 'GOOGL', price: '$139.67', change: '-0.63%', positive: false},
+            {symbol: 'AMZN', price: '$145.23', change: '+1.01%', positive: true},
+            {symbol: 'TSLA', price: '$242.18', change: '+2.40%', positive: true},
+            {symbol: 'META', price: '$478.92', change: '-0.49%', positive: false}
+        ];
+        
+        // Create two copies for seamless loop
+        for (var copy = 0; copy < 2; copy++) {
+            var stockList = document.createElement('div');
+            stockList.style.cssText = 'display: flex; gap: 50px; padding: 0 20px; white-space: nowrap; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;';
+            
+            stocks.forEach(function(stock) {
+                var item = document.createElement('div');
+                item.style.cssText = 'display: inline-flex; align-items: center; gap: 10px; font-size: 14px; font-weight: 500;';
+                
+                var symbol = document.createElement('span');
+                symbol.textContent = stock.symbol;
+                symbol.style.cssText = 'font-weight: 700; font-size: 15px; color: #00d4ff; letter-spacing: 0.5px;';
+                
+                var price = document.createElement('span');
+                price.textContent = stock.price;
+                price.style.cssText = 'font-weight: 600; color: #ffffff;';
+                
+                var change = document.createElement('span');
+                change.textContent = stock.change;
+                change.style.cssText = 'font-weight: 600; color: ' + (stock.positive ? '#00ff88' : '#ff4757') + ';';
+                
+                item.appendChild(symbol);
+                item.appendChild(price);
+                item.appendChild(change);
+                stockList.appendChild(item);
+            });
+            
+            // Add market status to first copy only
+            if (copy === 0) {
+                var status = document.createElement('div');
+                status.style.cssText = 'display: inline-flex; align-items: center; gap: 5px; padding: 4px 12px; background: rgba(255,255,255,0.1); border-radius: 12px; font-size: 12px; font-weight: 600;';
+                status.innerHTML = '<span>🔴</span><span>Market Closed</span>';
+                stockList.appendChild(status);
+            }
+            
+            scrollContainer.appendChild(stockList);
+        }
+        
+        wrapper.appendChild(scrollContainer);
+        ticker.appendChild(wrapper);
+        
+        // Add CSS animation
+        var style = document.createElement('style');
+        style.textContent = '@keyframes tickerScroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }';
+        document.head.appendChild(style);
+        
+        // Insert at the beginning of body
+        if (document.body && document.body.firstChild) {
+            document.body.insertBefore(ticker, document.body.firstChild);
+        }
+    }
+})();
+</script>

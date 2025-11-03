@@ -1,0 +1,340 @@
+<!-- Live Stock Tracker Header -->
+<div style="background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); color: white; padding: 20px 0; position: relative; overflow: hidden;">
+    <div style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
+        <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 20px;">
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <div style="font-size: 2em;">📈</div>
+                <div>
+                    <h2 style="margin: 0; font-size: 1.5em; font-weight: 600;">Live Stock Tracker</h2>
+                    <div id="stock-last-update-header" style="font-size: 0.8em; opacity: 0.8; margin-top: 2px;">Updated: 12:34:56 PM (Demo)</div>
+                </div>
+            </div>
+
+            <div id="stock-header-content" style="display: flex; gap: 20px; flex-wrap: wrap;">
+                <div class="stock-header-item">
+                    <div class="stock-header-symbol">SPY</div>
+                    <div class="stock-header-price">$452.34</div>
+                    <div class="stock-header-change positive">+0.54%</div>
+                </div>
+                <div class="stock-header-item">
+                    <div class="stock-header-symbol">QQQ</div>
+                    <div class="stock-header-price">$382.67</div>
+                    <div class="stock-header-change negative">-0.32%</div>
+                </div>
+                <div class="stock-header-item">
+                    <div class="stock-header-symbol">AAPL</div>
+                    <div class="stock-header-price">$182.45</div>
+                    <div class="stock-header-change positive">+1.79%</div>
+                </div>
+                <div class="stock-header-item">
+                    <div class="stock-header-symbol">MSFT</div>
+                    <div class="stock-header-price">$378.85</div>
+                    <div class="stock-header-change positive">+0.52%</div>
+                </div>
+                <div class="stock-header-item" style="background: rgba(248, 113, 113, 0.2); border: 1px solid #f87171;">
+                    <div style="font-size: 1.2em;">🔴</div>
+                    <div style="font-size: 0.7em; margin-top: 2px;">Closed</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Animated background elements -->
+    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; pointer-events: none;">
+        <div style="position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px); background-size: 50px 50px; animation: float 20s linear infinite;"></div>
+    </div>
+
+    <style>
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            100% { transform: translate(-50px, -50px) rotate(360deg); }
+        }
+
+        .stock-header-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 8px 12px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 6px;
+            backdrop-filter: blur(10px);
+            min-width: 80px;
+        }
+
+        .stock-header-symbol {
+            font-weight: 600;
+            font-size: 0.8em;
+            margin-bottom: 2px;
+        }
+
+        .stock-header-price {
+            font-size: 0.9em;
+            font-weight: 500;
+        }
+
+        .stock-header-change {
+            font-size: 0.7em;
+            margin-top: 1px;
+        }
+
+        .stock-header-change.positive {
+            color: #4ade80;
+        }
+
+        .stock-header-change.negative {
+            color: #f87171;
+        }
+
+        .stock-header-change.neutral {
+            color: rgba(255,255,255,0.7);
+        }
+
+        @media (max-width: 768px) {
+            .stock-header-item {
+                min-width: 60px;
+                padding: 6px 8px;
+            }
+
+            .stock-header-symbol {
+                font-size: 0.7em;
+            }
+
+            .stock-header-price {
+                font-size: 0.8em;
+            }
+
+            .stock-header-change {
+                font-size: 0.6em;
+            }
+        }
+    </style>
+</div>
+
+<!-- Hero Section -->
+<div style="max-width: 1200px; margin: 0 auto; padding: 40px 20px; text-align: center; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-radius: 15px; margin-bottom: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+    <h1 style="font-size: 3.5em; margin-bottom: 20px; font-weight: 300; text-shadow: 0 2px 4px rgba(0,0,0,0.3);">🌟 SphereVista360</h1>
+    <p style="font-size: 1.4em; margin-bottom: 30px; opacity: 0.9; max-width: 800px; margin-left: auto; margin-right: auto;">Your comprehensive source for financial insights, market analysis, and investment guidance</p>
+    <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;">
+        <a href="/tools/" style="background: rgba(255,255,255,0.2); color: white; padding: 15px 30px; text-decoration: none; border-radius: 50px; font-weight: 600; border: 2px solid rgba(255,255,255,0.3); transition: all 0.3s ease; display: inline-block;">🛠️ Explore Tools</a>
+        <a href="/sip-calculator/" style="background: rgba(255,255,255,0.2); color: white; padding: 15px 30px; text-decoration: none; border-radius: 50px; font-weight: 600; border: 2px solid rgba(255,255,255,0.3); transition: all 0.3s ease; display: inline-block;">💰 SIP Calculator</a>
+        <a href="/compound-interest-calculator/" style="background: rgba(255,255,255,0.2); color: white; padding: 15px 30px; text-decoration: none; border-radius: 50px; font-weight: 600; border: 2px solid rgba(255,255,255,0.3); transition: all 0.3s ease; display: inline-block;">📈 Compound Interest</a>
+    </div>
+</div>
+
+<div style="max-width: 1200px; margin: 0 auto; padding: 0 20px; display: grid; grid-template-columns: 1fr 300px; gap: 40px; align-items: start;">
+
+    <div style="background: white; border-radius: 15px; padding: 40px; box-shadow: 0 5px 20px rgba(0,0,0,0.08); margin-bottom: 40px;">
+        
+        <div style="text-align: center; margin-bottom: 50px;">
+            <h2 style="color: #2c3e50; font-size: 2.5em; margin-bottom: 20px; font-weight: 300;">Welcome to Your Financial Journey</h2>
+            <p style="font-size: 1.2em; color: #7f8c8d; line-height: 1.6; max-width: 800px; margin: 0 auto;">We provide expert analysis on global markets, economic trends, and investment strategies to help you make informed financial decisions.</p>
+        </div>
+
+        <div style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; padding: 40px; border-radius: 15px; margin-bottom: 40px; text-align: center;">
+            <h2 style="font-size: 2.2em; margin-bottom: 15px; font-weight: 300;">📈 Market Intelligence & Investment Insights</h2>
+            <p style="font-size: 1.1em; opacity: 0.9; margin-bottom: 0;">Stay informed with our comprehensive market analysis and investment guidance</p>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-bottom: 50px;">
+            <div style="background: #f8f9fa; padding: 30px; border-radius: 12px; border-left: 4px solid #3498db; transition: transform 0.3s ease;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'"">
+                <h3 style="color: #2c3e50; margin-bottom: 20px; font-size: 1.4em;">💰 Investment Strategies</h3>
+                <ul style="color: #555; line-height: 1.8; padding-left: 20px;">
+                    <li><strong>Portfolio Diversification</strong> – Build resilient investment portfolios</li>
+                    <li><strong>Risk Management</strong> – Protect your investments from market volatility</li>
+                    <li><strong>Asset Allocation</strong> – Optimize your investment mix</li>
+                    <li><strong>Tax-Efficient Investing</strong> – Maximize returns through smart tax planning</li>
+                </ul>
+            </div>
+            
+            <div style="background: #f8f9fa; padding: 30px; border-radius: 12px; border-left: 4px solid #e74c3c; transition: transform 0.3s ease;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'"">
+                <h3 style="color: #2c3e50; margin-bottom: 20px; font-size: 1.4em;">�� Economic Analysis</h3>
+                <ul style="color: #555; line-height: 1.8; padding-left: 20px;">
+                    <li><strong>GDP Trends</strong> – Global economic growth indicators</li>
+                    <li><strong>Inflation Monitoring</strong> – Impact on purchasing power and investments</li>
+                    <li><strong>Interest Rate Analysis</strong> – Federal Reserve policy implications</li>
+                    <li><strong>Currency Markets</strong> – Forex trends and international trade</li>
+                </ul>
+            </div>
+            
+            <div style="background: #f8f9fa; padding: 30px; border-radius: 12px; border-left: 4px solid #27ae60; transition: transform 0.3s ease;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'"">
+                <h3 style="color: #2c3e50; margin-bottom: 20px; font-size: 1.4em;">🏦 Banking & Finance</h3>
+                <ul style="color: #555; line-height: 1.8; padding-left: 20px;">
+                    <li><strong>Digital Banking</strong> – Fintech innovations and mobile banking</li>
+                    <li><strong>Cryptocurrency</strong> – Blockchain and digital asset strategies</li>
+                    <li><strong>Fintech Startups</strong> – Emerging financial technology companies</li>
+                    <li><strong>Regulatory Updates</strong> – Compliance and regulatory changes</li>
+                </ul>
+            </div>
+        </div>
+
+        <div style="margin-bottom: 50px;">
+            <h2 style="text-align: center; color: #2c3e50; font-size: 2.2em; margin-bottom: 40px; font-weight: 300;">🎯 Featured Financial Topics</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 30px;">
+                <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; border-radius: 12px; transition: transform 0.3s ease;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'"">
+                    <h4 style="margin-bottom: 15px; font-size: 1.3em;">Stock Market Analysis</h4>
+                    <p style="opacity: 0.9; line-height: 1.6;">In-depth analysis of equity markets, sector performance, and investment opportunities in stocks and ETFs.</p>
+                </div>
+                <div style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; padding: 30px; border-radius: 12px; transition: transform 0.3s ease;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'"">
+                    <h4 style="margin-bottom: 15px; font-size: 1.3em;">Bond Markets & Fixed Income</h4>
+                    <p style="opacity: 0.9; line-height: 1.6;">Understanding bond yields, credit ratings, and fixed income investment strategies for portfolio stability.</p>
+                </div>
+                <div style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white; padding: 30px; border-radius: 12px; transition: transform 0.3s ease;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'"">
+                    <h4 style="margin-bottom: 15px; font-size: 1.3em;">Real Estate Investment</h4>
+                    <p style="opacity: 0.9; line-height: 1.6;">Commercial and residential real estate trends, REITs, and property investment strategies.</p>
+                </div>
+                <div style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); color: white; padding: 30px; border-radius: 12px; transition: transform 0.3s ease;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'"">
+                    <h4 style="margin-bottom: 15px; font-size: 1.3em;">Alternative Investments</h4>
+                    <p style="opacity: 0.9; line-height: 1.6;">Hedge funds, private equity, commodities, and other alternative investment vehicles.</p>
+                </div>
+            </div>
+        </div>
+
+        <div style="background: #f8f9fa; padding: 50px; border-radius: 15px; margin-bottom: 40px;">
+            <h2 style="text-align: center; color: #2c3e50; font-size: 2.2em; margin-bottom: 40px; font-weight: 300;">Why Choose SphereVista360?</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px;">
+                <div style="text-align: center; padding: 20px;">
+                    <div style="font-size: 3em; margin-bottom: 15px;">🎓</div>
+                    <h4 style="color: #2c3e50; margin-bottom: 15px;">Expert Analysis</h4>
+                    <p style="color: #7f8c8d; line-height: 1.6;">Professional financial analysis and market insights from experienced analysts.</p>
+                </div>
+                <div style="text-align: center; padding: 20px;">
+                    <div style="font-size: 3em; margin-bottom: 15px;">🌍</div>
+                    <h4 style="color: #2c3e50; margin-bottom: 15px;">Comprehensive Coverage</h4>
+                    <p style="color: #7f8c8d; line-height: 1.6;">Complete coverage of global markets, economic trends, and investment opportunities.</p>
+                </div>
+                <div style="text-align: center; padding: 20px;">
+                    <div style="font-size: 3em; margin-bottom: 15px;">🛠️</div>
+                    <h4 style="color: #2c3e50; margin-bottom: 15px;">Free Tools</h4>
+                    <p style="color: #7f8c8d; line-height: 1.6;">Access powerful financial calculators and analysis tools at no cost.</p>
+                </div>
+                <div style="text-align: center; padding: 20px;">
+                    <div style="font-size: 3em; margin-bottom: 15px;">📚</div>
+                    <h4 style="color: #2c3e50; margin-bottom: 15px;">Educational Resources</h4>
+                    <p style="color: #7f8c8d; line-height: 1.6;">Learn about investing, markets, and financial planning with our educational content.</p>
+                </div>
+            </div>
+        </div>
+
+        <div style="text-align: center; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 40px; border-radius: 15px;">
+            <h2 style="font-size: 2em; margin-bottom: 20px; font-weight: 300;">Join Our Community</h2>
+            <p style="font-size: 1.1em; margin-bottom: 30px; opacity: 0.9;">Stay updated with the latest financial news, market analysis, and investment insights.</p>
+            <a href="/newsletter/" style="background: rgba(255,255,255,0.2); color: white; padding: 15px 30px; text-decoration: none; border-radius: 50px; font-weight: 600; border: 2px solid rgba(255,255,255,0.3); transition: all 0.3s ease; display: inline-block;">📧 Subscribe to Newsletter</a>
+        </div>
+
+    </div>
+
+    <div>
+        <div style="background: white; border-radius: 15px; padding: 30px; box-shadow: 0 5px 20px rgba(0,0,0,0.08); margin-bottom: 30px;">
+            <h3 style="color: #2c3e50; margin-bottom: 25px; text-align: center; font-size: 1.4em;">🛠️ Financial Tools</h3>
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+                <a href="/tools/" style="display: block; padding: 15px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; text-decoration: none; border-radius: 10px; text-align: center; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);" onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 8px 25px rgba(102, 126, 234, 0.4)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 15px rgba(102, 126, 234, 0.3)'"">
+                    📊 All Tools
+                </a>
+                <a href="/sip-calculator/" style="display: block; padding: 15px; background: #fff; color: #495057; text-decoration: none; border-radius: 10px; text-align: center; font-weight: 600; border: 2px solid #e9ecef; transition: all 0.3s ease;" onmouseover="this.style.background='#667eea'; this.style.color='white'; this.style.transform='translateY(-3px)'; this.style.borderColor='#667eea'" onmouseout="this.style.background='#fff'; this.style.color='#495057'; this.style.transform='translateY(0)'; this.style.borderColor='#e9ecef'"">
+                    💰 SIP Calculator
+                </a>
+                <a href="/compound-interest-calculator/" style="display: block; padding: 15px; background: #fff; color: #495057; text-decoration: none; border-radius: 10px; text-align: center; font-weight: 600; border: 2px solid #e9ecef; transition: all 0.3s ease;" onmouseover="this.style.background='#667eea'; this.style.color='white'; this.style.transform='translateY(-3px)'; this.style.borderColor='#667eea'" onmouseout="this.style.background='#fff'; this.style.color='#495057'; this.style.transform='translateY(0)'; this.style.borderColor='#e9ecef'"">
+                    📈 Compound Interest
+                </a>
+                <a href="/loan-emi-calculator/" style="display: block; padding: 15px; background: #fff; color: #495057; text-decoration: none; border-radius: 10px; text-align: center; font-weight: 600; border: 2px solid #e9ecef; transition: all 0.3s ease;" onmouseover="this.style.background='#667eea'; this.style.color='white'; this.style.transform='translateY(-3px)'; this.style.borderColor='#667eea'" onmouseout="this.style.background='#fff'; this.style.color='#495057'; this.style.transform='translateY(0)'; this.style.borderColor='#e9ecef'"">
+                    🏠 Loan EMI Calculator
+                </a>
+                <div style="display: block; padding: 15px; background: #f8f9fa; color: #6c757d; border-radius: 10px; text-align: center; font-weight: 600; border: 2px solid #e9ecef; opacity: 0.6; cursor: not-allowed;">
+                    📊 Investment Calculator (Coming Soon)
+                </div>
+                <div style="display: block; padding: 15px; background: #f8f9fa; color: #6c757d; border-radius: 10px; text-align: center; font-weight: 600; border: 2px solid #e9ecef; opacity: 0.6; cursor: not-allowed;">
+                    🏖️ Retirement Calculator (Coming Soon)
+                </div>
+            </div>
+        </div>
+
+        <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-radius: 15px; padding: 30px; box-shadow: 0 5px 20px rgba(0,0,0,0.08); text-align: center;">
+            <h4 style="margin-bottom: 20px; font-size: 1.2em;">📈 Quick Stats</h4>
+            <div style="display: flex; flex-direction: column; gap: 15px;">
+                <div>
+                    <div style="font-size: 2em; font-weight: bold;">6+</div>
+                    <div style="opacity: 0.8; font-size: 0.9em;">Financial Tools</div>
+                </div>
+                <div>
+                    <div style="font-size: 2em; font-weight: bold;">100%</div>
+                    <div style="opacity: 0.8; font-size: 0.9em;">Free Access</div>
+                </div>
+                <div>
+                    <div style="font-size: 2em; font-weight: bold;">24/7</div>
+                    <div style="opacity: 0.8; font-size: 0.9em;">Available</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<style>
+@media (max-width: 768px) {
+    .hero-section, .main-content-container {
+    }
+    .hero-section h1 {
+    }
+    .hero-section p {
+    }
+    .hero-section .cta-buttons {
+    }
+}
+</style>
+
+<script>
+// Immediately display mock stock data when script runs
+(function() {
+    const mockData = [
+        { symbol: 'SPY', name: 'S&P 500 ETF', price: 452.34, change: 2.45, changePercent: 0.54, marketState: 'CLOSED' },
+        { symbol: 'QQQ', name: 'Nasdaq 100 ETF', price: 382.67, change: -1.23, changePercent: -0.32, marketState: 'CLOSED' },
+        { symbol: 'AAPL', name: 'Apple Inc.', price: 182.45, change: 3.21, changePercent: 1.79, marketState: 'CLOSED' },
+        { symbol: 'MSFT', name: 'Microsoft Corp.', price: 378.85, change: 1.95, changePercent: 0.52, marketState: 'CLOSED' }
+    ];
+
+    const headerContentDiv = document.getElementById('stock-header-content');
+    const headerLastUpdateDiv = document.getElementById('stock-last-update-header');
+
+    const now = new Date();
+    const timeString = `Updated: ${now.toLocaleTimeString()} (Demo)`;
+
+    if (headerLastUpdateDiv) headerLastUpdateDiv.textContent = timeString;
+
+    if (headerContentDiv) {
+        const isMarketOpen = mockData.some(stock => stock.marketState === 'REGULAR');
+
+        let html = mockData.map(stock => {
+            const changeClass = stock.change > 0 ? 'positive' : stock.change < 0 ? 'negative' : 'neutral';
+            const changeSymbol = stock.change > 0 ? '+' : stock.change < 0 ? '' : '';
+
+            return `
+                <div class="stock-header-item">
+                    <div class="stock-header-symbol">${stock.symbol}</div>
+                    <div class="stock-header-price">$${stock.price.toFixed(2)}</div>
+                    <div class="stock-header-change ${changeClass}">
+                        ${changeSymbol}${stock.changePercent.toFixed(2)}%
+                    </div>
+                </div>
+            `;
+        }).join('');
+
+        // Add market status indicator
+        html += `<div class="stock-header-item" style="background: ${isMarketOpen ? 'rgba(74, 222, 128, 0.2)' : 'rgba(248, 113, 113, 0.2)'}; border: 1px solid ${isMarketOpen ? '#4ade80' : '#f87171'};">
+            <div style="font-size: 1.2em;">${isMarketOpen ? '🟢' : '🔴'}</div>
+            <div style="font-size: 0.7em; margin-top: 2px;">${isMarketOpen ? 'Open' : 'Closed'}</div>
+        </div>`;
+
+        headerContentDiv.innerHTML = html;
+    }
+
+    console.log('Stock tracker mock data displayed successfully');
+})();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Capital Gains Tax Calculator - US Tax Calculator Suite</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../design-system.css">
+</head>
+<body>
+    <div class="container">
+        <div class="tool-container">
+            <div class="tool-header">
+                <h1>📈 Capital Gains Tax Calculator</h1>
+                <p class="subtitle">Calculate federal capital gains tax on investments, real estate, and other assets</p>
+                <div class="badge-container">
+                    <span class="badge">💰 Investment Tax</span>
+                    <span class="badge">🏠 Real Estate</span>
+                    <span class="badge">📊 Short/Long-term</span>
+                    <span class="badge">🎯 Tax Optimization</span>
+                </div>
+            </div>
+
+            <div class="tool-content">
+                <div class="calculator-grid">
+                    <div class="input-section">
+                        <h3>Capital Gains Tax Calculation Inputs</h3>
+
+                        <div class="input-grid">
+                            <div class="input-group">
+                                <h4>🏷️ Asset Type</h4>
+                                <select id="asset-type" class="input-field">
+                                    <option value="stocks">Stocks/ETFs/Mutual Funds</option>
+                                    <option value="real-estate">Real Estate</option>
+                                    <option value="crypto">Cryptocurrency</option>
+                                    <option value="collectibles">Collectibles (Art, Coins, etc.)</option>
+                                    <option value="other">Other Capital Assets</option>
+                                </select>
+                                <p class="input-description">Type of asset being sold</p>
+                            </div>
+
+                            <div class="input-group">
+                                <h4>⏱️ Holding Period</h4>
+                                <select id="holding-period" class="input-field">
+                                    <option value="short-term">Short-term (≤ 1 year)</option>
+                                    <option value="long-term">Long-term (> 1 year)</option>
+                                </select>
+                                <p class="input-description">How long you owned the asset</p>
+                            </div>
+
+                            <div class="input-group">
+                                <h4>💰 Sale Price</h4>
+                                <input type="number" id="sale-price" class="input-field" placeholder="100000" min="0" step="0.01">
+                                <p class="input-description">Amount received from sale</p>
+                            </div>
+
+                            <div class="input-group">
+                                <h4>📊 Cost Basis</h4>
+                                <input type="number" id="cost-basis" class="input-field" placeholder="80000" min="0" step="0.01">
+                                <p class="input-description">Original purchase price</p>
+                            </div>
+
+                            <div class="input-group">
+                                <h4>🔧 Improvements</h4>
+                                <input type="number" id="improvements" class="input-field" placeholder="5000" min="0" step="0.01">
+                                <p class="input-description">Commissions, fees, improvements</p>
+                            </div>
+
+                            <div class="input-group">
+                                <h4>👤 Filing Status</h4>
+                                <select id="filing-status" class="input-field">
+                                    <option value="single">Single</option>
+                                    <option value="married-joint">Married Filing Jointly</option>
+                                    <option value="head-household">Head of Household</option>
+                                </select>
+                                <p class="input-description">Your tax filing status</p>
+                            </div>
+
+                            <div class="input-group">
+                                <h4>💼 Other Income</h4>
+                                <input type="number" id="taxable-income" class="input-field" placeholder="60000" min="0" step="0.01">
+                                <p class="input-description">Ordinary income before capital gains</p>
+                            </div>
+                        </div>
+
+                        <div style="text-align: center; margin: 40px 0;">
+                            <button id="calculate-capital-gains-btn" class="btn-primary">Calculate Capital Gains Tax</button>
+                            <button id="reset-capital-gains-btn" class="btn-secondary">Reset Calculator</button>
+                        </div>
+                    </div>
+
+                    <div class="results-section">
+                        <h3>Capital Gains Tax Results</h3>
+
+                        <div id="results-container" class="results-content">
+                            <div class="results-grid">
+                                <div class="result-card">
+                                    <div class="result-label">Sale Price</div>
+                                    <div class="result-value" id="sale-price-result">$0</div>
+                                </div>
+
+                                <div class="result-card">
+                                    <div class="result-label">Adjusted Cost Basis</div>
+                                    <div class="result-value" id="adjusted-basis-result">$0</div>
+                                </div>
+
+                                <div class="result-card">
+                                    <div class="result-label">Capital Gain/Loss</div>
+                                    <div class="result-value" id="capital-gain-result">$0</div>
+                                </div>
+
+                                <div class="result-card">
+                                    <div class="result-label">Tax Rate Applied</div>
+                                    <div class="result-value" id="tax-rate-applied">0%</div>
+                                </div>
+
+                                <div class="result-card">
+                                    <div class="result-label">Tax Due</div>
+                                    <div class="result-value" id="tax-due-result">$0</div>
+                                </div>
+
+                                <div class="result-card">
+                                    <div class="result-label">Net Proceeds After Tax</div>
+                                    <div class="result-value" id="net-proceeds-result">$0</div>
+                                </div>
+                            </div>
+
+                            <div class="data-table-section">
+                                <h3>Tax Breakdown Summary</h3>
+                                <p>Detailed breakdown of your capital gains tax calculation</p>
+                                <div class="data-table-container">
+                                    <table class="data-table" id="tax-breakdown-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Component</th>
+                                                <th>Amount</th>
+                                                <th>Description</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="tax-breakdown-body">
+                                            <tr>
+                                                <td colspan="3" class="empty-row">Enter sale details and calculate to see breakdown</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="export-section">
+                                <h3 style="margin-bottom: 16px;">Export Your Tax Calculation</h3>
+                                <div class="export-buttons">
+                                    <button id="export-capital-gains-json" class="export-btn">📄 Export JSON</button>
+                                    <button id="export-capital-gains-pdf" class="export-btn">📊 Export PDF</button>
+                                    <button id="share-capital-gains-results" class="export-btn">📤 Share Results</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="no-results" class="empty-state">
+                            <div class="empty-state-icon">📊</div>
+                            <h3>Ready to Calculate Capital Gains Tax</h3>
+                            <p>Enter your asset sale details including sale price, cost basis, and holding period, then click "Calculate Capital Gains Tax" to see your tax liability</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-section">
+                    <h3>Understanding Capital Gains Tax</h3>
+                    <p class="info-description">
+                        Capital gains tax applies to profits from selling capital assets like stocks, real estate, and collectibles.
+                        The tax rate depends on how long you owned the asset and your total income level.
+                    </p>
+
+                    <div class="features-grid">
+                        <div class="feature-card">
+                            <div class="feature-icon">⏱️</div>
+                            <h4 class="feature-title">Holding Period Matters</h4>
+                            <p class="feature-description">Assets held more than one year qualify for lower long-term capital gains rates (0%, 15%, or 20%), while short-term gains are taxed as ordinary income.</p>
+                        </div>
+
+                        <div class="feature-card">
+                            <div class="feature-icon">📊</div>
+                            <h4 class="feature-title">Progressive Rates</h4>
+                            <p class="feature-description">Long-term capital gains rates increase with income level. Higher earners pay higher rates on their investment gains.</p>
+                        </div>
+
+                        <div class="feature-card">
+                            <div class="feature-icon">🏛️</div>
+                            <h4 class="feature-title">Special Rules Apply</h4>
+                            <p class="feature-description">Collectibles like art and coins are taxed at 28%. Real estate may qualify for special exclusions. Primary residence sales have unique rules.</p>
+                        </div>
+
+                        <div class="feature-card">
+                            <div class="feature-icon">💡</div>
+                            <h4 class="feature-title">Tax Loss Harvesting</h4>
+                            <p class="feature-description">Capital losses can offset capital gains and up to $3,000 of ordinary income annually, with excess losses carried forward.</p>
+                        </div>
+                    </div>
+
+                    <div class="alert alert-info" style="margin-top: 24px;">
+                        <span class="alert-icon">ℹ️</span>
+                        <span>
+                            <strong>Disclaimer:</strong> This calculator provides estimates for federal capital gains tax only. It does not include state taxes, the 3.8% Net Investment Income Tax (NIIT), or the additional Medicare tax. Short-term capital gains are taxed as ordinary income. Long-term rates apply to assets held more than one year. This is not tax advice. Consult a qualified tax professional for personalized advice. Tax laws may change.
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../../utilities.js"></script>
+    <script>
+        class CapitalGainsCalculator {
+            constructor() {
+                this.results = null;
+                this.tools = new SphereVistaTools();
+                this.initializeEventListeners();
+                this.setDefaultValues();
+            }
+
+            initializeEventListeners() {
+                const calculateBtn = document.getElementById('calculate-capital-gains-btn');
+                const resetBtn = document.getElementById('reset-capital-gains-btn');
+                const exportJsonBtn = document.getElementById('export-capital-gains-json');
+                const exportPdfBtn = document.getElementById('export-capital-gains-pdf');
+                const shareBtn = document.getElementById('share-capital-gains-results');
+
+                calculateBtn.addEventListener('click', () => this.calculateCapitalGainsTax());
+                resetBtn.addEventListener('click', () => this.resetCalculator());
+                exportJsonBtn.addEventListener('click', () => this.exportCapitalGainsJSON());
+                exportPdfBtn.addEventListener('click', () => this.exportCapitalGainsPDF());
+                shareBtn.addEventListener('click', () => this.shareCapitalGainsResults());
+            }
+
+            setDefaultValues() {
+                document.getElementById('sale-price').value = '100000';
+                document.getElementById('cost-basis').value = '80000';
+                document.getElementById('improvements').value = '5000';
+                document.getElementById('taxable-income').value = '60000';
+            }
+
+            // 2024 Capital Gains Tax Rates
+            getCapitalGainsRates() {
+                return {
+                    'short-term': {
+                        single: [
+                            { min: 0, max: 11600, rate: 0.10 },
+                            { min: 11600, max: 47150, rate: 0.12 },
+                            { min: 47150, max: 100525, rate: 0.22 },
+                            { min: 100525, max: 191950, rate: 0.24 },
+                            { min: 191950, max: 243725, rate: 0.32 },
+                            { min: 243725, max: 609350, rate: 0.35 },
+                            { min: 609350, max: Infinity, rate: 0.37 }
+                        ],
+                        'married-joint': [
+                            { min: 0, max: 23200, rate: 0.10 },
+                            { min: 23200, max: 94300, rate: 0.12 },
+                            { min: 94300, max: 201050, rate: 0.22 },
+                            { min: 201050, max: 383900, rate: 0.24 },
+                            { min: 383900, max: 487450, rate: 0.32 },
+                            { min: 487450, max: 731200, rate: 0.35 },
+                            { min: 731200, max: Infinity, rate: 0.37 }
+                        ],
+                        'head-household': [
+                            { min: 0, max: 16550, rate: 0.10 },
+                            { min: 16550, max: 63100, rate: 0.12 },
+                            { min: 63100, max: 100500, rate: 0.22 },
+                            { min: 100500, max: 191650, rate: 0.24 },
+                            { min: 191650, max: 243700, rate: 0.32 },
+                            { min: 243700, max: 609350, rate: 0.35 },
+                            { min: 609350, max: Infinity, rate: 0.37 }
+                        ]
+                    },
+                    'long-term': {
+                        single: [
+                            { min: 0, max: 47925, rate: 0.00 },
+                            { min: 47925, max: 518900, rate: 0.15 },
+                            { min: 518900, max: Infinity, rate: 0.20 }
+                        ],
+                        'married-joint': [
+                            { min: 0, max: 83350, rate: 0.00 },
+                            { min: 83350, max: 517200, rate: 0.15 },
+                            { min: 517200, max: Infinity, rate: 0.20 }
+                        ],
+                        'head-household': [
+                            { min: 0, max: 59750, rate: 0.00 },
+                            { min: 59750, max: 518900, rate: 0.15 },
+                            { min: 518900, max: Infinity, rate: 0.20 }
+                        ]
+                    }
+                };
+            }
+
+            calculateCapitalGainsTax() {
+                const assetType = document.getElementById('asset-type').value;
+                const holdingPeriod = document.getElementById('holding-period').value;
+                const salePrice = parseFloat(document.getElementById('sale-price').value) || 0;
+                const costBasis = parseFloat(document.getElementById('cost-basis').value) || 0;
+                const improvements = parseFloat(document.getElementById('improvements').value) || 0;
+                const filingStatus = document.getElementById('filing-status').value;
+                const otherIncome = parseFloat(document.getElementById('taxable-income').value) || 0;
+
+                if (salePrice <= 0) {
+                    this.tools.ui.showAlert('Please enter a valid sale price.', 'error');
+                    return;
+                }
+
+                // Calculate adjusted basis
+                const adjustedBasis = costBasis + improvements;
+
+                // Calculate gain/loss
+                const capitalGain = salePrice - adjustedBasis;
+
+                // Store basic results
+                this.results = {
+                    assetType,
+                    holdingPeriod,
+                    salePrice,
+                    costBasis,
+                    improvements,
+                    adjustedBasis,
+                    capitalGain,
+                    filingStatus,
+                    otherIncome
+                };
+
+                if (capitalGain <= 0) {
+                    this.displayNoTaxResults();
+                    return;
+                }
+
+                // Determine tax rate based on asset type and holding period
+                let taxRate = 0;
+                let rateType = '';
+
+                if (assetType === 'collectibles') {
+                    taxRate = 0.28;
+                    rateType = 'Collectibles (28%)';
+                } else {
+                    // For other assets, use capital gains rates
+                    const brackets = this.getCapitalGainsRates()[holdingPeriod][filingStatus];
+
+                    // Find applicable rate based on total taxable income
+                    const totalTaxableIncome = otherIncome + capitalGain;
+
+                    for (let bracket of brackets) {
+                        if (totalTaxableIncome <= bracket.max || bracket.max === Infinity) {
+                            taxRate = bracket.rate;
+                            rateType = holdingPeriod === 'short-term' ?
+                                `Ordinary Income (${(taxRate * 100).toFixed(1)}%)` :
+                                `Long-term Capital Gains (${(taxRate * 100).toFixed(1)}%)`;
+                            break;
+                        }
+                    }
+                }
+
+                const taxDue = capitalGain * taxRate;
+                const netProceeds = salePrice - taxDue;
+
+                // Update results
+                this.results.taxRate = taxRate;
+                this.results.rateType = rateType;
+                this.results.taxDue = taxDue;
+                this.results.netProceeds = netProceeds;
+
+                // Display results
+                this.displayResults();
+
+                // Save to local storage
+                this.tools.storage.saveCalculatorState('capital-gains-tax', this.results);
+            }
+
+            displayResults() {
+                const results = this.results;
+                const resultsContainer = document.getElementById('results-container');
+                const noResults = document.getElementById('no-results');
+
+                // Show results section with animation
+                resultsContainer.style.display = 'block';
+                noResults.style.display = 'none';
+                this.tools.animations.slideInUp(resultsContainer);
+
+                // Animate result values
+                this.tools.animations.animateNumber(
+                    document.getElementById('sale-price-result'),
+                    0,
+                    results.salePrice,
+                    1000,
+                    (num) => NumberFormatter.formatCurrency(num)
+                );
+
+                this.tools.animations.animateNumber(
+                    document.getElementById('adjusted-basis-result'),
+                    0,
+                    results.adjustedBasis,
+                    1000,
+                    (num) => NumberFormatter.formatCurrency(num)
+                );
+
+                this.tools.animations.animateNumber(
+                    document.getElementById('capital-gain-result'),
+                    0,
+                    results.capitalGain,
+                    1000,
+                    (num) => NumberFormatter.formatCurrency(num)
+                );
+
+                document.getElementById('tax-rate-applied').textContent = results.rateType;
+
+                this.tools.animations.animateNumber(
+                    document.getElementById('tax-due-result'),
+                    0,
+                    results.taxDue,
+                    1000,
+                    (num) => NumberFormatter.formatCurrency(num)
+                );
+
+                this.tools.animations.animateNumber(
+                    document.getElementById('net-proceeds-result'),
+                    0,
+                    results.netProceeds,
+                    1000,
+                    (num) => NumberFormatter.formatCurrency(num)
+                );
+
+                // Display tax breakdown table
+                this.displayTaxBreakdown();
+
+                // Scroll to results
+                setTimeout(() => {
+                    this.tools.animations.scrollTo(resultsContainer, 100);
+                }, 300);
+            }
+
+            displayNoTaxResults() {
+                const results = this.results;
+                const resultsContainer = document.getElementById('results-container');
+                const noResults = document.getElementById('no-results');
+
+                // Show results section with animation
+                resultsContainer.style.display = 'block';
+                noResults.style.display = 'none';
+                this.tools.animations.slideInUp(resultsContainer);
+
+                // Animate result values
+                this.tools.animations.animateNumber(
+                    document.getElementById('sale-price-result'),
+                    0,
+                    results.salePrice,
+                    1000,
+                    (num) => NumberFormatter.formatCurrency(num)
+                );
+
+                this.tools.animations.animateNumber(
+                    document.getElementById('adjusted-basis-result'),
+                    0,
+                    results.adjustedBasis,
+                    1000,
+                    (num) => NumberFormatter.formatCurrency(num)
+                );
+
+                this.tools.animations.animateNumber(
+                    document.getElementById('capital-gain-result'),
+                    0,
+                    Math.abs(results.capitalGain),
+                    1000,
+                    (num) => `($${num.toLocaleString()})`
+                );
+
+                document.getElementById('tax-rate-applied').textContent = 'No Tax Due';
+
+                this.tools.animations.animateNumber(
+                    document.getElementById('tax-due-result'),
+                    0,
+                    0,
+                    1000,
+                    (num) => NumberFormatter.formatCurrency(num)
+                );
+
+                this.tools.animations.animateNumber(
+                    document.getElementById('net-proceeds-result'),
+                    0,
+                    results.salePrice,
+                    1000,
+                    (num) => NumberFormatter.formatCurrency(num)
+                );
+
+                // Display tax breakdown table
+                this.displayTaxBreakdown();
+
+                // Scroll to results
+                setTimeout(() => {
+                    this.tools.animations.scrollTo(resultsContainer, 100);
+                }, 300);
+            }
+
+            displayTaxBreakdown() {
+                const breakdownBody = document.getElementById('tax-breakdown-body');
+                const results = this.results;
+
+                let html = '';
+
+                if (results.capitalGain <= 0) {
+                    html = `
+                        <tr>
+                            <td>Capital Loss</td>
+                            <td>$${Math.abs(results.capitalGain).toLocaleString()}</td>
+                            <td>Loss can offset future gains or up to $3,000 of ordinary income</td>
+                        </tr>
+                        <tr>
+                            <td>Tax Due</td>
+                            <td>$0</td>
+                            <td>No tax due on capital losses</td>
+                        </tr>
+                        <tr>
+                            <td>Net Proceeds</td>
+                            <td>$${results.salePrice.toLocaleString()}</td>
+                            <td>Full sale proceeds received</td>
+                        </tr>
+                    `;
+                } else {
+                    html = `
+                        <tr>
+                            <td>Sale Price</td>
+                            <td>$${results.salePrice.toLocaleString()}</td>
+                            <td>Amount received from asset sale</td>
+                        </tr>
+                        <tr>
+                            <td>Adjusted Cost Basis</td>
+                            <td>$${results.adjustedBasis.toLocaleString()}</td>
+                            <td>Original cost plus improvements</td>
+                        </tr>
+                        <tr>
+                            <td>Capital Gain</td>
+                            <td>$${results.capitalGain.toLocaleString()}</td>
+                            <td>Taxable profit from sale</td>
+                        </tr>
+                        <tr>
+                            <td>Tax Rate</td>
+                            <td>${results.rateType}</td>
+                            <td>Applicable capital gains rate</td>
+                        </tr>
+                        <tr>
+                            <td>Tax Due</td>
+                            <td>$${results.taxDue.toLocaleString()}</td>
+                            <td>Federal capital gains tax</td>
+                        </tr>
+                        <tr>
+                            <td>Net Proceeds</td>
+                            <td>$${results.netProceeds.toLocaleString()}</td>
+                            <td>After-tax proceeds from sale</td>
+                        </tr>
+                    `;
+                }
+
+                breakdownBody.innerHTML = html;
+            }
+
+            resetCalculator() {
+                document.getElementById('sale-price').value = '100000';
+                document.getElementById('cost-basis').value = '80000';
+                document.getElementById('improvements').value = '5000';
+                document.getElementById('taxable-income').value = '60000';
+                document.getElementById('results-container').style.display = 'none';
+                document.getElementById('no-results').style.display = 'block';
+                this.results = null;
+            }
+
+            exportCapitalGainsJSON() {
+                if (!this.results) return;
+
+                try {
+                    this.tools.export.export(this.results, 'json', 'capital_gains_tax_calculation');
+                    this.tools.ui.showAlert('Capital gains tax calculation exported as JSON successfully!', 'success');
+                } catch (error) {
+                    this.tools.ui.showAlert('Export failed. Please try again.', 'error');
+                }
+            }
+
+            exportCapitalGainsPDF() {
+                if (!this.results) return;
+
+                try {
+                    // For PDF export, we'd need a more complex implementation
+                    // For now, just export as JSON with a note
+                    this.tools.ui.showAlert('PDF export coming soon. Use JSON export for now.', 'info');
+                } catch (error) {
+                    this.tools.ui.showAlert('Export failed. Please try again.', 'error');
+                }
+            }
+
+            async shareCapitalGainsResults() {
+                if (!this.results) return;
+
+                const shared = await this.tools.export.share(this.results, 'Capital Gains Tax Results');
+                if (!shared) {
+                    this.tools.ui.showAlert('Sharing not supported on this device. Try exporting instead.', 'info');
+                }
+            }
+        }
+
+        // Initialize calculator when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            new CapitalGainsCalculator();
+        });
+    </script>
+</body>
+</html>

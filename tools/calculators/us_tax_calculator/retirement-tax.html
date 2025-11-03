@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Retirement Account Tax Calculator - US Tax Calculator Suite</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../design-system.css">
+</head>
+<body>
+    <div class="container">
+        <div class="tool-container">
+            <div class="tool-header">
+                <h1>🏖️ Retirement Account Tax Calculator</h1>
+                <p class="subtitle">Estimate taxes on 401(k), IRA withdrawals and contributions</p>
+                <div class="badge-container">
+                    <span class="badge">🏦 Retirement Planning</span>
+                    <span class="badge">💰 Tax Optimization</span>
+                    <span class="badge">📊 Account Comparison</span>
+                    <span class="badge">⚖️ Tax Strategy</span>
+                </div>
+            </div>
+
+            <div class="tool-content">
+                <div class="calculator-grid">
+                    <div class="input-section">
+                        <h3>Retirement Account Details</h3>
+
+                        <div class="input-grid">
+                            <div class="input-group">
+                                <h4>🏦 Account Type</h4>
+                                <select id="account-type" class="input-field">
+                                    <option value="traditional-401k">Traditional 401(k)</option>
+                                    <option value="roth-401k">Roth 401(k)</option>
+                                    <option value="traditional-ira">Traditional IRA</option>
+                                    <option value="roth-ira">Roth IRA</option>
+                                    <option value="sep-ira">SEP IRA</option>
+                                    <option value="simple-ira">SIMPLE IRA</option>
+                                </select>
+                                <p class="input-description">Select your retirement account type</p>
+                            </div>
+
+                            <div class="input-group">
+                                <h4>💸 Transaction Type</h4>
+                                <select id="transaction-type" class="input-field">
+                                    <option value="contribution">Contribution</option>
+                                    <option value="withdrawal">Withdrawal</option>
+                                </select>
+                                <p class="input-description">Are you contributing or withdrawing?</p>
+                            </div>
+
+                            <div class="input-group">
+                                <h4>💰 Amount</h4>
+                                <input type="number" id="amount" class="input-field" placeholder="10000" min="0" step="0.01">
+                                <p class="input-description">Transaction amount in dollars</p>
+                            </div>
+
+                            <div class="input-group" id="age-group">
+                                <h4>🎂 Your Age</h4>
+                                <input type="number" id="age" class="input-field" placeholder="35" min="0" max="120">
+                                <p class="input-description">Required for withdrawal calculations</p>
+                            </div>
+
+                            <div class="input-group" id="tax-bracket-group">
+                                <h4>📊 Tax Bracket</h4>
+                                <select id="tax-bracket" class="input-field">
+                                    <option value="0.10">10% (Single: $0-$11,600)</option>
+                                    <option value="0.12">12% (Single: $11,601-$47,150)</option>
+                                    <option value="0.22">22% (Single: $47,151-$100,525)</option>
+                                    <option value="0.24">24% (Single: $100,526-$191,950)</option>
+                                    <option value="0.32">32% (Single: $191,951-$243,725)</option>
+                                    <option value="0.35">35% (Single: $243,726-$609,350)</option>
+                                    <option value="0.37">37% (Single: $609,351+)</option>
+                                </select>
+                                <p class="input-description">Your marginal tax rate for withdrawals</p>
+                            </div>
+
+                            <div class="input-group">
+                                <h4>📅 Account Age (Years)</h4>
+                                <input type="number" id="account-age" class="input-field" placeholder="5" min="0" max="50">
+                                <p class="input-description">How long has the account been open?</p>
+                            </div>
+                        </div>
+
+                        <div class="alert alert-info" style="margin: 20px 0;">
+                            <span class="alert-icon">📊</span>
+                            <span>
+                                <strong>2024 Contribution Limits:</strong> 401(k): $23,000 ($30,500 if 50+), IRA: $7,000 ($8,000 if 50+),
+                                SEP IRA: 25% of compensation (max $69,000), SIMPLE IRA: $16,000 ($19,500 if 50+)
+                            </span>
+                        </div>
+
+                        <div style="text-align: center; margin: 40px 0;">
+                            <button id="calculate-retirement-btn" class="btn-primary">Calculate Retirement Tax</button>
+                            <button id="reset-retirement-btn" class="btn-secondary">Reset Calculator</button>
+                        </div>
+                    </div>
+
+                    <div class="results-section">
+                        <h3>Retirement Tax Analysis Results</h3>
+
+                        <div id="results-container" class="results-content">
+                            <div class="results-grid">
+                                <div class="result-card">
+                                    <div class="result-label">Account Type</div>
+                                    <div class="result-value" id="account-type-result">Not calculated</div>
+                                </div>
+
+                                <div class="result-card">
+                                    <div class="result-label">Transaction Amount</div>
+                                    <div class="result-value" id="transaction-amount-result">$0</div>
+                                </div>
+
+                                <div class="result-card">
+                                    <div class="result-label">Tax Savings/Burden</div>
+                                    <div class="result-value" id="tax-impact-result">$0</div>
+                                </div>
+
+                                <div class="result-card">
+                                    <div class="result-label">Net Amount</div>
+                                    <div class="result-value" id="net-amount-result">$0</div>
+                                </div>
+
+                                <div class="result-card">
+                                    <div class="result-label">Effective Tax Rate</div>
+                                    <div class="result-value" id="effective-rate-result">0%</div>
+                                </div>
+
+                                <div class="result-card">
+                                    <div class="result-label">Penalty Amount</div>
+                                    <div class="result-value" id="penalty-result">$0</div>
+                                </div>
+                            </div>
+
+                            <div class="data-table-section">
+                                <h3>Tax Breakdown Analysis</h3>
+                                <p>Detailed breakdown of taxes and penalties</p>
+                                <div class="data-table-container">
+                                    <table class="data-table" id="tax-breakdown-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Tax Component</th>
+                                                <th>Amount</th>
+                                                <th>Rate</th>
+                                                <th>Description</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="tax-breakdown-body">
+                                            <tr>
+                                                <td colspan="4" class="empty-row">Calculate to see tax breakdown</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div id="recommendations-section" class="alert alert-info" style="display: none;">
+                                <span class="alert-icon">💡</span>
+                                <div>
+                                    <h4 style="margin: 0 0 12px 0; color: #2c3e50;">Recommendations</h4>
+                                    <ul id="recommendations-list" style="margin: 0; padding-left: 20px;">
+                                        <li>Consider your tax situation when choosing between Traditional and Roth accounts</li>
+                                        <li>Traditional accounts provide immediate tax benefits but tax-deferred growth</li>
+                                        <li>Roth accounts provide tax-free growth but no current deductions</li>
+                                        <li>Avoid early withdrawals to prevent 10% penalty plus income taxes</li>
+                                        <li>Review your retirement strategy annually with a tax professional</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="export-section">
+                                <h3 style="margin-bottom: 16px;">Export Your Retirement Tax Analysis</h3>
+                                <div class="export-buttons">
+                                    <button id="export-retirement-json" class="export-btn">📄 Export JSON</button>
+                                    <button id="export-retirement-pdf" class="export-btn">📊 Export PDF</button>
+                                    <button id="share-retirement-results" class="export-btn">📤 Share Results</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="no-results" class="empty-state">
+                            <div class="empty-state-icon">🏦</div>
+                            <h3>Ready to Analyze Retirement Taxes</h3>
+                            <p>Enter your retirement account details and transaction information, then click "Calculate Retirement Tax" to see the tax implications</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-section">
+                    <h3>Understanding Retirement Account Taxes</h3>
+                    <p class="info-description">
+                        Retirement accounts have different tax treatments that can significantly impact your long-term savings.
+                        Understanding these differences is crucial for effective retirement planning.
+                    </p>
+
+                    <div class="features-grid">
+                        <div class="feature-card">
+                            <div class="feature-icon">🏦</div>
+                            <h4 class="feature-title">Traditional Accounts</h4>
+                            <p class="feature-description">Pre-tax contributions reduce current taxable income. Withdrawals are taxed as ordinary income. Required Minimum Distributions (RMDs) start at age 73.</p>
+                        </div>
+
+                        <div class="feature-card">
+                            <div class="feature-icon">💰</div>
+                            <h4 class="feature-title">Roth Accounts</h4>
+                            <p class="feature-description">After-tax contributions with tax-free qualified withdrawals. No RMDs during lifetime. Ideal if you expect to be in a higher tax bracket in retirement.</p>
+                        </div>
+
+                        <div class="feature-card">
+                            <div class="feature-icon">⚖️</div>
+                            <h4 class="feature-title">Early Withdrawal Rules</h4>
+                            <p class="feature-description">Withdrawals before age 59½ incur 10% penalty plus income taxes. Exceptions exist for qualified expenses, first-time home purchase, education, etc.</p>
+                        </div>
+
+                        <div class="feature-card">
+                            <div class="feature-icon">📈</div>
+                            <h4 class="feature-title">Tax Efficiency</h4>
+                            <p class="feature-description">Choose account types based on your current vs. expected future tax rates. Consider both immediate tax benefits and long-term tax implications.</p>
+                        </div>
+                    </div>
+
+                    <div class="alert alert-warning" style="margin-top: 24px;">
+                        <span class="alert-icon">⚠️</span>
+                        <span>
+                            <strong>Important:</strong> This calculator provides estimates for retirement account taxes. Actual tax liability depends on many factors including final income, deductions, credits, and life changes. RMDs are required starting at age 73. Early withdrawals (before age 59½) may incur 10% penalties plus income taxes. This is not tax advice. Consult a qualified tax professional for personalized retirement planning.
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../../utilities.js"></script>
+    <script>
+        class RetirementTaxCalculator {
+            constructor() {
+                this.results = null;
+                this.tools = new SphereVistaTools();
+                this.initializeEventListeners();
+                this.setDefaultValues();
+                this.updateFormFields();
+            }
+
+            initializeEventListeners() {
+                const calculateBtn = document.getElementById('calculate-retirement-btn');
+                const resetBtn = document.getElementById('reset-retirement-btn');
+                const transactionTypeSelect = document.getElementById('transaction-type');
+                const exportJsonBtn = document.getElementById('export-retirement-json');
+                const exportPdfBtn = document.getElementById('export-retirement-pdf');
+                const shareBtn = document.getElementById('share-retirement-results');
+
+                calculateBtn.addEventListener('click', () => this.calculateRetirementTax());
+                resetBtn.addEventListener('click', () => this.resetCalculator());
+                transactionTypeSelect.addEventListener('change', () => this.updateFormFields());
+                exportJsonBtn.addEventListener('click', () => this.exportRetirementJSON());
+                exportPdfBtn.addEventListener('click', () => this.exportRetirementPDF());
+                shareBtn.addEventListener('click', () => this.shareRetirementResults());
+            }
+
+            setDefaultValues() {
+                document.getElementById('amount').value = '10000';
+                document.getElementById('age').value = '35';
+                document.getElementById('account-age').value = '5';
+            }
+
+            updateFormFields() {
+                const transactionType = document.getElementById('transaction-type').value;
+                const ageGroup = document.getElementById('age-group');
+                const taxBracketGroup = document.getElementById('tax-bracket-group');
+
+                if (transactionType === 'withdrawal') {
+                    ageGroup.style.display = 'block';
+                    taxBracketGroup.style.display = 'block';
+                } else {
+                    ageGroup.style.display = 'none';
+                    taxBracketGroup.style.display = 'none';
+                }
+            }
+
+            // 2024 Retirement Account Rules
+            getRetirementRules() {
+                return {
+                    EARLY_WITHDRAWAL_AGE: 59.5,
+                    RMD_START_AGE: 73,
+                    EARLY_WITHDRAWAL_PENALTY: 0.10, // 10%
+                    CONTRIBUTION_LIMITS: {
+                        'traditional-401k': { base: 23000, catchup: 30500 },
+                        'roth-401k': { base: 23000, catchup: 30500 },
+                        'traditional-ira': { base: 7000, catchup: 8000 },
+                        'roth-ira': { base: 7000, catchup: 8000 },
+                        'sep-ira': { base: 69000, catchup: 69000 }, // 25% of compensation
+                        'simple-ira': { base: 16000, catchup: 19500 }
+                    }
+                };
+            }
+
+            calculateRetirementTax() {
+                const accountType = document.getElementById('account-type').value;
+                const transactionType = document.getElementById('transaction-type').value;
+                const amount = parseFloat(document.getElementById('amount').value) || 0;
+                const age = parseFloat(document.getElementById('age').value) || 0;
+                const taxBracket = parseFloat(document.getElementById('tax-bracket').value);
+                const accountAge = parseInt(document.getElementById('account-age').value) || 0;
+
+                if (amount <= 0) {
+                    this.tools.ui.showAlert('Please enter a valid transaction amount.', 'error');
+                    return;
+                }
+
+                if (transactionType === 'withdrawal' && age <= 0) {
+                    this.tools.ui.showAlert('Please enter your age for withdrawal calculations.', 'error');
+                    return;
+                }
+
+                const rules = this.getRetirementRules();
+                let calculationResults;
+
+                if (transactionType === 'contribution') {
+                    calculationResults = this.calculateContributionTax(accountType, amount, taxBracket);
+                } else {
+                    calculationResults = this.calculateWithdrawalTax(accountType, amount, age, taxBracket, rules);
+                }
+
+                // Store results
+                this.results = {
+                    accountType,
+                    transactionType,
+                    amount,
+                    age,
+                    taxBracket,
+                    accountAge,
+                    ...calculationResults
+                };
+
+                // Display results
+                this.displayResults();
+
+                // Show tax breakdown
+                this.showTaxBreakdown();
+
+                // Show recommendations
+                this.showRecommendations();
+
+                // Save to local storage
+                this.tools.storage.saveCalculatorState('retirement-tax', this.results);
+            }
+
+            calculateContributionTax(accountType, amount, taxBracket) {
+                const isTaxDeductible = accountType.includes('traditional');
+                const isRoth = accountType.includes('roth');
+
+                let taxSavings = 0;
+                let afterTaxAmount = amount;
+                let effectiveRate = 0;
+
+                if (isTaxDeductible) {
+                    // Tax deduction for traditional accounts
+                    taxSavings = amount * taxBracket;
+                    afterTaxAmount = amount - taxSavings;
+                    effectiveRate = taxBracket * 100;
+                } else if (isRoth) {
+                    // Roth contributions are after-tax (no immediate tax benefit)
+                    taxSavings = 0;
+                    afterTaxAmount = amount;
+                    effectiveRate = 0;
+                }
+
+                return {
+                    taxSavings,
+                    afterTaxAmount,
+                    effectiveRate,
+                    penaltyAmount: 0,
+                    netAmount: afterTaxAmount,
+                    taxableAmount: isTaxDeductible ? 0 : amount
+                };
+            }
+
+            calculateWithdrawalTax(accountType, amount, age, taxBracket, rules) {
+                const isTraditional = accountType.includes('traditional');
+                const isRoth = accountType.includes('roth');
+
+                let taxableAmount = 0;
+                let penaltyAmount = 0;
+                let incomeTax = 0;
+                let netAmount = amount;
+                let effectiveRate = 0;
+
+                if (isTraditional) {
+                    // Traditional accounts: withdrawals are fully taxable
+                    taxableAmount = amount;
+
+                    // Early withdrawal penalty if under 59½
+                    if (age < rules.EARLY_WITHDRAWAL_AGE) {
+                        penaltyAmount = amount * rules.EARLY_WITHDRAWAL_PENALTY;
+                    }
+
+                    // Income tax
+                    incomeTax = taxableAmount * taxBracket;
+                    netAmount = amount - incomeTax - penaltyAmount;
+                    effectiveRate = ((incomeTax + penaltyAmount) / amount) * 100;
+
+                } else if (isRoth) {
+                    // Roth accounts: qualified withdrawals are tax-free
+                    if (age >= rules.EARLY_WITHDRAWAL_AGE) {
+                        // Qualified withdrawal - no taxes or penalties
+                        taxableAmount = 0;
+                        penaltyAmount = 0;
+                        incomeTax = 0;
+                        netAmount = amount;
+                        effectiveRate = 0;
+                    } else {
+                        // Early withdrawal - 10% penalty but no income tax on earnings
+                        // (Assuming the amount represents earnings for penalty calculation)
+                        penaltyAmount = amount * rules.EARLY_WITHDRAWAL_PENALTY;
+                        incomeTax = 0;
+                        netAmount = amount - penaltyAmount;
+                        effectiveRate = (penaltyAmount / amount) * 100;
+                    }
+                }
+
+                return {
+                    taxableAmount,
+                    penaltyAmount,
+                    incomeTax,
+                    netAmount,
+                    effectiveRate,
+                    taxSavings: 0,
+                    afterTaxAmount: netAmount
+                };
+            }
+
+            displayResults() {
+                const results = this.results;
+                const resultsContainer = document.getElementById('results-container');
+                const noResults = document.getElementById('no-results');
+
+                // Show results section with animation
+                resultsContainer.style.display = 'block';
+                noResults.style.display = 'none';
+                this.tools.animations.slideInUp(resultsContainer);
+
+                // Format account type display
+                const accountTypeDisplay = results.accountType.replace('-', ' ').toUpperCase();
+
+                // Animate result values
+                document.getElementById('account-type-result').textContent = accountTypeDisplay;
+
+                this.tools.animations.animateNumber(
+                    document.getElementById('transaction-amount-result'),
+                    0,
+                    results.amount,
+                    1000,
+                    (num) => NumberFormatter.formatCurrency(num)
+                );
+
+                const taxImpact = results.transactionType === 'contribution' ? results.taxSavings : -(results.incomeTax + results.penaltyAmount);
+                this.tools.animations.animateNumber(
+                    document.getElementById('tax-impact-result'),
+                    0,
+                    taxImpact,
+                    1000,
+                    (num) => `${taxImpact > 0 ? '+' : ''}${NumberFormatter.formatCurrency(num)}`
+                );
+
+                this.tools.animations.animateNumber(
+                    document.getElementById('net-amount-result'),
+                    0,
+                    results.netAmount,
+                    1000,
+                    (num) => NumberFormatter.formatCurrency(num)
+                );
+
+                this.tools.animations.animateNumber(
+                    document.getElementById('effective-rate-result'),
+                    0,
+                    results.effectiveRate,
+                    1000,
+                    (num) => num.toFixed(1) + '%'
+                );
+
+                this.tools.animations.animateNumber(
+                    document.getElementById('penalty-result'),
+                    0,
+                    results.penaltyAmount,
+                    1000,
+                    (num) => NumberFormatter.formatCurrency(num)
+                );
+
+                // Scroll to results
+                setTimeout(() => {
+                    this.tools.animations.scrollTo(resultsContainer, 100);
+                }, 300);
+            }
+
+            showTaxBreakdown() {
+                const breakdownBody = document.getElementById('tax-breakdown-body');
+                const results = this.results;
+
+                let breakdownHtml = '';
+
+                if (results.transactionType === 'contribution') {
+                    breakdownHtml = `
+                        <tr>
+                            <td>Gross Contribution</td>
+                            <td>${NumberFormatter.formatCurrency(results.amount)}</td>
+                            <td>N/A</td>
+                            <td>Amount contributed to account</td>
+                        </tr>
+                        <tr>
+                            <td>Tax Deduction</td>
+                            <td>${NumberFormatter.formatCurrency(results.taxSavings)}</td>
+                            <td>${(results.effectiveRate).toFixed(1)}%</td>
+                            <td>Immediate tax savings</td>
+                        </tr>
+                        <tr>
+                            <td>Net Cost</td>
+                            <td>${NumberFormatter.formatCurrency(results.afterTaxAmount)}</td>
+                            <td>N/A</td>
+                            <td>After-tax amount invested</td>
+                        </tr>
+                    `;
+                } else {
+                    breakdownHtml = `
+                        <tr>
+                            <td>Gross Withdrawal</td>
+                            <td>${NumberFormatter.formatCurrency(results.amount)}</td>
+                            <td>N/A</td>
+                            <td>Amount withdrawn from account</td>
+                        </tr>
+                        <tr>
+                            <td>Taxable Amount</td>
+                            <td>${NumberFormatter.formatCurrency(results.taxableAmount)}</td>
+                            <td>N/A</td>
+                            <td>Portion subject to income tax</td>
+                        </tr>
+                        <tr>
+                            <td>Income Tax</td>
+                            <td>${NumberFormatter.formatCurrency(results.incomeTax)}</td>
+                            <td>${(results.taxBracket * 100).toFixed(1)}%</td>
+                            <td>Federal income tax due</td>
+                        </tr>
+                        <tr>
+                            <td>Early Withdrawal Penalty</td>
+                            <td>${NumberFormatter.formatCurrency(results.penaltyAmount)}</td>
+                            <td>${results.penaltyAmount > 0 ? '10%' : '0%'}</td>
+                            <td>IRS penalty for early withdrawal</td>
+                        </tr>
+                        <tr>
+                            <td>Net Amount Received</td>
+                            <td>${NumberFormatter.formatCurrency(results.netAmount)}</td>
+                            <td>N/A</td>
+                            <td>Amount after taxes and penalties</td>
+                        </tr>
+                    `;
+                }
+
+                breakdownBody.innerHTML = breakdownHtml;
+            }
+
+            showRecommendations() {
+                const recommendationsSection = document.getElementById('recommendations-section');
+                const recommendationsList = document.getElementById('recommendations-list');
+
+                if (this.results.transactionType === 'withdrawal' && this.results.age < 59.5) {
+                    recommendationsSection.style.display = 'block';
+                    this.tools.animations.fadeIn(recommendationsSection);
+                } else {
+                    recommendationsSection.style.display = 'none';
+                }
+            }
+
+            resetCalculator() {
+                document.getElementById('amount').value = '10000';
+                document.getElementById('age').value = '35';
+                document.getElementById('account-age').value = '5';
+                document.getElementById('results-container').style.display = 'none';
+                document.getElementById('no-results').style.display = 'block';
+                document.getElementById('recommendations-section').style.display = 'none';
+                this.results = null;
+            }
+
+            exportRetirementJSON() {
+                if (!this.results) return;
+
+                try {
+                    this.tools.export.export(this.results, 'json', 'retirement_tax_analysis');
+                    this.tools.ui.showAlert('Retirement tax analysis exported as JSON successfully!', 'success');
+                } catch (error) {
+                    this.tools.ui.showAlert('Export failed. Please try again.', 'error');
+                }
+            }
+
+            exportRetirementPDF() {
+                if (!this.results) return;
+
+                try {
+                    // For PDF export, we'd need a more complex implementation
+                    // For now, just export as JSON with a note
+                    this.tools.ui.showAlert('PDF export coming soon. Use JSON export for now.', 'info');
+                } catch (error) {
+                    this.tools.ui.showAlert('Export failed. Please try again.', 'error');
+                }
+            }
+
+            async shareRetirementResults() {
+                if (!this.results) return;
+
+                const shared = await this.tools.export.share(this.results, 'Retirement Tax Analysis');
+                if (!shared) {
+                    this.tools.ui.showAlert('Sharing not supported on this device. Try exporting instead.', 'info');
+                }
+            }
+        }
+
+        // Initialize calculator when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            new RetirementTaxCalculator();
+        });
+    </script>
+</body>
+</html>

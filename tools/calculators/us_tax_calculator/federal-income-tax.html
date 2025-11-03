@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Federal Income Tax Calculator - US Tax Calculator Suite</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../design-system.css">
+</head>
+<body>
+    <div class="container">
+        <div class="tool-container">
+            <div class="tool-header">
+                <h1>🏛️ Federal Income Tax Calculator</h1>
+                <p class="subtitle">Calculate your federal income tax liability for 2024 based on current IRS tax brackets and rates</p>
+                <div class="badge-container">
+                    <span class="badge">📊 2024 Tax Brackets</span>
+                    <span class="badge">💰 Tax Calculation</span>
+                    <span class="badge">📈 Effective Rate</span>
+                    <span class="badge">📋 Bracket Breakdown</span>
+                </div>
+            </div>
+
+            <div class="tool-content">
+                <div class="calculator-grid">
+                    <div class="input-section">
+                        <h3>Federal Tax Calculation Inputs</h3>
+
+                        <div class="input-grid">
+                            <div class="input-group">
+                                <h4>👤 Filing Status</h4>
+                                <select id="filing-status" class="input-field">
+                                    <option value="single">Single</option>
+                                    <option value="married-joint">Married Filing Jointly</option>
+                                    <option value="married-separate">Married Filing Separately</option>
+                                    <option value="head-household">Head of Household</option>
+                                </select>
+                                <p class="input-description">Select your tax filing status</p>
+                            </div>
+
+                            <div class="input-group">
+                                <h4>💰 Taxable Income</h4>
+                                <input type="number" id="taxable-income" class="input-field" placeholder="75000" min="0" step="0.01">
+                                <p class="input-description">Your total taxable income amount</p>
+                            </div>
+
+                            <div class="input-group">
+                                <h4>📝 Deduction Type</h4>
+                                <select id="standard-deduction" class="input-field">
+                                    <option value="yes">Standard Deduction (Recommended)</option>
+                                    <option value="no">Itemized Deductions</option>
+                                </select>
+                                <p class="input-description">Choose deduction method</p>
+                            </div>
+                        </div>
+
+                        <div style="text-align: center; margin: 40px 0;">
+                            <button id="calculate-tax-btn" class="btn-primary">Calculate Federal Tax</button>
+                            <button id="reset-tax-btn" class="btn-secondary">Reset Calculator</button>
+                        </div>
+                    </div>
+
+                    <div class="results-section">
+                        <h3>Federal Tax Results</h3>
+
+                        <div id="results-container" class="results-content">
+                            <div class="results-grid">
+                                <div class="result-card">
+                                    <div class="result-label">Gross Taxable Income</div>
+                                    <div class="result-value" id="gross-income">$0</div>
+                                </div>
+
+                                <div class="result-card">
+                                    <div class="result-label">Adjusted Gross Income</div>
+                                    <div class="result-value" id="adjusted-income">$0</div>
+                                </div>
+
+                                <div class="result-card">
+                                    <div class="result-label">Total Federal Tax Due</div>
+                                    <div class="result-value" id="total-tax">$0</div>
+                                </div>
+
+                                <div class="result-card">
+                                    <div class="result-label">Effective Tax Rate</div>
+                                    <div class="result-value" id="effective-rate">0.00%</div>
+                                </div>
+
+                                <div class="result-card">
+                                    <div class="result-label">After-Tax Income</div>
+                                    <div class="result-value" id="after-tax-income">$0</div>
+                                </div>
+
+                                <div class="result-card">
+                                    <div class="result-label">Tax Savings (vs. No Deduction)</div>
+                                    <div class="result-value" id="tax-savings">$0</div>
+                                </div>
+                            </div>
+
+                            <div class="data-table-section">
+                                <h3>Tax Bracket Breakdown</h3>
+                                <p>Detailed breakdown of your tax calculation by bracket</p>
+                                <div class="data-table-container">
+                                    <table class="data-table" id="tax-breakdown-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Tax Bracket</th>
+                                                <th>Tax Rate</th>
+                                                <th>Taxable Amount</th>
+                                                <th>Tax Due</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="tax-breakdown-body">
+                                            <tr>
+                                                <td colspan="4" class="empty-row">Enter income and calculate to see breakdown</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="export-section">
+                                <h3 style="margin-bottom: 16px;">Export Your Tax Calculation</h3>
+                                <div class="export-buttons">
+                                    <button id="export-tax-json" class="export-btn">📄 Export JSON</button>
+                                    <button id="export-tax-pdf" class="export-btn">📊 Export PDF</button>
+                                    <button id="share-tax-results" class="export-btn">📤 Share Results</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="no-results" class="empty-state">
+                            <div class="empty-state-icon">📊</div>
+                            <h3>Ready to Calculate Federal Tax</h3>
+                            <p>Enter your income details and filing status, then click "Calculate Federal Tax" to see your tax liability breakdown</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-section">
+                    <h3>Understanding Federal Income Tax</h3>
+                    <p class="info-description">
+                        Federal income tax is calculated using progressive tax brackets where higher income levels are taxed at higher rates.
+                        The U.S. uses a marginal tax system, meaning you pay the corresponding rate only on income within each bracket.
+                    </p>
+
+                    <div class="features-grid">
+                        <div class="feature-card">
+                            <div class="feature-icon">📊</div>
+                            <h4 class="feature-title">Progressive Tax System</h4>
+                            <p class="feature-description">Tax rates increase as income rises, with seven brackets ranging from 10% to 37% for 2024.</p>
+                        </div>
+
+                        <div class="feature-card">
+                            <div class="feature-icon">💰</div>
+                            <h4 class="feature-title">Standard Deduction</h4>
+                            <p class="feature-description">Most taxpayers can reduce their taxable income by taking the standard deduction, which varies by filing status.</p>
+                        </div>
+
+                        <div class="feature-card">
+                            <div class="feature-icon">📈</div>
+                            <h4 class="feature-title">Effective vs. Marginal Rate</h4>
+                            <p class="feature-description">Your effective tax rate is the average rate you pay on all income, while marginal rate applies to additional income.</p>
+                        </div>
+
+                        <div class="feature-card">
+                            <div class="feature-icon">🔄</div>
+                            <h4 class="feature-title">Annual Updates</h4>
+                            <p class="feature-description">Tax brackets and rates are adjusted annually for inflation to prevent bracket creep.</p>
+                        </div>
+                    </div>
+
+                    <div class="alert alert-info" style="margin-top: 24px;">
+                        <span class="alert-icon">ℹ️</span>
+                        <span>
+                            <strong>Disclaimer:</strong> This calculator provides estimates based on 2024 federal income tax brackets and rates. It is not intended to provide tax advice. Please consult a qualified tax professional for personalized advice. Tax laws and rates may change, and this calculator does not account for all possible deductions, credits, or special circumstances.
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../../utilities.js"></script>
+    <script>
+        class FederalTaxCalculator {
+            constructor() {
+                this.results = null;
+                this.tools = new SphereVistaTools();
+                this.initializeEventListeners();
+                this.setDefaultValues();
+            }
+
+            initializeEventListeners() {
+                const calculateBtn = document.getElementById('calculate-tax-btn');
+                const resetBtn = document.getElementById('reset-tax-btn');
+                const exportJsonBtn = document.getElementById('export-tax-json');
+                const exportPdfBtn = document.getElementById('export-tax-pdf');
+                const shareBtn = document.getElementById('share-tax-results');
+
+                calculateBtn.addEventListener('click', () => this.calculateTax());
+                resetBtn.addEventListener('click', () => this.resetCalculator());
+                exportJsonBtn.addEventListener('click', () => this.exportTaxJSON());
+                exportPdfBtn.addEventListener('click', () => this.exportTaxPDF());
+                shareBtn.addEventListener('click', () => this.shareTaxResults());
+            }
+
+            setDefaultValues() {
+                document.getElementById('taxable-income').value = '75000';
+            }
+
+            // 2024 Federal Income Tax Brackets
+            getTaxBrackets() {
+                return {
+                    single: [
+                        { min: 0, max: 11600, rate: 0.10 },
+                        { min: 11600, max: 47150, rate: 0.12 },
+                        { min: 47150, max: 100525, rate: 0.22 },
+                        { min: 100525, max: 191950, rate: 0.24 },
+                        { min: 191950, max: 243725, rate: 0.32 },
+                        { min: 243725, max: 609350, rate: 0.35 },
+                        { min: 609350, max: Infinity, rate: 0.37 }
+                    ],
+                    'married-joint': [
+                        { min: 0, max: 23200, rate: 0.10 },
+                        { min: 23200, max: 94300, rate: 0.12 },
+                        { min: 94300, max: 201050, rate: 0.22 },
+                        { min: 201050, max: 383900, rate: 0.24 },
+                        { min: 383900, max: 487450, rate: 0.32 },
+                        { min: 487450, max: 731200, rate: 0.35 },
+                        { min: 731200, max: Infinity, rate: 0.37 }
+                    ],
+                    'married-separate': [
+                        { min: 0, max: 11600, rate: 0.10 },
+                        { min: 11600, max: 47150, rate: 0.12 },
+                        { min: 47150, max: 100525, rate: 0.22 },
+                        { min: 100525, max: 191950, rate: 0.24 },
+                        { min: 191950, max: 243725, rate: 0.32 },
+                        { min: 243725, max: 365600, rate: 0.35 },
+                        { min: 365600, max: Infinity, rate: 0.37 }
+                    ],
+                    'head-household': [
+                        { min: 0, max: 16550, rate: 0.10 },
+                        { min: 16550, max: 63100, rate: 0.12 },
+                        { min: 63100, max: 100500, rate: 0.22 },
+                        { min: 100500, max: 191650, rate: 0.24 },
+                        { min: 191650, max: 243700, rate: 0.32 },
+                        { min: 243700, max: 609350, rate: 0.35 },
+                        { min: 609350, max: Infinity, rate: 0.37 }
+                    ]
+                };
+            }
+
+            // Standard Deductions for 2024
+            getStandardDeductions() {
+                return {
+                    single: 14600,
+                    'married-joint': 29200,
+                    'married-separate': 14600,
+                    'head-household': 21900
+                };
+            }
+
+            calculateTax() {
+                const filingStatus = document.getElementById('filing-status').value;
+                let taxableIncome = parseFloat(document.getElementById('taxable-income').value) || 0;
+                const useStandardDeduction = document.getElementById('standard-deduction').value === 'yes';
+
+                if (taxableIncome <= 0) {
+                    this.tools.ui.showAlert('Please enter a valid taxable income amount.', 'error');
+                    return;
+                }
+
+                const brackets = this.getTaxBrackets()[filingStatus];
+                const standardDeductions = this.getStandardDeductions();
+
+                // Apply standard deduction if selected
+                let adjustedIncome = taxableIncome;
+                let deductionAmount = 0;
+                if (useStandardDeduction) {
+                    deductionAmount = standardDeductions[filingStatus];
+                    adjustedIncome = Math.max(0, taxableIncome - deductionAmount);
+                }
+
+                // Calculate tax without deduction for comparison
+                let taxWithoutDeduction = 0;
+                let remainingIncomeNoDeduction = taxableIncome;
+                for (let i = 0; i < brackets.length; i++) {
+                    const bracket = brackets[i];
+                    if (remainingIncomeNoDeduction <= 0) break;
+                    const taxableInBracket = Math.min(remainingIncomeNoDeduction, bracket.max - bracket.min);
+                    taxWithoutDeduction += taxableInBracket * bracket.rate;
+                    remainingIncomeNoDeduction -= taxableInBracket;
+                }
+
+                // Calculate tax with deduction
+                let totalTax = 0;
+                let remainingIncome = adjustedIncome;
+                const breakdown = [];
+
+                for (let i = 0; i < brackets.length; i++) {
+                    const bracket = brackets[i];
+                    if (remainingIncome <= 0) break;
+
+                    const taxableInBracket = Math.min(remainingIncome, bracket.max - bracket.min);
+                    const taxInBracket = taxableInBracket * bracket.rate;
+
+                    if (taxableInBracket > 0) {
+                        breakdown.push({
+                            bracket: `${(bracket.rate * 100).toFixed(0)}%`,
+                            rate: bracket.rate,
+                            taxableAmount: taxableInBracket,
+                            taxDue: taxInBracket
+                        });
+                    }
+
+                    totalTax += taxInBracket;
+                    remainingIncome -= taxableInBracket;
+                }
+
+                const taxSavings = taxWithoutDeduction - totalTax;
+
+                // Store results
+                this.results = {
+                    filingStatus,
+                    taxableIncome,
+                    adjustedIncome,
+                    deductionAmount,
+                    totalTax,
+                    effectiveRate: (totalTax / taxableIncome) * 100,
+                    afterTaxIncome: taxableIncome - totalTax,
+                    taxSavings,
+                    breakdown
+                };
+
+                // Display results
+                this.displayResults();
+
+                // Save to local storage
+                this.tools.storage.saveCalculatorState('federal-income-tax', this.results);
+            }
+
+            displayResults() {
+                const results = this.results;
+                const resultsContainer = document.getElementById('results-container');
+                const noResults = document.getElementById('no-results');
+
+                // Show results section with animation
+                resultsContainer.style.display = 'block';
+                noResults.style.display = 'none';
+                this.tools.animations.slideInUp(resultsContainer);
+
+                // Animate result values
+                this.tools.animations.animateNumber(
+                    document.getElementById('gross-income'),
+                    0,
+                    results.taxableIncome,
+                    1000,
+                    (num) => NumberFormatter.formatCurrency(num)
+                );
+
+                this.tools.animations.animateNumber(
+                    document.getElementById('adjusted-income'),
+                    0,
+                    results.adjustedIncome,
+                    1000,
+                    (num) => NumberFormatter.formatCurrency(num)
+                );
+
+                this.tools.animations.animateNumber(
+                    document.getElementById('total-tax'),
+                    0,
+                    results.totalTax,
+                    1000,
+                    (num) => NumberFormatter.formatCurrency(num)
+                );
+
+                this.tools.animations.animateNumber(
+                    document.getElementById('effective-rate'),
+                    0,
+                    results.effectiveRate,
+                    1000,
+                    (num) => num.toFixed(2) + '%'
+                );
+
+                this.tools.animations.animateNumber(
+                    document.getElementById('after-tax-income'),
+                    0,
+                    results.afterTaxIncome,
+                    1000,
+                    (num) => NumberFormatter.formatCurrency(num)
+                );
+
+                this.tools.animations.animateNumber(
+                    document.getElementById('tax-savings'),
+                    0,
+                    results.taxSavings,
+                    1000,
+                    (num) => NumberFormatter.formatCurrency(num)
+                );
+
+                // Display tax breakdown table
+                this.displayTaxBreakdown();
+
+                // Scroll to results
+                setTimeout(() => {
+                    this.tools.animations.scrollTo(resultsContainer, 100);
+                }, 300);
+            }
+
+            displayTaxBreakdown() {
+                const breakdownBody = document.getElementById('tax-breakdown-body');
+
+                if (this.results.breakdown.length === 0) {
+                    breakdownBody.innerHTML = '<tr><td colspan="4" class="empty-row">No tax breakdown available</td></tr>';
+                    return;
+                }
+
+                let html = '';
+                this.results.breakdown.forEach(item => {
+                    html += `
+                        <tr>
+                            <td>${item.bracket}</td>
+                            <td>${(item.rate * 100).toFixed(0)}%</td>
+                            <td>${NumberFormatter.formatCurrency(item.taxableAmount)}</td>
+                            <td>${NumberFormatter.formatCurrency(item.taxDue)}</td>
+                        </tr>
+                    `;
+                });
+
+                breakdownBody.innerHTML = html;
+            }
+
+            resetCalculator() {
+                document.getElementById('taxable-income').value = '75000';
+                document.getElementById('results-container').style.display = 'none';
+                document.getElementById('no-results').style.display = 'block';
+                this.results = null;
+            }
+
+            exportTaxJSON() {
+                if (!this.results) return;
+
+                try {
+                    this.tools.export.export(this.results, 'json', 'federal_tax_calculation');
+                    this.tools.ui.showAlert('Tax calculation exported as JSON successfully!', 'success');
+                } catch (error) {
+                    this.tools.ui.showAlert('Export failed. Please try again.', 'error');
+                }
+            }
+
+            exportTaxPDF() {
+                if (!this.results) return;
+
+                try {
+                    // For PDF export, we'd need a more complex implementation
+                    // For now, just export as JSON with a note
+                    this.tools.ui.showAlert('PDF export coming soon. Use JSON export for now.', 'info');
+                } catch (error) {
+                    this.tools.ui.showAlert('Export failed. Please try again.', 'error');
+                }
+            }
+
+            async shareTaxResults() {
+                if (!this.results) return;
+
+                const shared = await this.tools.export.share(this.results, 'Federal Income Tax Results');
+                if (!shared) {
+                    this.tools.ui.showAlert('Sharing not supported on this device. Try exporting instead.', 'info');
+                }
+            }
+        }
+
+        // Initialize calculator when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            new FederalTaxCalculator();
+        });
+    </script>
+</body>
+</html>

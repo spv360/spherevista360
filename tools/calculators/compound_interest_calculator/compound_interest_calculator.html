@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compound Interest Calculator - SphereVista360</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../design-system.css">
+</head>
+<body>
+    <div class="container">
+        <div class="tool-container">
+            <div class="tool-header">
+                <h1>📈 Compound Interest Calculator</h1>
+                <p class="subtitle">Calculate the power of compound interest and plan your investment growth</p>
+                <div class="badge-container">
+                    <span class="badge">🎯 Professional Grade</span>
+                    <span class="badge">📊 Accurate Calculations</span>
+                    <span class="badge">⚡ Instant Results</span>
+                    <span class="badge">💾 Export Ready</span>
+                </div>
+            </div>
+
+            <div class="tool-content">
+                <div class="input-grid">
+                    <div class="input-group">
+                        <h3>💰 Initial Investment</h3>
+                        <input type="number" id="principal" class="input-field" placeholder="Enter initial amount" min="0" step="100">
+                        <p class="input-description">Your starting investment amount</p>
+                    </div>
+
+                    <div class="input-group">
+                        <h3>📊 Annual Interest Rate</h3>
+                        <input type="number" id="rate" class="input-field" placeholder="7.0" min="0" max="50" step="0.1">
+                        <p class="input-description">Expected annual return (e.g., 7% = 7.0)</p>
+                    </div>
+
+                    <div class="input-group">
+                        <h3>⏰ Investment Period</h3>
+                        <input type="number" id="years" class="input-field" placeholder="10" min="1" max="50">
+                        <p class="input-description">Number of years to invest</p>
+                    </div>
+
+                    <div class="input-group">
+                        <h3>🔄 Compounding Frequency</h3>
+                        <select id="frequency" class="select-field">
+                            <option value="1">Annually</option>
+                            <option value="2">Semi-annually</option>
+                            <option value="4">Quarterly</option>
+                            <option value="12" selected>Monthly</option>
+                            <option value="365">Daily</option>
+                        </select>
+                        <p class="input-description">How often interest is compounded</p>
+                    </div>
+
+                    <div class="input-group">
+                        <h3>💵 Monthly Contribution</h3>
+                        <input type="number" id="monthly" class="input-field" placeholder="0" min="0" step="10">
+                        <p class="input-description">Additional monthly investment (optional)</p>
+                    </div>
+
+                    <div class="input-group">
+                        <h3>📉 Inflation Rate</h3>
+                        <input type="number" id="inflation" class="input-field" placeholder="3.0" min="0" max="20" step="0.1">
+                        <p class="input-description">Annual inflation rate (optional)</p>
+                    </div>
+                </div>
+
+                <div id="error-message" class="alert alert-error" style="display: none;"></div>
+
+                <div style="text-align: center; margin: 40px 0;">
+                    <button id="calculate-btn" class="btn-primary">Calculate Compound Interest</button>
+                </div>
+
+                <div id="results-section" class="results-section">
+                    <div class="results-header">
+                        <h2>Investment Results</h2>
+                        <p>Your compound interest calculation summary</p>
+                    </div>
+
+                    <div class="results-grid">
+                        <div class="result-card">
+                            <div class="result-label">Future Value</div>
+                            <div id="future-value" class="result-value">$0.00</div>
+                        </div>
+
+                        <div class="result-card">
+                            <div class="result-label">Total Contributions</div>
+                            <div id="total-contributions" class="result-value">$0.00</div>
+                        </div>
+
+                        <div class="result-card">
+                            <div class="result-label">Total Interest Earned</div>
+                            <div id="total-interest" class="result-value">$0.00</div>
+                        </div>
+
+                        <div class="result-card">
+                            <div class="result-label">Effective Annual Rate</div>
+                            <div id="effective-rate" class="result-value">0.00%</div>
+                        </div>
+                    </div>
+
+                    <div id="inflation-results" style="display: none;">
+                        <div class="results-grid">
+                            <div class="result-card">
+                                <div class="result-label">Inflation-Adjusted Value</div>
+                                <div id="inflation-adjusted" class="result-value">$0.00</div>
+                            </div>
+
+                            <div class="result-card">
+                                <div class="result-label">Real Return</div>
+                                <div id="real-return" class="result-value">$0.00</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="chart-container">
+                        <div class="chart-header">
+                            <h3>Growth Visualization</h3>
+                            <p>Interactive chart showing your investment growth over time</p>
+                        </div>
+                        <div id="growth-chart"></div>
+                    </div>
+
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Year</th>
+                                    <th>Starting Balance</th>
+                                    <th>Contributions</th>
+                                    <th>Interest Earned</th>
+                                    <th>Ending Balance</th>
+                                    <th>Inflation Adjusted</th>
+                                </tr>
+                            </thead>
+                            <tbody id="breakdown-body">
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="export-section">
+                        <h3 style="margin-bottom: 16px;">Export Your Results</h3>
+                        <div class="export-buttons">
+                            <button id="export-json" class="export-btn">📄 Export JSON</button>
+                            <button id="export-csv" class="export-btn">📊 Export CSV</button>
+                            <button id="share-results" class="export-btn">📤 Share Results</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-section">
+                    <h3>About This Calculator</h3>
+                    <p class="info-description">
+                        This compound interest calculator helps you understand the power of compounding and plan your investment growth. It includes options for regular contributions and inflation adjustment to provide realistic projections.
+                    </p>
+
+                    <div class="features-grid">
+                        <div class="feature-card">
+                            <div class="feature-icon">📊</div>
+                            <h4 class="feature-title">Accurate Calculations</h4>
+                            <p class="feature-description">Uses standard compound interest formulas with support for different compounding frequencies</p>
+                        </div>
+
+                        <div class="feature-card">
+                            <div class="feature-icon">💰</div>
+                            <h4 class="feature-title">Regular Contributions</h4>
+                            <p class="feature-description">Factor in monthly investments to see how consistent saving accelerates growth</p>
+                        </div>
+
+                        <div class="feature-card">
+                            <div class="feature-icon">📉</div>
+                            <h4 class="feature-title">Inflation Adjustment</h4>
+                            <p class="feature-description">Account for inflation to understand your real purchasing power</p>
+                        </div>
+
+                        <div class="feature-card">
+                            <div class="feature-icon">📈</div>
+                            <h4 class="feature-title">Year-by-Year Breakdown</h4>
+                            <p class="feature-description">Detailed annual view of your investment growth and contributions</p>
+                        </div>
+                    </div>
+
+                    <div class="alert alert-info" style="margin-top: 24px;">
+                        <span class="alert-icon">ℹ️</span>
+                        <span>
+                            <strong>Disclaimer:</strong> This calculator provides estimates based on the inputs provided.
+                            Actual investment returns may vary significantly due to market conditions and other factors.
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../../utilities.js"></script>
+    <script>
+        class CompoundInterestCalculator {
+            constructor() {
+                this.results = null;
+                this.tools = new SphereVistaTools();
+                this.initializeEventListeners();
+            }
+
+            initializeEventListeners() {
+                const calculateBtn = document.getElementById('calculate-btn');
+                const exportJsonBtn = document.getElementById('export-json');
+                const exportCsvBtn = document.getElementById('export-csv');
+                const shareBtn = document.getElementById('share-results');
+
+                calculateBtn.addEventListener('click', () => this.calculate());
+                exportJsonBtn.addEventListener('click', () => this.exportJSON());
+                exportCsvBtn.addEventListener('click', () => this.exportCSV());
+                shareBtn.addEventListener('click', () => this.shareResults());
+            }
+
+            calculate() {
+                const principal = parseFloat(document.getElementById('principal').value);
+                const rate = parseFloat(document.getElementById('rate').value) / 100;
+                const years = parseInt(document.getElementById('years').value);
+                const frequency = parseInt(document.getElementById('frequency').value);
+                const monthly = parseFloat(document.getElementById('monthly').value) || 0;
+                const inflation = parseFloat(document.getElementById('inflation').value) || 0;
+
+                // Validation
+                if (!principal || principal < 0) {
+                    this.showError('Please enter a valid initial investment amount');
+                    return;
+                }
+
+                if (!rate || rate < 0 || rate > 0.5) {
+                    this.showError('Please enter a valid interest rate between 0% and 50%');
+                    return;
+                }
+
+                if (!years || years < 1 || years > 50) {
+                    this.showError('Please enter investment period between 1 and 50 years');
+                    return;
+                }
+
+                this.hideError();
+                this.results = this.calculateCompoundInterest(principal, rate, years, frequency, monthly, inflation / 100);
+                this.displayResults();
+            }
+
+            calculateCompoundInterest(principal, annualRate, years, compoundingFreq, monthlyContribution, inflationRate) {
+                const periodicRate = annualRate / compoundingFreq;
+                const totalPeriods = years * compoundingFreq;
+
+                // Calculate future value of principal
+                let futureValue = principal * Math.pow(1 + periodicRate, totalPeriods);
+
+                // Add future value of regular contributions
+                if (monthlyContribution > 0) {
+                    const monthlyRate = annualRate / 12;
+                    const totalMonths = years * 12;
+                    futureValue += monthlyContribution * (Math.pow(1 + monthlyRate, totalMonths) - 1) / monthlyRate;
+                }
+
+                const totalContributions = principal + (monthlyContribution * years * 12);
+                const totalInterest = futureValue - totalContributions;
+                const effectiveAnnualRate = Math.pow(1 + periodicRate, compoundingFreq) - 1;
+
+                // Inflation adjustment
+                let inflationAdjustedValue = futureValue;
+                let realReturn = totalInterest;
+
+                if (inflationRate > 0) {
+                    inflationAdjustedValue = futureValue / Math.pow(1 + inflationRate, years);
+                    realReturn = inflationAdjustedValue - totalContributions;
+                }
+
+                // Generate yearly breakdown
+                const yearlyBreakdown = this.generateYearlyBreakdown(
+                    principal, annualRate, years, compoundingFreq, monthlyContribution, inflationRate
+                );
+
+                return {
+                    principal,
+                    annualRate,
+                    effectiveAnnualRate,
+                    years,
+                    compoundingFreq,
+                    monthlyContribution,
+                    totalContributions,
+                    futureValue,
+                    totalInterest,
+                    inflationRate,
+                    inflationAdjustedValue,
+                    realReturn,
+                    yearlyBreakdown
+                };
+            }
+
+            generateYearlyBreakdown(principal, annualRate, years, compoundingFreq, monthlyContribution, inflationRate) {
+                const breakdown = [];
+                let currentPrincipal = principal;
+                const periodicRate = annualRate / compoundingFreq;
+                const periodsPerYear = compoundingFreq;
+
+                for (let year = 1; year <= years; year++) {
+                    const yearStartValue = currentPrincipal;
+
+                    // Add yearly contributions
+                    const yearlyContributions = monthlyContribution * 12;
+                    currentPrincipal += yearlyContributions;
+
+                    // Apply compound interest for the year
+                    for (let i = 0; i < periodsPerYear; i++) {
+                        currentPrincipal *= (1 + periodicRate);
+                    }
+
+                    const yearEndValue = currentPrincipal;
+                    const yearInterest = yearEndValue - yearStartValue - yearlyContributions;
+
+                    // Inflation adjustment
+                    let inflationAdjustedValue = yearEndValue;
+                    if (inflationRate > 0) {
+                        const inflationFactor = Math.pow(1 + inflationRate, year);
+                        inflationAdjustedValue = yearEndValue / inflationFactor;
+                    }
+
+                    breakdown.push({
+                        year,
+                        startingBalance: yearStartValue,
+                        contributions: yearlyContributions,
+                        interestEarned: yearInterest,
+                        endingBalance: yearEndValue,
+                        inflationAdjustedValue
+                    });
+                }
+
+                return breakdown;
+            }
+
+            displayResults() {
+                const results = this.results;
+                const resultsSection = document.getElementById('results-section');
+
+                // Show results section with animation
+                resultsSection.style.display = 'block';
+                this.tools.animations.slideInUp(resultsSection);
+
+                // Animate result values
+                this.tools.animations.animateNumber(
+                    document.getElementById('future-value'),
+                    0,
+                    results.futureValue,
+                    1000,
+                    (num) => NumberFormatter.formatCurrency(num)
+                );
+
+                this.tools.animations.animateNumber(
+                    document.getElementById('total-contributions'),
+                    0,
+                    results.totalContributions,
+                    1000,
+                    (num) => NumberFormatter.formatCurrency(num)
+                );
+
+                this.tools.animations.animateNumber(
+                    document.getElementById('total-interest'),
+                    0,
+                    results.totalInterest,
+                    1000,
+                    (num) => NumberFormatter.formatCurrency(num)
+                );
+
+                document.getElementById('effective-rate').textContent = NumberFormatter.formatPercent(results.effectiveAnnualRate);
+
+                // Inflation results
+                if (results.inflationRate > 0) {
+                    document.getElementById('inflation-results').style.display = 'block';
+                    this.tools.animations.animateNumber(
+                        document.getElementById('inflation-adjusted'),
+                        0,
+                        results.inflationAdjustedValue,
+                        1000,
+                        (num) => NumberFormatter.formatCurrency(num)
+                    );
+                    this.tools.animations.animateNumber(
+                        document.getElementById('real-return'),
+                        0,
+                        results.realReturn,
+                        1000,
+                        (num) => NumberFormatter.formatCurrency(num)
+                    );
+                } else {
+                    document.getElementById('inflation-results').style.display = 'none';
+                }
+
+                // Display yearly breakdown table
+                this.displayYearlyBreakdown();
+
+                // Create chart placeholder
+                this.tools.charts.createPlaceholderChart('growth-chart', 'Investment Growth Visualization');
+
+                // Save results to local storage
+                this.tools.storage.saveCalculatorState('compound-interest', results);
+
+                // Scroll to results
+                setTimeout(() => {
+                    this.tools.animations.scrollTo(resultsSection, 100);
+                }, 300);
+            }
+
+            displayYearlyBreakdown() {
+                const tbody = document.getElementById('breakdown-body');
+                tbody.innerHTML = '';
+
+                this.results.yearlyBreakdown.forEach(year => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${year.year}</td>
+                        <td>${NumberFormatter.formatCurrency(year.startingBalance)}</td>
+                        <td>${NumberFormatter.formatCurrency(year.contributions)}</td>
+                        <td>${NumberFormatter.formatCurrency(year.interestEarned)}</td>
+                        <td>${NumberFormatter.formatCurrency(year.endingBalance)}</td>
+                        <td>${NumberFormatter.formatCurrency(year.inflationAdjustedValue)}</td>
+                    `;
+                    tbody.appendChild(row);
+                });
+            }
+
+            exportJSON() {
+                if (!this.results) return;
+
+                try {
+                    this.tools.export.export(this.results, 'json', 'compound_interest_results');
+                    this.tools.ui.showAlert('Results exported as JSON successfully!', 'success');
+                } catch (error) {
+                    this.tools.ui.showAlert('Export failed. Please try again.', 'error');
+                }
+            }
+
+            exportCSV() {
+                if (!this.results) return;
+
+                try {
+                    this.tools.export.export(this.results.yearlyBreakdown, 'csv', 'compound_interest_breakdown');
+                    this.tools.ui.showAlert('Results exported as CSV successfully!', 'success');
+                } catch (error) {
+                    this.tools.ui.showAlert('Export failed. Please try again.', 'error');
+                }
+            }
+
+            async shareResults() {
+                if (!this.results) return;
+
+                const shared = await this.tools.export.share(this.results, 'Compound Interest Calculator Results');
+                if (!shared) {
+                    this.tools.ui.showAlert('Sharing not supported on this device. Try exporting instead.', 'info');
+                }
+            }
+
+            showError(message) {
+                const errorDiv = document.getElementById('error-message');
+                errorDiv.textContent = message;
+                errorDiv.style.display = 'block';
+                errorDiv.scrollIntoView({ behavior: 'smooth' });
+            }
+
+            hideError() {
+                document.getElementById('error-message').style.display = 'none';
+            }
+        }
+
+        // Initialize calculator when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            new CompoundInterestCalculator();
+        });
+    </script>
+</body>
+</html>

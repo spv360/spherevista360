@@ -1,0 +1,10 @@
+# Allow access to calculator files
+<Files "*.html">
+    Allow from all
+</Files>
+
+# Prevent access to Python files
+<Files "*.py">
+    Order deny,allow
+    Deny from all
+</Files>

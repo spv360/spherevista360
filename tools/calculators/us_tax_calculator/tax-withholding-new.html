@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tax Withholding Calculator - US Tax Calculator Suite</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../design-system.css">
+</head>
+<body>
+    <div class="container">
+        <div class="tool-container">
+            <div class="tool-header">
+                <h1>💼 Tax Withholding Calculator</h1>
+                <p class="subtitle">Optimize your W-4 form to avoid underpayment penalties or large refunds</p>
+                <div class="badge-container">
+                    <span class="badge">📋 W-4 Optimization</span>
+                    <span class="badge">💰 Withholding Analysis</span>
+                    <span class="badge">⚖️ Tax Planning</span>
+                    <span class="badge">📊 Pay Period Calculator</span>
+                </div>
+            </div>
+
+            <div class="tool-content">
+                <div class="calculator-grid">
+                    <div class="input-section">
+                        <h3>Withholding Analysis Inputs</h3>
+
+                        <div class="input-grid">
+                            <div class="input-group">
+                                <h4>📅 Pay Period</h4>
+                                <select id="pay-period" class="input-field">
+                                    <option value="weekly">Weekly</option>
+                                    <option value="biweekly">Bi-weekly</option>
+                                    <option value="semimonthly">Semi-monthly</option>
+                                    <option value="monthly">Monthly</option>
+                                </select>
+                                <p class="input-description">How often do you get paid?</p>
+                            </div>
+
+                            <div class="input-group">
+                                <h4>💰 Gross Pay</h4>
+                                <input type="number" id="gross-pay" class="input-field" placeholder="5000" min="0" step="0.01">
+                                <p class="input-description">Your gross pay for this pay period</p>
+                            </div>
+
+                            <div class="input-group">
+                                <h4>👤 Filing Status</h4>
+                                <select id="filing-status" class="input-field">
+                                    <option value="single">Single</option>
+                                    <option value="married-joint">Married Filing Jointly</option>
+                                    <option value="married-separate">Married Filing Separately</option>
+                                    <option value="head-household">Head of Household</option>
+                                </select>
+                                <p class="input-description">Your federal tax filing status</p>
+                            </div>
+
+                            <div class="input-group">
+                                <h4>👶 Number of Dependents</h4>
+                                <input type="number" id="dependents" class="input-field" placeholder="0" min="0" max="10">
+                                <p class="input-description">Children and other dependents</p>
+                            </div>
+
+                            <div class="input-group">
+                                <h4>📈 Other Annual Income</h4>
+                                <input type="number" id="other-income" class="input-field" placeholder="0" min="0" step="0.01">
+                                <p class="input-description">Interest, dividends, rental income, etc.</p>
+                            </div>
+
+                            <div class="input-group">
+                                <h4>📝 Annual Deductions</h4>
+                                <input type="number" id="deductions" class="input-field" placeholder="0" min="0" step="0.01">
+                                <p class="input-description">Itemized deductions beyond standard deduction</p>
+                            </div>
+
+                            <div class="input-group">
+                                <h4>💸 Current Federal Withholding</h4>
+                                <input type="number" id="current-withholding" class="input-field" placeholder="0" min="0" step="0.01">
+                                <p class="input-description">Amount withheld from this paycheck</p>
+                            </div>
+                        </div>
+
+                        <div style="text-align: center; margin: 40px 0;">
+                            <button id="calculate-withholding-btn" class="btn-primary">Analyze Withholding</button>
+                            <button id="reset-withholding-btn" class="btn-secondary">Reset Calculator</button>
+                        </div>
+                    </div>
+
+                    <div class="results-section">
+                        <h3>Withholding Analysis Results</h3>
+
+                        <div id="results-container" class="results-content">
+                            <div class="results-grid">
+                                <div class="result-card">
+                                    <div class="result-label">Annual Gross Income</div>
+                                    <div class="result-value" id="annual-gross-result">$0</div>
+                                </div>
+
+                                <div class="result-card">
+                                    <div class="result-label">Current Annual Withholding</div>
+                                    <div class="result-value" id="current-annual-result">$0</div>
+                                </div>
+
+                                <div class="result-card">
+                                    <div class="result-label">Expected Annual Tax</div>
+                                    <div class="result-value" id="expected-tax-result">$0</div>
+                                </div>
+
+                                <div class="result-card">
+                                    <div class="result-label">Withholding Status</div>
+                                    <div class="result-value" id="withholding-status-result">Not calculated</div>
+                                </div>
+
+                                <div class="result-card">
+                                    <div class="result-label">Annual Shortfall/Surplus</div>
+                                    <div class="result-value" id="annual-shortfall-result">$0</div>
+                                </div>
+
+                                <div class="result-card">
+                                    <div class="result-label">Recommended Per-Pay-Period</div>
+                                    <div class="result-value" id="recommended-result">$0</div>
+                                </div>
+                            </div>
+
+                            <div class="data-table-section">
+                                <h3>Withholding Adjustment Analysis</h3>
+                                <p>Breakdown of your current withholding vs. recommended amounts</p>
+                                <div class="data-table-container">
+                                    <table class="data-table" id="withholding-analysis-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Analysis Item</th>
+                                                <th>Current</th>
+                                                <th>Recommended</th>
+                                                <th>Difference</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="withholding-analysis-body">
+                                            <tr>
+                                                <td colspan="4" class="empty-row">Calculate to see withholding analysis</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div id="recommendations-section" class="alert alert-info" style="display: none;">
+                                <span class="alert-icon">💡</span>
+                                <div>
+                                    <h4 style="margin: 0 0 12px 0; color: #2c3e50;">Recommendations</h4>
+                                    <ul id="recommendations-list" style="margin: 0; padding-left: 20px;">
+                                        <li>Use the IRS Tax Withholding Estimator for precise calculations</li>
+                                        <li>Consider adjusting your W-4 allowances or using the IRS withholding tables</li>
+                                        <li>If under-withholding significantly, increase withholding to avoid penalties</li>
+                                        <li>Review your withholding annually, especially after major life changes</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="export-section">
+                                <h3 style="margin-bottom: 16px;">Export Your Withholding Analysis</h3>
+                                <div class="export-buttons">
+                                    <button id="export-withholding-json" class="export-btn">📄 Export JSON</button>
+                                    <button id="export-withholding-pdf" class="export-btn">📊 Export PDF</button>
+                                    <button id="share-withholding-results" class="export-btn">📤 Share Results</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="no-results" class="empty-state">
+                            <div class="empty-state-icon">💼</div>
+                            <h3>Ready to Analyze Your Withholding</h3>
+                            <p>Enter your pay information and current withholding amount, then click "Analyze Withholding" to see if you're over or under-withholding taxes</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-section">
+                    <h3>Understanding Tax Withholding</h3>
+                    <p class="info-description">
+                        Proper tax withholding ensures you don't face underpayment penalties or receive large unexpected refunds.
+                        The IRS recommends reviewing your withholding annually.
+                    </p>
+
+                    <div class="features-grid">
+                        <div class="feature-card">
+                            <div class="feature-icon">⚖️</div>
+                            <h4 class="feature-title">W-4 Optimization</h4>
+                            <p class="feature-description">Adjust your W-4 form to match your expected tax liability and avoid penalties or large refunds.</p>
+                        </div>
+
+                        <div class="feature-card">
+                            <div class="feature-icon">📊</div>
+                            <h4 class="feature-title">Pay Period Analysis</h4>
+                            <p class="feature-description">Calculate withholding for weekly, bi-weekly, semi-monthly, and monthly pay periods.</p>
+                        </div>
+
+                        <div class="feature-card">
+                            <div class="feature-icon">👨‍👩‍👧‍👦</div>
+                            <h4 class="feature-title">Family Considerations</h4>
+                            <p class="feature-description">Factor in dependents, filing status, and other income sources for accurate calculations.</p>
+                        </div>
+
+                        <div class="feature-card">
+                            <div class="feature-icon">🎯</div>
+                            <h4 class="feature-title">Tax Planning Tool</h4>
+                            <p class="feature-description">Use this calculator to plan for tax refunds or avoid underpayment penalties.</p>
+                        </div>
+                    </div>
+
+                    <div class="alert alert-warning" style="margin-top: 24px;">
+                        <span class="alert-icon">⚠️</span>
+                        <span>
+                            <strong>Important:</strong> This calculator provides estimates to help you adjust your W-4 form. Actual tax liability depends on many factors including final income, deductions, credits, and life changes. The IRS recommends using their withholding estimator at <a href="https://www.irs.gov/individuals/tax-withholding-estimator" target="_blank" style="color: #856404;">irs.gov</a>. This is not tax advice. Consult a tax professional for personalized guidance.
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../../utilities.js"></script>
+    <script>
+        class TaxWithholdingCalculator {
+            constructor() {
+                this.results = null;
+                this.tools = new SphereVistaTools();
+                this.initializeEventListeners();
+                this.setDefaultValues();
+            }
+
+            initializeEventListeners() {
+                const calculateBtn = document.getElementById('calculate-withholding-btn');
+                const resetBtn = document.getElementById('reset-withholding-btn');
+                const exportJsonBtn = document.getElementById('export-withholding-json');
+                const exportPdfBtn = document.getElementById('export-withholding-pdf');
+                const shareBtn = document.getElementById('share-withholding-results');
+
+                calculateBtn.addEventListener('click', () => this.calculateWithholding());
+                resetBtn.addEventListener('click', () => this.resetCalculator());
+                exportJsonBtn.addEventListener('click', () => this.exportWithholdingJSON());
+                exportPdfBtn.addEventListener('click', () => this.exportWithholdingPDF());
+                shareBtn.addEventListener('click', () => this.shareWithholdingResults());
+            }
+
+            setDefaultValues() {
+                document.getElementById('gross-pay').value = '5000';
+                document.getElementById('dependents').value = '0';
+                document.getElementById('other-income').value = '0';
+                document.getElementById('deductions').value = '0';
+                document.getElementById('current-withholding').value = '0';
+            }
+
+            // Pay period multipliers for annual calculations
+            getPayPeriods() {
+                return {
+                    weekly: 52,
+                    biweekly: 26,
+                    semimonthly: 24,
+                    monthly: 12
+                };
+            }
+
+            // 2024 Federal Income Tax Brackets (simplified for withholding)
+            getTaxBrackets() {
+                return {
+                    single: [
+                        { min: 0, max: 11600, rate: 0.10 },
+                        { min: 11600, max: 47150, rate: 0.12 },
+                        { min: 47150, max: 100525, rate: 0.22 },
+                        { min: 100525, max: 191950, rate: 0.24 },
+                        { min: 191950, max: 243725, rate: 0.32 },
+                        { min: 243725, max: 609350, rate: 0.35 },
+                        { min: 609350, max: Infinity, rate: 0.37 }
+                    ],
+                    'married-joint': [
+                        { min: 0, max: 23200, rate: 0.10 },
+                        { min: 23200, max: 94300, rate: 0.12 },
+                        { min: 94300, max: 201050, rate: 0.22 },
+                        { min: 201050, max: 383900, rate: 0.24 },
+                        { min: 383900, max: 487450, rate: 0.32 },
+                        { min: 487450, max: 731200, rate: 0.35 },
+                        { min: 731200, max: Infinity, rate: 0.37 }
+                    ],
+                    'married-separate': [
+                        { min: 0, max: 11600, rate: 0.10 },
+                        { min: 11600, max: 47150, rate: 0.12 },
+                        { min: 47150, max: 100525, rate: 0.22 },
+                        { min: 100525, max: 191950, rate: 0.24 },
+                        { min: 191950, max: 243725, rate: 0.32 },
+                        { min: 243725, max: 365600, rate: 0.35 },
+                        { min: 365600, max: Infinity, rate: 0.37 }
+                    ],
+                    'head-household': [
+                        { min: 0, max: 16550, rate: 0.10 },
+                        { min: 16550, max: 63100, rate: 0.12 },
+                        { min: 63100, max: 100500, rate: 0.22 },
+                        { min: 100500, max: 191650, rate: 0.24 },
+                        { min: 191650, max: 243700, rate: 0.32 },
+                        { min: 243700, max: 609350, rate: 0.35 },
+                        { min: 609350, max: Infinity, rate: 0.37 }
+                    ]
+                };
+            }
+
+            // Standard deductions for 2024
+            getStandardDeductions() {
+                return {
+                    single: 14600,
+                    'married-joint': 29200,
+                    'married-separate': 14600,
+                    'head-household': 21900
+                };
+            }
+
+            calculateWithholding() {
+                const payPeriod = document.getElementById('pay-period').value;
+                const grossPay = parseFloat(document.getElementById('gross-pay').value) || 0;
+                const filingStatus = document.getElementById('filing-status').value;
+                const dependents = parseInt(document.getElementById('dependents').value) || 0;
+                const otherIncome = parseFloat(document.getElementById('other-income').value) || 0;
+                const deductions = parseFloat(document.getElementById('deductions').value) || 0;
+                const currentWithholding = parseFloat(document.getElementById('current-withholding').value) || 0;
+
+                if (grossPay <= 0) {
+                    this.tools.ui.showAlert('Please enter a valid gross pay amount.', 'error');
+                    return;
+                }
+
+                const payPeriods = this.getPayPeriods();
+                const taxBrackets = this.getTaxBrackets();
+                const standardDeductions = this.getStandardDeductions();
+
+                // Calculate annual equivalents
+                const annualGross = grossPay * payPeriods[payPeriod];
+                const annualWithholding = currentWithholding * payPeriods[payPeriod];
+
+                // Estimate annual taxable income
+                const personalExemption = 0; // Eliminated in TCJA
+                const dependentExemption = dependents * 0; // Eliminated in TCJA
+                const standardDeduction = standardDeductions[filingStatus];
+
+                const estimatedTaxableIncome = annualGross + otherIncome - standardDeduction - deductions - dependentExemption;
+
+                // Calculate expected tax liability
+                const expectedTax = this.calculateTax(estimatedTaxableIncome, taxBrackets[filingStatus]);
+
+                // Calculate recommended withholding
+                const recommendedAnnualWithholding = expectedTax;
+                const recommendedPayPeriodWithholding = recommendedAnnualWithholding / payPeriods[payPeriod];
+
+                // Analyze current situation
+                const annualShortfall = expectedTax - annualWithholding;
+                const payPeriodShortfall = annualShortfall / payPeriods[payPeriod];
+
+                // Determine status
+                const status = Math.abs(annualShortfall) < 1000 ? 'good' : (annualShortfall > 0 ? 'warning' : 'bad');
+                const statusText = annualShortfall > 1000 ? 'Under-withholding' : (annualShortfall < -1000 ? 'Over-withholding' : 'Good');
+
+                // Store results
+                this.results = {
+                    payPeriod,
+                    grossPay,
+                    filingStatus,
+                    dependents,
+                    otherIncome,
+                    deductions,
+                    currentWithholding,
+                    annualGross,
+                    annualWithholding,
+                    expectedTax,
+                    recommendedPayPeriodWithholding,
+                    annualShortfall,
+                    payPeriodShortfall,
+                    status,
+                    statusText
+                };
+
+                // Display results
+                this.displayResults();
+
+                // Show analysis table
+                this.showWithholdingAnalysis();
+
+                // Show recommendations if needed
+                this.showRecommendations();
+
+                // Save to local storage
+                this.tools.storage.saveCalculatorState('tax-withholding', this.results);
+            }
+
+            calculateTax(taxableIncome, brackets) {
+                if (taxableIncome <= 0) return 0;
+
+                let totalTax = 0;
+                let remainingIncome = taxableIncome;
+
+                for (let bracket of brackets) {
+                    if (remainingIncome <= 0) break;
+
+                    const taxableInBracket = Math.min(remainingIncome, bracket.max - bracket.min);
+                    const taxInBracket = taxableInBracket * bracket.rate;
+
+                    totalTax += taxInBracket;
+                    remainingIncome -= taxableInBracket;
+                }
+
+                return totalTax;
+            }
+
+            displayResults() {
+                const results = this.results;
+                const resultsContainer = document.getElementById('results-container');
+                const noResults = document.getElementById('no-results');
+
+                // Show results section with animation
+                resultsContainer.style.display = 'block';
+                noResults.style.display = 'none';
+                this.tools.animations.slideInUp(resultsContainer);
+
+                // Animate result values
+                this.tools.animations.animateNumber(
+                    document.getElementById('annual-gross-result'),
+                    0,
+                    results.annualGross,
+                    1000,
+                    (num) => NumberFormatter.formatCurrency(num)
+                );
+
+                this.tools.animations.animateNumber(
+                    document.getElementById('current-annual-result'),
+                    0,
+                    results.annualWithholding,
+                    1000,
+                    (num) => NumberFormatter.formatCurrency(num)
+                );
+
+                this.tools.animations.animateNumber(
+                    document.getElementById('expected-tax-result'),
+                    0,
+                    results.expectedTax,
+                    1000,
+                    (num) => NumberFormatter.formatCurrency(num)
+                );
+
+                const statusElement = document.getElementById('withholding-status-result');
+                statusElement.textContent = results.statusText;
+                statusElement.className = `result-value status-${results.status}`;
+
+                this.tools.animations.animateNumber(
+                    document.getElementById('annual-shortfall-result'),
+                    0,
+                    results.annualShortfall,
+                    1000,
+                    (num) => `${results.annualShortfall > 0 ? '-' : '+'}${NumberFormatter.formatCurrency(Math.abs(num))}`
+                );
+
+                this.tools.animations.animateNumber(
+                    document.getElementById('recommended-result'),
+                    0,
+                    results.recommendedPayPeriodWithholding,
+                    1000,
+                    (num) => NumberFormatter.formatCurrency(num)
+                );
+
+                // Scroll to results
+                setTimeout(() => {
+                    this.tools.animations.scrollTo(resultsContainer, 100);
+                }, 300);
+            }
+
+            showWithholdingAnalysis() {
+                const analysisBody = document.getElementById('withholding-analysis-body');
+                const results = this.results;
+
+                const html = `
+                    <tr>
+                        <td>Annual Gross Income</td>
+                        <td>${NumberFormatter.formatCurrency(results.annualGross)}</td>
+                        <td>N/A</td>
+                        <td>N/A</td>
+                    </tr>
+                    <tr>
+                        <td>Annual Withholding</td>
+                        <td>${NumberFormatter.formatCurrency(results.annualWithholding)}</td>
+                        <td>${NumberFormatter.formatCurrency(results.expectedTax)}</td>
+                        <td class="${results.annualShortfall > 0 ? 'negative' : 'positive'}">${results.annualShortfall > 0 ? '-' : '+'}${NumberFormatter.formatCurrency(Math.abs(results.annualShortfall))}</td>
+                    </tr>
+                    <tr>
+                        <td>Per Pay Period Withholding</td>
+                        <td>${NumberFormatter.formatCurrency(results.currentWithholding)}</td>
+                        <td>${NumberFormatter.formatCurrency(results.recommendedPayPeriodWithholding)}</td>
+                        <td class="${results.payPeriodShortfall > 0 ? 'negative' : 'positive'}">${results.payPeriodShortfall > 0 ? '-' : '+'}${NumberFormatter.formatCurrency(Math.abs(results.payPeriodShortfall))}</td>
+                    </tr>
+                `;
+
+                analysisBody.innerHTML = html;
+            }
+
+            showRecommendations() {
+                const recommendationsSection = document.getElementById('recommendations-section');
+                const recommendationsList = document.getElementById('recommendations-list');
+
+                if (this.results.status === 'warning' || this.results.status === 'bad') {
+                    recommendationsSection.style.display = 'block';
+                    this.tools.animations.fadeIn(recommendationsSection);
+                } else {
+                    recommendationsSection.style.display = 'none';
+                }
+            }
+
+            resetCalculator() {
+                document.getElementById('gross-pay').value = '5000';
+                document.getElementById('dependents').value = '0';
+                document.getElementById('other-income').value = '0';
+                document.getElementById('deductions').value = '0';
+                document.getElementById('current-withholding').value = '0';
+                document.getElementById('results-container').style.display = 'none';
+                document.getElementById('no-results').style.display = 'block';
+                document.getElementById('recommendations-section').style.display = 'none';
+                this.results = null;
+            }
+
+            exportWithholdingJSON() {
+                if (!this.results) return;
+
+                try {
+                    this.tools.export.export(this.results, 'json', 'tax_withholding_analysis');
+                    this.tools.ui.showAlert('Withholding analysis exported as JSON successfully!', 'success');
+                } catch (error) {
+                    this.tools.ui.showAlert('Export failed. Please try again.', 'error');
+                }
+            }
+
+            exportWithholdingPDF() {
+                if (!this.results) return;
+
+                try {
+                    // For PDF export, we'd need a more complex implementation
+                    // For now, just export as JSON with a note
+                    this.tools.ui.showAlert('PDF export coming soon. Use JSON export for now.', 'info');
+                } catch (error) {
+                    this.tools.ui.showAlert('Export failed. Please try again.', 'error');
+                }
+            }
+
+            async shareWithholdingResults() {
+                if (!this.results) return;
+
+                const shared = await this.tools.export.share(this.results, 'Tax Withholding Analysis');
+                if (!shared) {
+                    this.tools.ui.showAlert('Sharing not supported on this device. Try exporting instead.', 'info');
+                }
+            }
+        }
+
+        // Initialize calculator when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            new TaxWithholdingCalculator();
+        });
+    </script>
+</body>
+</html>

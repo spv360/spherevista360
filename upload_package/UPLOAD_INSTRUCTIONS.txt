@@ -1,0 +1,30 @@
+
+# Upload Instructions for Loan EMI Calculator
+
+## Files to Upload:
+Upload the following files to: /public_html/tools/calculators/loan_emi_calculator/
+
+- loan_emi_calculator.html
+- loan_emi_calculator.py
+- README.md
+- .htaccess
+
+## Directory Structure:
+```
+/public_html/
+├── tools/
+│   └── calculators/
+│       └── loan_emi_calculator/
+│           ├── loan_emi_calculator.html  ← Main calculator interface
+│           ├── loan_emi_calculator.py    ← Backend logic
+│           ├── README.md                 ← Documentation
+│           └── .htaccess                 ← Security settings
+```
+
+## Verification:
+After upload, test these URLs:
+- https://spherevista360.com/tools/calculators/loan_emi_calculator/loan_emi_calculator.html
+- https://spherevista360.com/loan-emi-calculator/
+
+## FTP Upload:
+Use your hosting control panel or FTP client to upload these files.

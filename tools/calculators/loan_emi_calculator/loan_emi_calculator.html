@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loan EMI Calculator - SphereVista360</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../design-system.css">
+</head>
+<body>
+    <div class="container">
+        <div class="tool-container">
+            <div class="tool-header">
+                <h1>🏠 Loan EMI Calculator</h1>
+                <p class="subtitle">Calculate your Equated Monthly Installment and loan repayment schedule</p>
+                <div class="badge-container">
+                    <span class="badge">🎯 Professional Grade</span>
+                    <span class="badge">📊 Amortization Schedule</span>
+                    <span class="badge">💰 Eligibility Check</span>
+                    <span class="badge">📈 Multiple Scenarios</span>
+                </div>
+            </div>
+
+            <div class="tool-content">
+                <div class="tabs">
+                    <button class="tab-button active" data-tab="emi">EMI Calculator</button>
+                    <button class="tab-button" data-tab="eligibility">Loan Eligibility</button>
+                </div>
+
+                <div id="emi-tab" class="tab-content active">
+                    <div class="input-grid">
+                        <div class="input-group">
+                            <h3>💰 Loan Amount</h3>
+                            <input type="number" id="loan-amount" class="input-field" placeholder="Enter loan amount" min="1000" step="1000">
+                            <p class="input-description">Principal loan amount you want to borrow</p>
+                        </div>
+
+                        <div class="input-group">
+                            <h3>📊 Annual Interest Rate</h3>
+                            <input type="number" id="interest-rate" class="input-field" placeholder="12.0" min="1" max="30" step="0.1">
+                            <p class="input-description">Annual interest rate (e.g., 12% = 12.0)</p>
+                        </div>
+
+                        <div class="input-group">
+                            <h3>⏰ Loan Tenure</h3>
+                            <div class="tenure-inputs">
+                                <div class="tenure-field">
+                                    <input type="number" id="tenure-years" class="input-field" placeholder="5" min="1" max="30">
+                                    <label>Years</label>
+                                </div>
+                                <div class="tenure-field">
+                                    <input type="number" id="tenure-months" class="input-field" placeholder="0" min="0" max="11">
+                                    <label>Months</label>
+                                </div>
+                            </div>
+                            <p class="input-description">Total loan repayment period</p>
+                        </div>
+                    </div>
+
+                    <div id="emi-error-message" class="alert alert-error" style="display: none;"></div>
+
+                    <div style="text-align: center; margin: 40px 0;">
+                        <button id="calculate-emi-btn" class="btn-primary">Calculate EMI</button>
+                    </div>
+
+                    <div id="emi-results-section" class="results-section">
+                        <div class="results-header">
+                            <h2>Loan EMI Results</h2>
+                            <p>Your loan repayment calculation summary</p>
+                        </div>
+
+                        <div class="results-grid">
+                            <div class="result-card">
+                                <div class="result-label">Monthly EMI</div>
+                                <div id="monthly-emi" class="result-value">$0.00</div>
+                            </div>
+
+                            <div class="result-card">
+                                <div class="result-label">Total Amount Payable</div>
+                                <div id="total-amount" class="result-value">$0.00</div>
+                            </div>
+
+                            <div class="result-card">
+                                <div class="result-label">Total Interest</div>
+                                <div id="total-interest" class="result-value">$0.00</div>
+                            </div>
+
+                            <div class="result-card">
+                                <div class="result-label">Interest Percentage</div>
+                                <div id="interest-percentage" class="result-value">0.00%</div>
+                            </div>
+                        </div>
+
+                        <div class="chart-container">
+                            <div class="chart-header">
+                                <h3>Payment Breakdown</h3>
+                                <p>Visual representation of principal vs interest payments</p>
+                            </div>
+                            <div id="payment-chart"></div>
+                        </div>
+
+                        <div class="table-container">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Month</th>
+                                        <th>EMI</th>
+                                        <th>Interest</th>
+                                        <th>Principal</th>
+                                        <th>Balance</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="amortization-body">
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="export-section">
+                            <h3 style="margin-bottom: 16px;">Export Your Results</h3>
+                            <div class="export-buttons">
+                                <button id="export-emi-json" class="export-btn">📄 Export JSON</button>
+                                <button id="export-emi-csv" class="export-btn">📊 Export CSV</button>
+                                <button id="share-emi-results" class="export-btn">📤 Share Results</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="eligibility-tab" class="tab-content">
+                    <div class="input-grid">
+                        <div class="input-group">
+                            <h3>💵 Monthly Income</h3>
+                            <input type="number" id="monthly-income" class="input-field" placeholder="Enter monthly income" min="1000" step="500">
+                            <p class="input-description">Your total monthly income</p>
+                        </div>
+
+                        <div class="input-group">
+                            <h3>💳 Existing Obligations</h3>
+                            <input type="number" id="existing-obligations" class="input-field" placeholder="0" min="0" step="100">
+                            <p class="input-description">Current monthly EMIs/debts</p>
+                        </div>
+
+                        <div class="input-group">
+                            <h3>📊 Max EMI Percentage</h3>
+                            <input type="number" id="max-emi-percentage" class="input-field" placeholder="50" min="10" max="80" step="5" value="50">
+                            <p class="input-description">Max % of income for EMI (recommended: 50%)</p>
+                        </div>
+                    </div>
+
+                    <div style="text-align: center; margin: 40px 0;">
+                        <button id="calculate-eligibility-btn" class="btn-secondary">Calculate Loan Eligibility</button>
+                    </div>
+
+                    <div id="eligibility-results-section" class="results-section">
+                        <div class="results-header">
+                            <h2>Loan Eligibility Results</h2>
+                            <p>Maximum loan amounts you can afford</p>
+                        </div>
+
+                        <div class="results-grid">
+                            <div class="result-card">
+                                <div class="result-label">Maximum Monthly EMI</div>
+                                <div id="max-monthly-emi" class="result-value">$0.00</div>
+                            </div>
+
+                            <div class="result-card">
+                                <div class="result-label">Available EMI</div>
+                                <div id="available-emi" class="result-value">$0.00</div>
+                            </div>
+                        </div>
+
+                        <div class="scenario-section">
+                            <h3>Loan Scenarios</h3>
+                            <p>Maximum loan amounts for different interest rates and tenures</p>
+                            <div id="scenario-results" class="scenario-grid">
+                                <!-- Scenarios will be populated here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-section">
+                    <h3>About This Calculator</h3>
+                    <p class="info-description">
+                        This comprehensive loan EMI calculator helps you understand your loan repayment capacity and plan your borrowing needs. It includes both EMI calculation with amortization schedule and loan eligibility assessment.
+                    </p>
+
+                    <div class="features-grid">
+                        <div class="feature-card">
+                            <div class="feature-icon">📊</div>
+                            <h4 class="feature-title">Accurate EMI Calculation</h4>
+                            <p class="feature-description">Uses standard EMI formulas to calculate exact monthly payments</p>
+                        </div>
+
+                        <div class="feature-card">
+                            <div class="feature-icon">📅</div>
+                            <h4 class="feature-title">Amortization Schedule</h4>
+                            <p class="feature-description">Detailed month-by-month breakdown of interest and principal payments</p>
+                        </div>
+
+                        <div class="feature-card">
+                            <div class="feature-icon">💰</div>
+                            <h4 class="feature-title">Loan Eligibility Check</h4>
+                            <p class="feature-description">Determine maximum loan amounts based on your income and existing obligations</p>
+                        </div>
+
+                        <div class="feature-card">
+                            <div class="feature-icon">📈</div>
+                            <h4 class="feature-title">Multiple Scenarios</h4>
+                            <p class="feature-description">Compare different interest rates and tenure combinations</p>
+                        </div>
+                    </div>
+
+                    <div class="alert alert-info" style="margin-top: 24px;">
+                        <span class="alert-icon">ℹ️</span>
+                        <span>
+                            <strong>Disclaimer:</strong> This calculator provides estimates based on the inputs provided.
+                            Actual loan terms may vary based on lender policies, credit score, and other factors.
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../../utilities.js"></script>
+    <script>
+        class LoanEMICalculator {
+            constructor() {
+                this.emiResults = null;
+                this.eligibilityResults = null;
+                this.tools = new SphereVistaTools();
+                this.initializeEventListeners();
+                this.initializeTabs();
+            }
+
+            initializeEventListeners() {
+                const emiBtn = document.getElementById('calculate-emi-btn');
+                const eligibilityBtn = document.getElementById('calculate-eligibility-btn');
+                const exportEmiJsonBtn = document.getElementById('export-emi-json');
+                const exportEmiCsvBtn = document.getElementById('export-emi-csv');
+                const shareEmiBtn = document.getElementById('share-emi-results');
+
+                emiBtn.addEventListener('click', () => this.calculateEMI());
+                eligibilityBtn.addEventListener('click', () => this.calculateEligibility());
+                exportEmiJsonBtn.addEventListener('click', () => this.exportEMIJSON());
+                exportEmiCsvBtn.addEventListener('click', () => this.exportEMICSV());
+                shareEmiBtn.addEventListener('click', () => this.shareEMIResults());
+            }
+
+            initializeTabs() {
+                const tabButtons = document.querySelectorAll('.tab-button');
+                tabButtons.forEach(button => {
+                    button.addEventListener('click', () => {
+                        const tabName = button.getAttribute('data-tab');
+
+                        // Remove active class from all buttons and tabs
+                        document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+                        document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+
+                        // Add active class to clicked button and corresponding tab
+                        button.classList.add('active');
+                        document.getElementById(tabName + '-tab').classList.add('active');
+                    });
+                });
+            }
+
+            calculateEMI() {
+                const loanAmount = parseFloat(document.getElementById('loan-amount').value);
+                const interestRate = parseFloat(document.getElementById('interest-rate').value) / 100;
+                const tenureYears = parseInt(document.getElementById('tenure-years').value);
+                const tenureMonths = parseInt(document.getElementById('tenure-months').value) || 0;
+
+                // Validation
+                if (!loanAmount || loanAmount < 1000) {
+                    this.showError('emi-error-message', 'Please enter a valid loan amount (minimum $1,000)');
+                    return;
+                }
+
+                if (!interestRate || interestRate < 0.01 || interestRate > 0.3) {
+                    this.showError('emi-error-message', 'Please enter a valid interest rate between 1% and 30%');
+                    return;
+                }
+
+                if (!tenureYears || tenureYears < 1 || tenureYears > 30) {
+                    this.showError('emi-error-message', 'Please enter loan tenure between 1 and 30 years');
+                    return;
+                }
+
+                this.hideError('emi-error-message');
+                this.emiResults = this.calculateEMIValues(loanAmount, interestRate, tenureYears, tenureMonths);
+                this.displayEMIResults();
+            }
+
+            calculateEMIValues(principal, annualRate, years, months) {
+                const totalMonths = (years * 12) + months;
+                const monthlyRate = annualRate / 12;
+
+                // EMI formula
+                const emi = principal * monthlyRate * Math.pow(1 + monthlyRate, totalMonths) /
+                           (Math.pow(1 + monthlyRate, totalMonths) - 1);
+
+                const totalAmount = emi * totalMonths;
+                const totalInterest = totalAmount - principal;
+
+                // Generate amortization schedule
+                const schedule = this.generateAmortizationSchedule(principal, monthlyRate, totalMonths, emi);
+
+                return {
+                    loanAmount: principal,
+                    annualRate,
+                    tenureYears: years,
+                    tenureMonths: months,
+                    totalMonths,
+                    monthlyEMI: emi,
+                    totalAmount,
+                    totalInterest,
+                    interestPercentage: (totalInterest / principal) * 100,
+                    amortizationSchedule: schedule
+                };
+            }
+
+            generateAmortizationSchedule(principal, monthlyRate, totalMonths, emi) {
+                const schedule = [];
+                let remainingBalance = principal;
+
+                for (let month = 1; month <= totalMonths; month++) {
+                    const interestPayment = remainingBalance * monthlyRate;
+                    const principalPayment = emi - interestPayment;
+                    remainingBalance = Math.max(0, remainingBalance - principalPayment);
+
+                    schedule.push({
+                        month,
+                        emi,
+                        interestPayment,
+                        principalPayment,
+                        remainingBalance
+                    });
+                }
+
+                return schedule;
+            }
+
+            displayEMIResults() {
+                const results = this.emiResults;
+                const resultsSection = document.getElementById('emi-results-section');
+
+                // Show results section with animation
+                resultsSection.style.display = 'block';
+                this.tools.animations.slideInUp(resultsSection);
+
+                // Animate result values
+                this.tools.animations.animateNumber(
+                    document.getElementById('monthly-emi'),
+                    0,
+                    results.monthlyEMI,
+                    1000,
+                    (num) => NumberFormatter.formatCurrency(num)
+                );
+
+                this.tools.animations.animateNumber(
+                    document.getElementById('total-amount'),
+                    0,
+                    results.totalAmount,
+                    1000,
+                    (num) => NumberFormatter.formatCurrency(num)
+                );
+
+                this.tools.animations.animateNumber(
+                    document.getElementById('total-interest'),
+                    0,
+                    results.totalInterest,
+                    1000,
+                    (num) => NumberFormatter.formatCurrency(num)
+                );
+
+                document.getElementById('interest-percentage').textContent = NumberFormatter.formatPercent(results.interestPercentage / 100);
+
+                // Display amortization table
+                this.displayAmortizationTable();
+
+                // Create chart placeholder
+                this.tools.charts.createPlaceholderChart('payment-chart', 'Payment Breakdown Visualization');
+
+                // Save results to local storage
+                this.tools.storage.saveCalculatorState('loan-emi', results);
+
+                // Scroll to results
+                setTimeout(() => {
+                    this.tools.animations.scrollTo(resultsSection, 100);
+                }, 300);
+            }
+
+            displayAmortizationTable() {
+                const tbody = document.getElementById('amortization-body');
+                tbody.innerHTML = '';
+
+                // Show only first 12 months and last 12 months for large loans
+                const schedule = this.emiResults.amortizationSchedule;
+                const showSchedule = schedule.length <= 24 ? schedule :
+                    [...schedule.slice(0, 12), ...schedule.slice(-12)];
+
+                showSchedule.forEach((payment, index) => {
+                    if (schedule.length > 24 && index === 12) {
+                        // Add separator row
+                        const separatorRow = document.createElement('tr');
+                        separatorRow.innerHTML = '<td colspan="5" style="text-align: center; font-style: italic; color: #6b7280;">... ' + (schedule.length - 24) + ' months ...</td>';
+                        tbody.appendChild(separatorRow);
+                    }
+
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${payment.month}</td>
+                        <td>${NumberFormatter.formatCurrency(payment.emi)}</td>
+                        <td>${NumberFormatter.formatCurrency(payment.interestPayment)}</td>
+                        <td>${NumberFormatter.formatCurrency(payment.principalPayment)}</td>
+                        <td>${NumberFormatter.formatCurrency(payment.remainingBalance)}</td>
+                    `;
+                    tbody.appendChild(row);
+                });
+            }
+
+            calculateEligibility() {
+                const monthlyIncome = parseFloat(document.getElementById('monthly-income').value);
+                const existingObligations = parseFloat(document.getElementById('existing-obligations').value) || 0;
+                const maxEMIPercentage = parseFloat(document.getElementById('max-emi-percentage').value) / 100;
+
+                // Validation
+                if (!monthlyIncome || monthlyIncome < 1000) {
+                    this.showError('eligibility-error-message', 'Please enter a valid monthly income (minimum $1,000)');
+                    return;
+                }
+
+                this.eligibilityResults = this.calculateEligibilityValues(monthlyIncome, existingObligations, maxEMIPercentage);
+                this.displayEligibilityResults();
+            }
+
+            calculateEligibilityValues(monthlyIncome, existingObligations, maxEMIPercentage) {
+                const maxEMI = monthlyIncome * maxEMIPercentage;
+                const availableEMI = Math.max(0, maxEMI - existingObligations);
+
+                // Generate scenarios for different rates and tenures
+                const scenarios = [];
+                const rates = [0.08, 0.10, 0.12, 0.14];
+                const tenures = [5, 10, 15, 20];
+
+                rates.forEach(rate => {
+                    tenures.forEach(tenure => {
+                        const monthlyRate = rate / 12;
+                        const totalMonths = tenure * 12;
+
+                        let maxLoan = 0;
+                        if (availableEMI > 0) {
+                            maxLoan = availableEMI * (Math.pow(1 + monthlyRate, totalMonths) - 1) /
+                                     (monthlyRate * Math.pow(1 + monthlyRate, totalMonths));
+                        }
+
+                        scenarios.push({
+                            rate,
+                            tenure,
+                            maxLoan,
+                            monthlyEMI: availableEMI
+                        });
+                    });
+                });
+
+                return {
+                    monthlyIncome,
+                    existingObligations,
+                    maxEMIPercentage,
+                    maxEMI,
+                    availableEMI,
+                    scenarios
+                };
+            }
+
+            displayEligibilityResults() {
+                const results = this.eligibilityResults;
+                const resultsSection = document.getElementById('eligibility-results-section');
+
+                // Show results section with animation
+                resultsSection.style.display = 'block';
+                this.tools.animations.slideInUp(resultsSection);
+
+                // Animate result values
+                this.tools.animations.animateNumber(
+                    document.getElementById('max-monthly-emi'),
+                    0,
+                    results.maxEMI,
+                    1000,
+                    (num) => NumberFormatter.formatCurrency(num)
+                );
+
+                this.tools.animations.animateNumber(
+                    document.getElementById('available-emi'),
+                    0,
+                    results.availableEMI,
+                    1000,
+                    (num) => NumberFormatter.formatCurrency(num)
+                );
+
+                // Display scenarios
+                const scenarioContainer = document.getElementById('scenario-results');
+                scenarioContainer.innerHTML = '';
+
+                results.scenarios.forEach(scenario => {
+                    const card = document.createElement('div');
+                    card.className = 'scenario-card';
+                    card.innerHTML = `
+                        <h4>${(scenario.rate * 100).toFixed(1)}% rate, ${scenario.tenure} years</h4>
+                        <div class="scenario-amount">${NumberFormatter.formatCurrency(scenario.maxLoan)}</div>
+                        <div class="scenario-emi">Monthly EMI: ${NumberFormatter.formatCurrency(scenario.monthlyEMI)}</div>
+                    `;
+                    scenarioContainer.appendChild(card);
+                });
+
+                // Scroll to results
+                setTimeout(() => {
+                    this.tools.animations.scrollTo(resultsSection, 100);
+                }, 300);
+            }
+
+            exportEMIJSON() {
+                if (!this.emiResults) return;
+
+                try {
+                    this.tools.export.export(this.emiResults, 'json', 'loan_emi_results');
+                    this.tools.ui.showAlert('Results exported as JSON successfully!', 'success');
+                } catch (error) {
+                    this.tools.ui.showAlert('Export failed. Please try again.', 'error');
+                }
+            }
+
+            exportEMICSV() {
+                if (!this.emiResults) return;
+
+                try {
+                    this.tools.export.export(this.emiResults.amortizationSchedule, 'csv', 'loan_amortization_schedule');
+                    this.tools.ui.showAlert('Results exported as CSV successfully!', 'success');
+                } catch (error) {
+                    this.tools.ui.showAlert('Export failed. Please try again.', 'error');
+                }
+            }
+
+            async shareEMIResults() {
+                if (!this.emiResults) return;
+
+                const shared = await this.tools.export.share(this.emiResults, 'Loan EMI Calculator Results');
+                if (!shared) {
+                    this.tools.ui.showAlert('Sharing not supported on this device. Try exporting instead.', 'info');
+                }
+            }
+
+            showError(elementId, message) {
+                const errorDiv = document.getElementById(elementId);
+                errorDiv.textContent = message;
+                errorDiv.style.display = 'block';
+                errorDiv.scrollIntoView({ behavior: 'smooth' });
+            }
+
+            hideError(elementId) {
+                const errorDiv = document.getElementById(elementId);
+                if (errorDiv) {
+                    errorDiv.style.display = 'none';
+                }
+            }
+        }
+
+        // Initialize calculator when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            new LoanEMICalculator();
+        });
+    </script>
+</body>
+</html>

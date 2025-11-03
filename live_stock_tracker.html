@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Stock Tracker Widget</title>
+    <style>
+        .stock-tracker-widget {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            margin-bottom: 20px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        .stock-tracker-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .stock-tracker-title {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: #2c3e50;
+            margin: 0;
+        }
+
+        .stock-tracker-time {
+            font-size: 0.8em;
+            color: #7f8c8d;
+            margin: 0;
+        }
+
+        .stock-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #f8f9fa;
+            transition: background-color 0.2s ease;
+        }
+
+        .stock-item:hover {
+            background-color: #f8f9fa;
+        }
+
+        .stock-item:last-child {
+            border-bottom: none;
+        }
+
+        .stock-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .stock-symbol {
+            font-weight: 600;
+            font-size: 0.9em;
+            color: #2c3e50;
+            margin-bottom: 2px;
+        }
+
+        .stock-name {
+            font-size: 0.8em;
+            color: #7f8c8d;
+        }
+
+        .stock-price {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+
+        .current-price {
+            font-weight: 600;
+            font-size: 1em;
+            color: #2c3e50;
+        }
+
+        .price-change {
+            font-size: 0.8em;
+            font-weight: 500;
+        }
+
+        .price-change.positive {
+            color: #27ae60;
+        }
+
+        .price-change.negative {
+            color: #e74c3c;
+        }
+
+        .price-change.neutral {
+            color: #7f8c8d;
+        }
+
+        .market-status {
+            text-align: center;
+            padding: 8px;
+            border-radius: 6px;
+            font-size: 0.8em;
+            font-weight: 500;
+            margin-top: 15px;
+        }
+
+        .market-open {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .market-closed {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: #7f8c8d;
+        }
+
+        .error {
+            text-align: center;
+            padding: 20px;
+            color: #e74c3c;
+            font-size: 0.9em;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div id="stock-tracker-widget" class="stock-tracker-widget">
+        <div class="stock-tracker-header">
+            <h3 class="stock-tracker-title">📈 Live Stock Tracker</h3>
+            <span id="last-update" class="stock-tracker-time">Loading...</span>
+        </div>
+
+        <div id="stock-content">
+            <div class="loading">
+                <div class="loading-spinner"></div>
+                <p>Loading stock data...</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class StockTracker {
+            constructor() {
+                this.widget = document.getElementById('stock-tracker-widget');
+                this.content = document.getElementById('stock-content');
+                this.lastUpdate = document.getElementById('last-update');
+
+                // Major stock symbols to track
+                this.stocks = [
+                    { symbol: 'SPY', name: 'S&P 500 ETF' },
+                    { symbol: 'QQQ', name: 'Nasdaq 100 ETF' },
+                    { symbol: 'AAPL', name: 'Apple Inc.' },
+                    { symbol: 'MSFT', name: 'Microsoft Corp.' },
+                    { symbol: 'GOOGL', name: 'Alphabet Inc.' },
+                    { symbol: 'AMZN', name: 'Amazon.com Inc.' },
+                    { symbol: 'TSLA', name: 'Tesla Inc.' },
+                    { symbol: 'NVDA', name: 'NVIDIA Corp.' }
+                ];
+
+                this.stockData = {};
+                this.isMarketOpen = this.checkMarketHours();
+
+                this.init();
+            }
+
+            init() {
+                this.updateStocks();
+                // Update every 60 seconds
+                setInterval(() => this.updateStocks(), 60000);
+            }
+
+            checkMarketHours() {
+                const now = new Date();
+                const day = now.getDay(); // 0 = Sunday, 6 = Saturday
+                const hour = now.getHours();
+                const minute = now.getMinutes();
+                const currentTime = hour * 60 + minute;
+
+                // Market closed on weekends
+                if (day === 0 || day === 6) return false;
+
+                // Market hours: 9:30 AM - 4:00 PM ET
+                const marketOpen = 9 * 60 + 30; // 9:30 AM
+                const marketClose = 16 * 60; // 4:00 PM
+
+                return currentTime >= marketOpen && currentTime <= marketClose;
+            }
+
+            async updateStocks() {
+                try {
+                    // Using a free API service (you may need to replace with your preferred service)
+                    const promises = this.stocks.map(stock =>
+                        this.fetchStockData(stock.symbol)
+                    );
+
+                    const results = await Promise.allSettled(promises);
+
+                    results.forEach((result, index) => {
+                        if (result.status === 'fulfilled') {
+                            this.stockData[this.stocks[index].symbol] = result.value;
+                        } else {
+                            console.error(`Failed to fetch ${this.stocks[index].symbol}:`, result.reason);
+                        }
+                    });
+
+                    this.renderStocks();
+                    this.updateTimestamp();
+
+                } catch (error) {
+                    console.error('Error updating stocks:', error);
+                    this.showError('Failed to load stock data');
+                }
+            }
+
+            async fetchStockData(symbol) {
+                // Using Yahoo Finance API (free tier)
+                // Note: In production, you might want to use a more reliable API
+                try {
+                    const response = await fetch(`https://query1.finance.yahoo.com/v8/finance/chart/${symbol}?range=1d&interval=1m`);
+
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+
+                    const data = await response.json();
+
+                    if (!data.chart || !data.chart.result || !data.chart.result[0]) {
+                        throw new Error('Invalid data structure');
+                    }
+
+                    const result = data.chart.result[0];
+                    const meta = result.meta;
+                    const timestamps = result.timestamp;
+                    const quotes = result.indicators.quote[0];
+
+                    if (!quotes || !quotes.close || quotes.close.length === 0) {
+                        throw new Error('No quote data available');
+                    }
+
+                    const currentPrice = quotes.close[quotes.close.length - 1];
+                    const previousClose = meta.previousClose || meta.chartPreviousClose;
+
+                    let change = 0;
+                    let changePercent = 0;
+
+                    if (previousClose && currentPrice) {
+                        change = currentPrice - previousClose;
+                        changePercent = (change / previousClose) * 100;
+                    }
+
+                    return {
+                        symbol: symbol,
+                        price: currentPrice,
+                        change: change,
+                        changePercent: changePercent,
+                        previousClose: previousClose
+                    };
+
+                } catch (error) {
+                    // Fallback: Generate mock data for demo purposes
+                    console.warn(`Using mock data for ${symbol}:`, error.message);
+                    return this.generateMockData(symbol);
+                }
+            }
+
+            generateMockData(symbol) {
+                // Generate realistic mock data for demo
+                const basePrices = {
+                    'SPY': 450,
+                    'QQQ': 380,
+                    'AAPL': 180,
+                    'MSFT': 380,
+                    'GOOGL': 140,
+                    'AMZN': 150,
+                    'TSLA': 250,
+                    'NVDA': 450
+                };
+
+                const basePrice = basePrices[symbol] || 100;
+                const price = basePrice + (Math.random() - 0.5) * 10;
+                const change = (Math.random() - 0.5) * 4;
+                const changePercent = (change / basePrice) * 100;
+
+                return {
+                    symbol: symbol,
+                    price: price,
+                    change: change,
+                    changePercent: changePercent,
+                    previousClose: basePrice,
+                    isMock: true
+                };
+            }
+
+            renderStocks() {
+                const html = this.stocks.map(stock => {
+                    const data = this.stockData[stock.symbol];
+
+                    if (!data) {
+                        return `
+                            <div class="stock-item">
+                                <div class="stock-info">
+                                    <div class="stock-symbol">${stock.symbol}</div>
+                                    <div class="stock-name">${stock.name}</div>
+                                </div>
+                                <div class="stock-price">
+                                    <div class="current-price">--</div>
+                                    <div class="price-change neutral">--</div>
+                                </div>
+                            </div>
+                        `;
+                    }
+
+                    const changeClass = data.change >= 0 ? 'positive' : 'negative';
+                    const changeSign = data.change >= 0 ? '+' : '';
+                    const mockIndicator = data.isMock ? ' *' : '';
+
+                    return `
+                        <div class="stock-item">
+                            <div class="stock-info">
+                                <div class="stock-symbol">${stock.symbol}${mockIndicator}</div>
+                                <div class="stock-name">${stock.name}</div>
+                            </div>
+                            <div class="stock-price">
+                                <div class="current-price">$${data.price.toFixed(2)}</div>
+                                <div class="price-change ${changeClass}">
+                                    ${changeSign}$${data.change.toFixed(2)} (${changeSign}${data.changePercent.toFixed(2)}%)
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+
+                // Add market status
+                const marketStatusHtml = `
+                    <div class="market-status ${this.isMarketOpen ? 'market-open' : 'market-closed'}">
+                        ${this.isMarketOpen ? '🟢 Market Open' : '🔴 Market Closed'}
+                    </div>
+                `;
+
+                this.content.innerHTML = html + marketStatusHtml;
+            }
+
+            updateTimestamp() {
+                const now = new Date();
+                const timeString = now.toLocaleTimeString('en-US', {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit'
+                });
+                this.lastUpdate.textContent = `Updated ${timeString}`;
+            }
+
+            showError(message) {
+                this.content.innerHTML = `<div class="error">${message}</div>`;
+            }
+        }
+
+        // Initialize the stock tracker when the page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            new StockTracker();
+        });
+
+        // Also initialize immediately if DOM is already loaded
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => {
+                new StockTracker();
+            });
+        } else {
+            new StockTracker();
+        }
+    </script>
+</body>
+</html>

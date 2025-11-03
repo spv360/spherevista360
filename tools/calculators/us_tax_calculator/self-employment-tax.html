@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Self-Employment Tax Calculator - US Tax Calculator Suite</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../design-system.css">
+</head>
+<body>
+    <div class="container">
+        <div class="tool-container">
+            <div class="tool-header">
+                <h1>💼 Self-Employment Tax Calculator</h1>
+                <p class="subtitle">Calculate Social Security and Medicare taxes for freelancers and business owners</p>
+                <div class="badge-container">
+                    <span class="badge">💰 Business Tax</span>
+                    <span class="badge">📊 SS & Medicare</span>
+                    <span class="badge">📅 Quarterly Payments</span>
+                    <span class="badge">🧾 Tax Planning</span>
+                </div>
+            </div>
+
+            <div class="tool-content">
+                <div class="calculator-grid">
+                    <div class="input-section">
+                        <h3>Self-Employment Tax Calculation Inputs</h3>
+
+                        <div class="input-grid">
+                            <div class="input-group">
+                                <h4>💰 Gross Income</h4>
+                                <input type="number" id="gross-income" class="input-field" placeholder="75000" min="0" step="0.01">
+                                <p class="input-description">Total self-employment income before expenses</p>
+                            </div>
+
+                            <div class="input-group">
+                                <h4>📉 Business Expenses</h4>
+                                <input type="number" id="business-expenses" class="input-field" placeholder="15000" min="0" step="0.01">
+                                <p class="input-description">Deductible business expenses and costs</p>
+                            </div>
+
+                            <div class="input-group">
+                                <h4>💼 Other Income</h4>
+                                <input type="number" id="other-income" class="input-field" placeholder="30000" min="0" step="0.01">
+                                <p class="input-description">W-2 wages and other non-self-employment income</p>
+                            </div>
+
+                            <div class="input-group">
+                                <h4>📅 Quarterly Payments</h4>
+                                <input type="number" id="quarterly-payments" class="input-field" placeholder="2000" min="0" step="0.01">
+                                <p class="input-description">Estimated tax payments already made</p>
+                            </div>
+                        </div>
+
+                        <div style="text-align: center; margin: 40px 0;">
+                            <button id="calculate-self-employment-btn" class="btn-primary">Calculate Self-Employment Tax</button>
+                            <button id="reset-self-employment-btn" class="btn-secondary">Reset Calculator</button>
+                        </div>
+                    </div>
+
+                    <div class="results-section">
+                        <h3>Self-Employment Tax Results</h3>
+
+                        <div id="results-container" class="results-content">
+                            <div class="results-grid">
+                                <div class="result-card">
+                                    <div class="result-label">Gross Self-Employment Income</div>
+                                    <div class="result-value" id="gross-income-result">$0</div>
+                                </div>
+
+                                <div class="result-card">
+                                    <div class="result-label">Business Expenses</div>
+                                    <div class="result-value" id="business-expenses-result">$0</div>
+                                </div>
+
+                                <div class="result-card">
+                                    <div class="result-label">Net Self-Employment Income</div>
+                                    <div class="result-value" id="net-income-result">$0</div>
+                                </div>
+
+                                <div class="result-card">
+                                    <div class="result-label">Total Self-Employment Tax</div>
+                                    <div class="result-value" id="total-tax-result">$0</div>
+                                </div>
+
+                                <div class="result-card">
+                                    <div class="result-label">Balance Due/(Refund)</div>
+                                    <div class="result-value" id="balance-due-result">$0</div>
+                                </div>
+
+                                <div class="result-card">
+                                    <div class="result-label">Effective Self-Employment Tax Rate</div>
+                                    <div class="result-value" id="effective-rate-result">0.00%</div>
+                                </div>
+                            </div>
+
+                            <div class="data-table-section">
+                                <h3>Tax Breakdown by Component</h3>
+                                <p>Detailed breakdown of Social Security and Medicare taxes</p>
+                                <div class="data-table-container">
+                                    <table class="data-table" id="tax-breakdown-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Tax Component</th>
+                                                <th>Rate</th>
+                                                <th>Tax Amount</th>
+                                                <th>Description</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="tax-breakdown-body">
+                                            <tr>
+                                                <td colspan="4" class="empty-row">Enter income details and calculate to see breakdown</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="data-table-section">
+                                <h3>Quarterly Payment Schedule</h3>
+                                <p>Recommended quarterly estimated tax payments</p>
+                                <div class="data-table-container">
+                                    <table class="data-table" id="quarterly-schedule-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Quarter</th>
+                                                <th>Period</th>
+                                                <th>Payment Due</th>
+                                                <th>Due Date</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="quarterly-schedule-body">
+                                            <tr>
+                                                <td colspan="4" class="empty-row">Calculate to see quarterly payment schedule</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="export-section">
+                                <h3 style="margin-bottom: 16px;">Export Your Tax Calculation</h3>
+                                <div class="export-buttons">
+                                    <button id="export-self-employment-json" class="export-btn">📄 Export JSON</button>
+                                    <button id="export-self-employment-pdf" class="export-btn">📊 Export PDF</button>
+                                    <button id="share-self-employment-results" class="export-btn">📤 Share Results</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="no-results" class="empty-state">
+                            <div class="empty-state-icon">📊</div>
+                            <h3>Ready to Calculate Self-Employment Tax</h3>
+                            <p>Enter your self-employment income and expense details, then click "Calculate Self-Employment Tax" to see your Social Security and Medicare tax obligations</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-section">
+                    <h3>Understanding Self-Employment Tax</h3>
+                    <p class="info-description">
+                        Self-employment tax covers Social Security and Medicare taxes for freelancers, contractors, and business owners.
+                        It's calculated on net self-employment income after deducting half of the self-employment tax itself.
+                    </p>
+
+                    <div class="features-grid">
+                        <div class="feature-card">
+                            <div class="feature-icon">🏛️</div>
+                            <h4 class="feature-title">Two Components</h4>
+                            <p class="feature-description">Self-employment tax consists of Social Security tax (12.4%) and Medicare tax (2.9%), totaling 15.3% for most taxpayers.</p>
+                        </div>
+
+                        <div class="feature-card">
+                            <div class="feature-icon">💰</div>
+                            <h4 class="feature-title">Social Security Limit</h4>
+                            <p class="feature-description">Social Security tax applies only to the first $168,600 of net self-employment earnings in 2024.</p>
+                        </div>
+
+                        <div class="feature-card">
+                            <div class="feature-icon">📈</div>
+                            <h4 class="feature-title">Additional Medicare Tax</h4>
+                            <p class="feature-description">An extra 0.9% Medicare tax applies to self-employment income over $200,000 for single filers.</p>
+                        </div>
+
+                        <div class="feature-card">
+                            <div class="feature-icon">📅</div>
+                            <h4 class="feature-title">Quarterly Payments</h4>
+                            <p class="feature-description">Self-employment tax must be paid quarterly through estimated tax payments to avoid penalties.</p>
+                        </div>
+                    </div>
+
+                    <div class="alert alert-info" style="margin-top: 24px;">
+                        <span class="alert-icon">ℹ️</span>
+                        <span>
+                            <strong>Disclaimer:</strong> This calculator estimates self-employment tax based on 2024 rates (15.3% total rate: 12.4% Social Security + 2.9% Medicare). The Social Security portion is only due on the first $168,600 of net earnings in 2024. Additional Medicare tax (0.9%) may apply to earnings over $200,000 (single) or $250,000 (joint). This is not tax advice. Consult a qualified tax professional for personalized guidance.
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../../utilities.js"></script>
+    <script>
+        class SelfEmploymentTaxCalculator {
+            constructor() {
+                this.results = null;
+                this.tools = new SphereVistaTools();
+                this.initializeEventListeners();
+                this.setDefaultValues();
+            }
+
+            initializeEventListeners() {
+                const calculateBtn = document.getElementById('calculate-self-employment-btn');
+                const resetBtn = document.getElementById('reset-self-employment-btn');
+                const exportJsonBtn = document.getElementById('export-self-employment-json');
+                const exportPdfBtn = document.getElementById('export-self-employment-pdf');
+                const shareBtn = document.getElementById('share-self-employment-results');
+
+                calculateBtn.addEventListener('click', () => this.calculateSelfEmploymentTax());
+                resetBtn.addEventListener('click', () => this.resetCalculator());
+                exportJsonBtn.addEventListener('click', () => this.exportSelfEmploymentJSON());
+                exportPdfBtn.addEventListener('click', () => this.exportSelfEmploymentPDF());
+                shareBtn.addEventListener('click', () => this.shareSelfEmploymentResults());
+            }
+
+            setDefaultValues() {
+                document.getElementById('gross-income').value = '75000';
+                document.getElementById('business-expenses').value = '15000';
+                document.getElementById('other-income').value = '30000';
+                document.getElementById('quarterly-payments').value = '2000';
+            }
+
+            // 2024 Self-Employment Tax Rates and Limits
+            getTaxConstants() {
+                return {
+                    SELF_EMPLOYMENT_RATE: 0.153, // 15.3% total (12.4% SS + 2.9% Medicare)
+                    SOCIAL_SECURITY_RATE: 0.124,
+                    MEDICARE_RATE: 0.029,
+                    SOCIAL_SECURITY_LIMIT: 168600, // 2024 limit
+                    ADDITIONAL_MEDICARE_THRESHOLD: 200000, // For single filers
+                    ADDITIONAL_MEDICARE_RATE: 0.009 // 0.9% additional Medicare tax
+                };
+            }
+
+            calculateSelfEmploymentTax() {
+                const grossIncome = parseFloat(document.getElementById('gross-income').value) || 0;
+                const businessExpenses = parseFloat(document.getElementById('business-expenses').value) || 0;
+                const otherIncome = parseFloat(document.getElementById('other-income').value) || 0;
+                const quarterlyPayments = parseFloat(document.getElementById('quarterly-payments').value) || 0;
+
+                if (grossIncome <= 0) {
+                    this.tools.ui.showAlert('Please enter a valid gross self-employment income.', 'error');
+                    return;
+                }
+
+                const constants = this.getTaxConstants();
+
+                // Calculate net profit (after half of self-employment tax deduction)
+                const netProfitBeforeDeduction = grossIncome - businessExpenses;
+                const selfEmploymentTaxDeduction = netProfitBeforeDeduction * constants.SELF_EMPLOYMENT_RATE * 0.5;
+                const netProfit = netProfitBeforeDeduction - selfEmploymentTaxDeduction;
+
+                // Calculate self-employment tax components
+                const socialSecurityTax = Math.min(netProfit, constants.SOCIAL_SECURITY_LIMIT) * constants.SOCIAL_SECURITY_RATE;
+                const medicareTax = netProfit * constants.MEDICARE_RATE;
+
+                // Additional Medicare tax if applicable
+                const additionalMedicareTax = netProfit > constants.ADDITIONAL_MEDICARE_THRESHOLD ?
+                    (netProfit - constants.ADDITIONAL_MEDICARE_THRESHOLD) * constants.ADDITIONAL_MEDICARE_RATE : 0;
+
+                const totalSelfEmploymentTax = socialSecurityTax + medicareTax + additionalMedicareTax;
+
+                // Calculate balance due or refund
+                const balanceDue = totalSelfEmploymentTax - quarterlyPayments;
+                const effectiveRate = (totalSelfEmploymentTax / grossIncome) * 100;
+
+                // Store results
+                this.results = {
+                    grossIncome,
+                    businessExpenses,
+                    otherIncome,
+                    quarterlyPayments,
+                    netProfitBeforeDeduction,
+                    selfEmploymentTaxDeduction,
+                    netProfit,
+                    socialSecurityTax,
+                    medicareTax,
+                    additionalMedicareTax,
+                    totalSelfEmploymentTax,
+                    balanceDue,
+                    effectiveRate
+                };
+
+                // Display results
+                this.displayResults();
+
+                // Save to local storage
+                this.tools.storage.saveCalculatorState('self-employment-tax', this.results);
+            }
+
+            displayResults() {
+                const results = this.results;
+                const resultsContainer = document.getElementById('results-container');
+                const noResults = document.getElementById('no-results');
+
+                // Show results section with animation
+                resultsContainer.style.display = 'block';
+                noResults.style.display = 'none';
+                this.tools.animations.slideInUp(resultsContainer);
+
+                // Animate result values
+                this.tools.animations.animateNumber(
+                    document.getElementById('gross-income-result'),
+                    0,
+                    results.grossIncome,
+                    1000,
+                    (num) => NumberFormatter.formatCurrency(num)
+                );
+
+                this.tools.animations.animateNumber(
+                    document.getElementById('business-expenses-result'),
+                    0,
+                    results.businessExpenses,
+                    1000,
+                    (num) => NumberFormatter.formatCurrency(num)
+                );
+
+                this.tools.animations.animateNumber(
+                    document.getElementById('net-income-result'),
+                    0,
+                    results.netProfit,
+                    1000,
+                    (num) => NumberFormatter.formatCurrency(num)
+                );
+
+                this.tools.animations.animateNumber(
+                    document.getElementById('total-tax-result'),
+                    0,
+                    results.totalSelfEmploymentTax,
+                    1000,
+                    (num) => NumberFormatter.formatCurrency(num)
+                );
+
+                this.tools.animations.animateNumber(
+                    document.getElementById('balance-due-result'),
+                    0,
+                    results.balanceDue,
+                    1000,
+                    (num) => (results.balanceDue >= 0 ? '-' : '+') + NumberFormatter.formatCurrency(Math.abs(results.balanceDue))
+                );
+
+                this.tools.animations.animateNumber(
+                    document.getElementById('effective-rate-result'),
+                    0,
+                    results.effectiveRate,
+                    1000,
+                    (num) => num.toFixed(2) + '%'
+                );
+
+                // Display tax breakdown table
+                this.displayTaxBreakdown();
+
+                // Display quarterly schedule
+                this.displayQuarterlySchedule();
+
+                // Scroll to results
+                setTimeout(() => {
+                    this.tools.animations.scrollTo(resultsContainer, 100);
+                }, 300);
+            }
+
+            displayTaxBreakdown() {
+                const breakdownBody = document.getElementById('tax-breakdown-body');
+                const results = this.results;
+                const constants = this.getTaxConstants();
+
+                let html = `
+                    <tr>
+                        <td>Social Security Tax</td>
+                        <td>12.4%</td>
+                        <td>${NumberFormatter.formatCurrency(results.socialSecurityTax)}</td>
+                        <td>On first $${NumberFormatter.formatCurrency(constants.SOCIAL_SECURITY_LIMIT)} of net earnings</td>
+                    </tr>
+                    <tr>
+                        <td>Medicare Tax</td>
+                        <td>2.9%</td>
+                        <td>${NumberFormatter.formatCurrency(results.medicareTax)}</td>
+                        <td>On all net self-employment earnings</td>
+                    </tr>
+                    <tr>
+                        <td>Additional Medicare Tax</td>
+                        <td>0.9%</td>
+                        <td>${NumberFormatter.formatCurrency(results.additionalMedicareTax)}</td>
+                        <td>On earnings over $${NumberFormatter.formatCurrency(constants.ADDITIONAL_MEDICARE_THRESHOLD)}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Total Self-Employment Tax</strong></td>
+                        <td><strong>${(constants.SELF_EMPLOYMENT_RATE * 100).toFixed(1)}%</strong></td>
+                        <td><strong>${NumberFormatter.formatCurrency(results.totalSelfEmploymentTax)}</strong></td>
+                        <td><strong>Combined Social Security and Medicare tax</strong></td>
+                    </tr>
+                `;
+
+                breakdownBody.innerHTML = html;
+            }
+
+            displayQuarterlySchedule() {
+                const scheduleBody = document.getElementById('quarterly-schedule-body');
+                const results = this.results;
+
+                const quarterlyAmount = results.totalSelfEmploymentTax / 4;
+
+                const quarters = [
+                    { name: 'Q1', period: 'Jan-Mar', dueDate: 'April 15' },
+                    { name: 'Q2', period: 'Apr-Jun', dueDate: 'June 15' },
+                    { name: 'Q3', period: 'Jul-Sep', dueDate: 'September 15' },
+                    { name: 'Q4', period: 'Oct-Dec', dueDate: 'January 15' }
+                ];
+
+                let html = '';
+                quarters.forEach(quarter => {
+                    html += `
+                        <tr>
+                            <td>${quarter.name}</td>
+                            <td>${quarter.period}</td>
+                            <td>${NumberFormatter.formatCurrency(quarterlyAmount)}</td>
+                            <td>${quarter.dueDate}</td>
+                        </tr>
+                    `;
+                });
+
+                scheduleBody.innerHTML = html;
+            }
+
+            resetCalculator() {
+                document.getElementById('gross-income').value = '75000';
+                document.getElementById('business-expenses').value = '15000';
+                document.getElementById('other-income').value = '30000';
+                document.getElementById('quarterly-payments').value = '2000';
+                document.getElementById('results-container').style.display = 'none';
+                document.getElementById('no-results').style.display = 'block';
+                this.results = null;
+            }
+
+            exportSelfEmploymentJSON() {
+                if (!this.results) return;
+
+                try {
+                    this.tools.export.export(this.results, 'json', 'self_employment_tax_calculation');
+                    this.tools.ui.showAlert('Self-employment tax calculation exported as JSON successfully!', 'success');
+                } catch (error) {
+                    this.tools.ui.showAlert('Export failed. Please try again.', 'error');
+                }
+            }
+
+            exportSelfEmploymentPDF() {
+                if (!this.results) return;
+
+                try {
+                    // For PDF export, we'd need a more complex implementation
+                    // For now, just export as JSON with a note
+                    this.tools.ui.showAlert('PDF export coming soon. Use JSON export for now.', 'info');
+                } catch (error) {
+                    this.tools.ui.showAlert('Export failed. Please try again.', 'error');
+                }
+            }
+
+            async shareSelfEmploymentResults() {
+                if (!this.results) return;
+
+                const shared = await this.tools.export.share(this.results, 'Self-Employment Tax Results');
+                if (!shared) {
+                    this.tools.ui.showAlert('Sharing not supported on this device. Try exporting instead.', 'info');
+                }
+            }
+        }
+
+        // Initialize calculator when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            new SelfEmploymentTaxCalculator();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,2326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Retirement Planner and Estimator - SphereVista360</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+/* ===========================================
+   SPHEREVISTA360 FINANCIAL TOOLS DESIGN SYSTEM
+   =========================================== */
+
+/* ===== RESET & BASE STYLES ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    line-height: 1.6;
+    color: #1a202c;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* ===== LAYOUT COMPONENTS ===== */
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.tool-container {
+    background: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+    margin: 30px auto;
+    position: relative;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.tool-container:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 35px 60px -12px rgba(0, 0, 0, 0.2);
+}
+
+/* ===== HEADER STYLES ===== */
+.tool-header {
+    background: linear-gradient(135deg, #1e293b 0%, #334155 50%, #475569 100%);
+    color: white;
+    padding: 50px 40px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.tool-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="white" opacity="0.03"/><circle cx="75" cy="75" r="1" fill="white" opacity="0.03"/><circle cx="50" cy="50" r="1" fill="white" opacity="0.02"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+    pointer-events: none;
+}
+
+.tool-header h1 {
+    font-size: 3.5rem;
+    font-weight: 700;
+    margin-bottom: 15px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    position: relative;
+    z-index: 2;
+    letter-spacing: -0.025em;
+}
+
+.tool-header .subtitle {
+    font-size: 1.25rem;
+    opacity: 0.9;
+    margin-bottom: 30px;
+    position: relative;
+    z-index: 2;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.badge-container {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 25px;
+    position: relative;
+    z-index: 2;
+}
+
+.badge {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 50px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.badge:hover {
+    background: rgba(255, 255, 255, 0.25);
+    transform: translateY(-1px);
+}
+
+/* ===== NAVIGATION TABS ===== */
+.tab-navigation {
+    display: flex;
+    justify-content: center;
+    background: #f8fafc;
+    border-bottom: 1px solid #e2e8f0;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    backdrop-filter: blur(10px);
+}
+
+.tab-buttons {
+    display: flex;
+    gap: 0;
+    padding: 0 20px;
+}
+
+.tab-btn {
+    background: transparent;
+    border: none;
+    padding: 16px 24px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #64748b;
+    border-bottom: 3px solid transparent;
+    transition: all 0.3s ease;
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.tab-btn:hover {
+    color: #0f172a;
+    background: rgba(15, 23, 42, 0.05);
+}
+
+.tab-btn.active {
+    color: #2563eb;
+    border-bottom-color: #2563eb;
+    background: rgba(37, 99, 235, 0.05);
+}
+
+.tab-btn.active::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 20px;
+    height: 3px;
+    background: #2563eb;
+    border-radius: 2px 2px 0 0;
+}
+
+/* ===== MAIN CONTENT ===== */
+.tool-content {
+    padding: 40px;
+}
+
+/* ===== INPUT COMPONENTS ===== */
+.input-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 24px;
+    margin-bottom: 40px;
+}
+
+.input-group {
+    background: #ffffff;
+    padding: 24px;
+    border-radius: 16px;
+    border: 2px solid #f1f5f9;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.input-group::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: linear-gradient(135deg, #2563eb, #3b82f6);
+    transition: width 0.3s ease;
+}
+
+.input-group:hover {
+    border-color: #cbd5e1;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px -8px rgba(0, 0, 0, 0.1);
+}
+
+.input-group:focus-within {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.input-group:focus-within::before {
+    width: 6px;
+}
+
+.input-group h3 {
+    color: #0f172a;
+    margin-bottom: 16px;
+    font-size: 1.125rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.input-field {
+    width: 100%;
+    padding: 14px 16px;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    background: #ffffff;
+    color: #1e293b;
+}
+
+.input-field:focus {
+    outline: none;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    background: #fefefe;
+}
+
+.input-field:hover {
+    border-color: #cbd5e1;
+}
+
+.input-field::placeholder {
+    color: #94a3b8;
+    font-weight: 400;
+}
+
+.input-description {
+    color: #64748b;
+    font-size: 0.875rem;
+    margin-top: 8px;
+    line-height: 1.4;
+}
+
+/* ===== SELECT COMPONENTS ===== */
+.select-wrapper {
+    position: relative;
+}
+
+.select-field {
+    appearance: none;
+    background: #ffffff;
+    width: 100%;
+    padding: 14px 16px;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #1e293b;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.select-field:focus {
+    outline: none;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.select-field:hover {
+    border-color: #cbd5e1;
+}
+
+.select-wrapper::after {
+    content: '';
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 6px solid #64748b;
+    pointer-events: none;
+}
+
+/* ===== CHECKBOX COMPONENTS ===== */
+.checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 12px 0;
+    padding: 12px;
+    background: #f8fafc;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+}
+
+.checkbox-input {
+    width: 18px;
+    height: 18px;
+    accent-color: #2563eb;
+    cursor: pointer;
+}
+
+.checkbox-label {
+    color: #374151;
+    font-weight: 500;
+    cursor: pointer;
+    user-select: none;
+}
+
+/* ===== BUTTON COMPONENTS ===== */
+.btn-primary {
+    background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
+    color: white;
+    border: none;
+    padding: 16px 32px;
+    border-radius: 12px;
+    font-size: 1.125rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    text-transform: none;
+    letter-spacing: 0.025em;
+}
+
+.btn-primary::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 25px -8px rgba(37, 99, 235, 0.4);
+}
+
+.btn-primary:hover::before {
+    left: 100%;
+}
+
+.btn-primary:active {
+    transform: translateY(0);
+}
+
+.btn-primary:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.btn-secondary {
+    background: #ffffff;
+    color: #374151;
+    border: 2px solid #d1d5db;
+    padding: 14px 28px;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-secondary:hover {
+    background: #f9fafb;
+    border-color: #9ca3af;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px -4px rgba(0, 0, 0, 0.1);
+}
+
+.btn-outline {
+    background: transparent;
+    color: #2563eb;
+    border: 2px solid #2563eb;
+    padding: 14px 28px;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-outline:hover {
+    background: #2563eb;
+    color: white;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px -4px rgba(37, 99, 235, 0.3);
+}
+
+/* ===== LOADING STATES ===== */
+.loading-spinner {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: white;
+    animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.btn-loading {
+    position: relative;
+    color: transparent !important;
+}
+
+.btn-loading::after {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    top: 50%;
+    left: 50%;
+    margin-left: -10px;
+    margin-top: -10px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: white;
+    animation: spin 1s ease-in-out infinite;
+}
+
+/* ===== RESULTS COMPONENTS ===== */
+.results-section {
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    border-radius: 16px;
+    padding: 32px;
+    margin-top: 40px;
+    border: 1px solid #e2e8f0;
+    display: none;
+    animation: slideInUp 0.5s ease-out;
+}
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.results-header {
+    text-align: center;
+    margin-bottom: 32px;
+}
+
+.results-header h2 {
+    color: #0f172a;
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.results-header p {
+    color: #64748b;
+    font-size: 1.125rem;
+}
+
+.results-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+    margin-bottom: 40px;
+}
+
+.result-card {
+    background: #ffffff;
+    padding: 24px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e2e8f0;
+    transition: all 0.3s ease;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.result-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, #2563eb, #3b82f6, #60a5fa);
+}
+
+.result-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 25px -8px rgba(0, 0, 0, 0.15);
+}
+
+.result-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #059669;
+    margin: 12px 0;
+    font-variant-numeric: tabular-nums;
+}
+
+.result-label {
+    color: #6b7280;
+    font-size: 0.875rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* ===== TABLE COMPONENTS ===== */
+.table-container {
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e2e8f0;
+    overflow: hidden;
+    margin: 32px 0;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.875rem;
+}
+
+.data-table thead th {
+    background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+    color: white;
+    padding: 16px 12px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 0.8125rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-bottom: 1px solid #475569;
+}
+
+.data-table tbody td {
+    padding: 14px 12px;
+    border-bottom: 1px solid #f1f5f9;
+    color: #374151;
+    font-weight: 500;
+}
+
+.data-table tbody tr:nth-child(even) {
+    background: #f8fafc;
+}
+
+.data-table tbody tr:hover {
+    background: #eff6ff;
+    transition: background-color 0.2s ease;
+}
+
+.data-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* ===== CHART COMPONENTS ===== */
+.chart-container {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 24px;
+    margin: 32px 0;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e2e8f0;
+}
+
+.chart-header {
+    text-align: center;
+    margin-bottom: 24px;
+}
+
+.chart-header h3 {
+    color: #0f172a;
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.chart-placeholder {
+    height: 350px;
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #64748b;
+    border: 2px dashed #cbd5e1;
+    position: relative;
+    overflow: hidden;
+}
+
+.chart-placeholder::before {
+    content: '';
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    right: 20px;
+    bottom: 20px;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="%23e2e8f0" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+    opacity: 0.3;
+}
+
+.chart-placeholder .icon {
+    font-size: 3rem;
+    margin-bottom: 16px;
+    opacity: 0.6;
+}
+
+.chart-placeholder h4 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.chart-placeholder p {
+    font-size: 0.875rem;
+    text-align: center;
+    max-width: 300px;
+}
+
+/* ===== EXPORT COMPONENTS ===== */
+.export-section {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 24px;
+    margin: 32px 0;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e2e8f0;
+}
+
+.export-buttons {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.export-btn {
+    background: #ffffff;
+    color: #374151;
+    border: 2px solid #d1d5db;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.export-btn:hover {
+    background: #f9fafb;
+    border-color: #9ca3af;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px -4px rgba(0, 0, 0, 0.1);
+}
+
+.export-btn:active {
+    transform: translateY(0);
+}
+
+/* ===== INFO COMPONENTS ===== */
+.info-section {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 32px;
+    margin-top: 40px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e2e8f0;
+}
+
+.info-section h3 {
+    color: #0f172a;
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin-bottom: 24px;
+    text-align: center;
+}
+
+.info-description {
+    color: #64748b;
+    font-size: 1.125rem;
+    text-align: center;
+    margin-bottom: 32px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+    margin-top: 32px;
+}
+
+.feature-card {
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    padding: 24px;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+.feature-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 25px -8px rgba(0, 0, 0, 0.15);
+    border-color: #cbd5e1;
+}
+
+.feature-icon {
+    font-size: 2.5rem;
+    margin-bottom: 16px;
+    display: block;
+}
+
+.feature-title {
+    color: #0f172a;
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin-bottom: 12px;
+}
+
+.feature-description {
+    color: #64748b;
+    font-size: 0.875rem;
+    line-height: 1.5;
+}
+
+/* ===== ALERT COMPONENTS ===== */
+.alert {
+    padding: 16px 20px;
+    border-radius: 12px;
+    margin: 24px 0;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    font-weight: 500;
+    animation: slideInDown 0.3s ease-out;
+}
+
+@keyframes slideInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.alert-error {
+    background: #fef2f2;
+    color: #dc2626;
+    border: 1px solid #fecaca;
+}
+
+.alert-success {
+    background: #f0fdf4;
+    color: #16a34a;
+    border: 1px solid #bbf7d0;
+}
+
+.alert-warning {
+    background: #fffbeb;
+    color: #d97706;
+    border: 1px solid #fde68a;
+}
+
+.alert-info {
+    background: #eff6ff;
+    color: #2563eb;
+    border: 1px solid #bfdbfe;
+}
+
+.alert-icon {
+    font-size: 1.25rem;
+    flex-shrink: 0;
+    margin-top: 1px;
+}
+
+/* ===== TOOLTIP COMPONENTS ===== */
+.tooltip {
+    position: relative;
+    display: inline-block;
+    cursor: help;
+}
+
+.tooltip-trigger {
+    color: #64748b;
+    font-size: 1.125rem;
+    transition: color 0.2s ease;
+}
+
+.tooltip-trigger:hover {
+    color: #2563eb;
+}
+
+.tooltip-content {
+    visibility: hidden;
+    opacity: 0;
+    position: absolute;
+    bottom: 125%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #1e293b;
+    color: white;
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    font-weight: 400;
+    line-height: 1.4;
+    max-width: 250px;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    transition: all 0.3s ease;
+    pointer-events: none;
+}
+
+.tooltip-content::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 6px solid transparent;
+    border-top-color: #1e293b;
+}
+
+.tooltip:hover .tooltip-content {
+    visibility: visible;
+    opacity: 1;
+    transform: translateX(-50%) translateY(-4px);
+}
+
+/* ===== RESPONSIVE DESIGN ===== */
+@media (max-width: 1024px) {
+    .tool-header h1 {
+        font-size: 2.5rem;
+    }
+
+    .input-grid {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    }
+
+    .results-grid {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 0 16px;
+    }
+
+    .tool-header {
+        padding: 32px 24px;
+    }
+
+    .tool-header h1 {
+        font-size: 2rem;
+    }
+
+    .tool-header .subtitle {
+        font-size: 1.125rem;
+    }
+
+    .tool-content {
+        padding: 24px;
+    }
+
+    .input-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .results-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .features-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .tab-buttons {
+        flex-wrap: wrap;
+    }
+
+    .tab-btn {
+        padding: 12px 16px;
+        font-size: 0.875rem;
+    }
+
+    .badge-container {
+        gap: 8px;
+    }
+
+    .badge {
+        padding: 6px 12px;
+        font-size: 0.8125rem;
+    }
+
+    .export-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .table-container {
+        overflow-x: auto;
+    }
+
+    .data-table {
+        font-size: 0.8125rem;
+    }
+
+    .data-table thead th,
+    .data-table tbody td {
+        padding: 10px 8px;
+    }
+}
+
+@media (max-width: 480px) {
+    .tool-header h1 {
+        font-size: 1.75rem;
+    }
+
+    .tool-header .subtitle {
+        font-size: 1rem;
+    }
+
+    .tool-content {
+        padding: 20px;
+    }
+
+    .input-group {
+        padding: 20px;
+    }
+
+    .input-group h3 {
+        font-size: 1rem;
+    }
+
+    .result-value {
+        font-size: 1.5rem;
+    }
+
+    .results-header h2 {
+        font-size: 1.5rem;
+    }
+
+    .info-section h3 {
+        font-size: 1.5rem;
+    }
+}
+
+/* ===== ACCESSIBILITY ===== */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* Focus styles for keyboard navigation */
+.btn-primary:focus-visible,
+.btn-secondary:focus-visible,
+.btn-outline:focus-visible,
+.input-field:focus-visible,
+.select-field:focus-visible,
+.checkbox-input:focus-visible {
+    outline: 2px solid #2563eb;
+    outline-offset: 2px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .tool-container {
+        border: 2px solid #000;
+    }
+
+    .input-group {
+        border: 2px solid #000;
+    }
+
+    .result-card {
+        border: 2px solid #000;
+    }
+}
+
+/* ===== UTILITY CLASSES ===== */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.text-left {
+    text-align: left;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.mb-0 { margin-bottom: 0; }
+.mb-1 { margin-bottom: 0.25rem; }
+.mb-2 { margin-bottom: 0.5rem; }
+.mb-3 { margin-bottom: 0.75rem; }
+.mb-4 { margin-bottom: 1rem; }
+.mb-5 { margin-bottom: 1.25rem; }
+.mb-6 { margin-bottom: 1.5rem; }
+
+.mt-0 { margin-top: 0; }
+.mt-1 { margin-top: 0.25rem; }
+.mt-2 { margin-top: 0.5rem; }
+.mt-3 { margin-top: 0.75rem; }
+.mt-4 { margin-top: 1rem; }
+.mt-5 { margin-top: 1.25rem; }
+.mt-6 { margin-top: 1.5rem; }
+
+.hidden {
+    display: none !important;
+}
+
+.fade-in {
+    animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.slide-up {
+    animation: slideInUp 0.5s ease-out;
+}
+
+.bounce-in {
+    animation: bounceIn 0.6s ease-out;
+}
+
+@keyframes bounceIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.3);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.05);
+    }
+    70% {
+        transform: scale(0.9);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+/* ===== ENHANCED INPUT LABEL STYLES ===== */
+.input-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #1e293b;
+    margin-bottom: 8px;
+    letter-spacing: -0.01em;
+}
+
+.label-icon {
+    font-size: 1.25rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    border-radius: 8px;
+    flex-shrink: 0;
+}
+
+.label-text {
+    flex: 1;
+    line-height: 1.4;
+}
+
+.input-description {
+    font-size: 0.8125rem;
+    color: #64748b;
+    margin: 6px 0 0 0;
+    line-height: 1.5;
+    font-weight: 400;
+}
+
+.input-field::placeholder {
+    color: #94a3b8;
+    font-weight: 400;
+}
+</head>
+<body>
+    <div class="container">
+        <div class="tool-container">
+            <div class="tool-header">
+                <h1>🏖️ Retirement Planner and Estimator</h1>
+                <p class="subtitle">Plan your retirement with comprehensive savings projections and income estimates</p>
+                <div class="badge-container">
+                    <span class="badge">📊 Comprehensive Planning</span>
+                    <span class="badge">💰 Savings Projections</span>
+                    <span class="badge">📈 Income Forecasting</span>
+                    <span class="badge">🎯 Goal Tracking</span>
+                </div>
+            </div>
+
+            <div class="tool-content">
+                <div class="calculator-grid">
+                    <div class="input-section">
+                        <h3>Retirement Planning Inputs</h3>
+
+                        <div class="input-grid">
+                            <div class="input-group">
+                                <label class="input-label">
+                                    <span class="label-icon">👤</span>
+                                    <span class="label-text">Current Age</span>
+                                </label>
+                                <input type="number" id="current-age" class="input-field" placeholder="e.g., 35" min="18" max="80">
+                                <p class="input-description">Enter your current age to calculate years until retirement</p>
+                            </div>
+
+                            <div class="input-group">
+                                <label class="input-label">
+                                    <span class="label-icon">🎯</span>
+                                    <span class="label-text">Target Retirement Age</span>
+                                </label>
+                                <input type="number" id="retirement-age" class="input-field" placeholder="e.g., 65" min="50" max="80">
+                                <p class="input-description">Choose when you plan to retire (typical: 62-67 years)</p>
+                            </div>
+
+                            <div class="input-group">
+                                <label class="input-label">
+                                    <span class="label-icon">💰</span>
+                                    <span class="label-text">Current Retirement Savings</span>
+                                </label>
+                                <input type="number" id="current-savings" class="input-field" placeholder="e.g., $50,000" min="0">
+                                <p class="input-description">Total balance in 401(k), IRA, and other retirement accounts</p>
+                            </div>
+
+                            <div class="input-group">
+                                <label class="input-label">
+                                    <span class="label-icon">📈</span>
+                                    <span class="label-text">Annual Contribution</span>
+                                </label>
+                                <input type="number" id="annual-contribution" class="input-field" placeholder="e.g., $6,000" min="0">
+                                <p class="input-description">Yearly amount you plan to save (2024 IRA limit: $7,000)</p>
+                            </div>
+
+                            <div class="input-group">
+                                <label class="input-label">
+                                    <span class="label-icon">📊</span>
+                                    <span class="label-text">Expected Annual Return</span>
+                                </label>
+                                <input type="number" id="expected-return" class="input-field" placeholder="e.g., 7%" step="0.1" min="0" max="15">
+                                <p class="input-description">Projected investment growth rate (historical S&P 500: ~10%)</p>
+                            </div>
+
+                            <div class="input-group">
+                                <label class="input-label">
+                                    <span class="label-icon">⏳</span>
+                                    <span class="label-text">Life Expectancy</span>
+                                </label>
+                                <input type="number" id="life-expectancy" class="input-field" placeholder="e.g., 85" min="70" max="100">
+                                <p class="input-description">Expected lifespan for retirement planning (US avg: 77 years)</p>
+                            </div>
+
+                            <div class="input-group">
+                                <label class="input-label">
+                                    <span class="label-icon">💸</span>
+                                    <span class="label-text">Annual Retirement Expenses</span>
+                                </label>
+                                <input type="number" id="annual-expenses" class="input-field" placeholder="e.g., $40,000" min="0">
+                                <p class="input-description">Yearly spending needed in retirement (rule of thumb: 70-80% of current income)</p>
+                            </div>
+
+                            <div class="input-group">
+                                <label class="input-label">
+                                    <span class="label-icon">📉</span>
+                                    <span class="label-text">Inflation Rate</span>
+                                </label>
+                                <input type="number" id="inflation-rate" class="input-field" placeholder="e.g., 3%" step="0.1" min="0" max="10">
+                                <p class="input-description">Expected yearly inflation (historical US average: ~3%)</p>
+                            </div>
+
+                            <div class="input-group">
+                                <label class="input-label">
+                                    <span class="label-icon">🏛️</span>
+                                    <span class="label-text">Social Security Benefit (Monthly)</span>
+                                </label>
+                                <input type="number" id="social-security" class="input-field" placeholder="e.g., $1,500" min="0">
+                                <p class="input-description">Expected monthly Social Security payment (2024 avg: $1,907)</p>
+                            </div>
+
+                            <div class="input-group">
+                                <label class="input-label">
+                                    <span class="label-icon">💼</span>
+                                    <span class="label-text">Additional Annual Income</span>
+                                </label>
+                                <input type="number" id="other-income" class="input-field" placeholder="e.g., $5,000" min="0">
+                                <p class="input-description">Yearly income from pensions, rental properties, or part-time work</p>
+                            </div>
+
+                            <div class="input-group">
+                                <label class="input-label">
+                                    <span class="label-icon">🎲</span>
+                                    <span class="label-text">Investment Risk Profile</span>
+                                </label>
+                                <select id="risk-profile" class="input-field">
+                                    <option value="conservative">🛡️ Conservative (4% return)</option>
+                                    <option value="moderate" selected>⚖️ Moderate (7% return)</option>
+                                    <option value="aggressive">🚀 Aggressive (10% return)</option>
+                                    <option value="custom">⚙️ Custom Return Rate</option>
+                                </select>
+                                <p class="input-description">Select your investment strategy - automatically adjusts expected return rate</p>
+                            </div>
+                        </div>
+
+                        <div style="text-align: center; margin: 40px 0;">
+                            <button id="calculate-retirement-btn" class="btn-primary">Calculate Retirement Plan</button>
+                            <button id="reset-retirement-btn" class="btn-secondary">Reset Calculator</button>
+                        </div>
+                    </div>
+
+                    <div class="results-section">
+                        <h3>Retirement Projections</h3>
+
+                        <div id="results-container" class="results-content">
+                            <div class="results-grid">
+                                <div class="result-card">
+                                    <div class="result-label">Years Until Retirement</div>
+                                    <div class="result-value" id="years-to-retirement">0</div>
+                                </div>
+
+                                <div class="result-card">
+                                    <div class="result-label">Projected Savings at Retirement</div>
+                                    <div class="result-value" id="projected-savings">$0</div>
+                                </div>
+
+                                <div class="result-card">
+                                    <div class="result-label">Total Contributions</div>
+                                    <div class="result-value" id="total-contributions">$0</div>
+                                </div>
+
+                                <div class="result-card">
+                                    <div class="result-label">Investment Growth</div>
+                                    <div class="result-value" id="investment-growth">$0</div>
+                                </div>
+
+                                <div class="result-card">
+                                    <div class="result-label">Annual Income Needed (Today $)</div>
+                                    <div class="result-value" id="annual-income-needed">$0</div>
+                                </div>
+
+                                <div class="result-card">
+                                    <div class="result-label">Savings Status</div>
+                                    <div class="result-value" id="savings-status">$0</div>
+                                </div>
+
+                                <div class="result-card">
+                                    <div class="result-label">Social Security (Monthly)</div>
+                                    <div class="result-value" id="social-security-result">$0</div>
+                                </div>
+
+                                <div class="result-card">
+                                    <div class="result-label">Other Annual Income</div>
+                                    <div class="result-value" id="other-income-result">$0</div>
+                                </div>
+
+                                <div class="result-card">
+                                    <div class="result-label">Total Retirement Income</div>
+                                    <div class="result-value" id="total-retirement-income">$0</div>
+                                </div>
+
+                                <div class="result-card">
+                                    <div class="result-label">Savings Coverage</div>
+                                    <div class="result-value" id="savings-coverage">0%</div>
+                                </div>
+                            </div>
+
+                            <div class="projection-section">
+                                <h3>Retirement Income Projections</h3>
+                                <p>Annual income needed adjusted for inflation over time</p>
+                                <div class="projection-grid">
+                                    <div class="projection-card">
+                                        <div class="projection-year">Year 1</div>
+                                        <div id="year1-income" class="projection-amount">$0</div>
+                                        <div class="projection-label">Annual Income</div>
+                                    </div>
+                                    <div class="projection-card">
+                                        <div class="projection-year">Year 10</div>
+                                        <div id="year10-income" class="projection-amount">$0</div>
+                                        <div class="projection-label">Annual Income</div>
+                                    </div>
+                                    <div class="projection-card">
+                                        <div class="projection-year">Year 20</div>
+                                        <div id="year20-income" class="projection-amount">$0</div>
+                                        <div class="projection-label">Annual Income</div>
+                                    </div>
+                                    <div class="projection-card">
+                                        <div class="projection-year">Final Year</div>
+                                        <div id="final-year-income" class="projection-amount">$0</div>
+                                        <div class="projection-label">Annual Income</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="chart-container">
+                                <div class="chart-header">
+                                    <h3>Savings Growth Visualization</h3>
+                                    <p>Projected growth of your retirement savings over time</p>
+                                </div>
+                                <div id="savings-chart"></div>
+                            </div>
+
+                            <div id="recommendations-section" class="alert alert-info" style="display: none;">
+                                <span class="alert-icon">💡</span>
+                                <div>
+                                    <h4 style="margin: 0 0 12px 0; color: #2c3e50;">Personalized Recommendations</h4>
+                                    <ul id="recommendations-list" style="margin: 0; padding-left: 20px;">
+                                        <li>Consider increasing your annual contributions to improve retirement security</li>
+                                        <li>Review your investment strategy regularly and rebalance as needed</li>
+                                        <li>Consider delaying Social Security benefits for higher monthly payments</li>
+                                        <li>Plan for healthcare costs in retirement (not included in this calculator)</li>
+                                        <li>Consult with a financial advisor for personalized retirement planning</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="export-section">
+                                <h3 style="margin-bottom: 16px;">Export Your Retirement Plan</h3>
+                                <div class="export-buttons">
+                                    <button id="export-retirement-json" class="export-btn">📄 Export JSON</button>
+                                    <button id="export-retirement-pdf" class="export-btn">📊 Export PDF</button>
+                                    <button id="share-retirement-plan" class="export-btn">📤 Share Plan</button>
+                                    <button id="print-retirement-plan" class="export-btn">🖨️ Print Plan</button>
+                                </div>
+                            </div>
+
+                            <div class="data-table-section">
+                                <h3>Year-by-Year Savings Projection</h3>
+                                <p>Detailed breakdown of your retirement savings growth and contributions</p>
+                                <div class="data-table-container">
+                                    <table class="data-table" id="savings-projection-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Year</th>
+                                                <th>Age</th>
+                                                <th>Beginning Balance</th>
+                                                <th>Annual Contribution</th>
+                                                <th>Investment Growth</th>
+                                                <th>Ending Balance</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="savings-projection-body">
+                                            <tr>
+                                                <td colspan="6" class="empty-row">Calculate to see year-by-year projection</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="data-table-section">
+                                <h3>Retirement Income Analysis</h3>
+                                <p>Annual income sources and coverage analysis during retirement</p>
+                                <div class="data-table-container">
+                                    <table class="data-table" id="income-analysis-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Income Source</th>
+                                                <th>Annual Amount</th>
+                                                <th>% of Total Income</th>
+                                                <th>Notes</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="income-analysis-body">
+                                            <tr>
+                                                <td colspan="4" class="empty-row">Calculate to see income analysis</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="no-results" class="empty-state">
+                            <div class="empty-state-icon">📊</div>
+                            <h3>Ready to Plan Your Retirement</h3>
+                            <p>Enter your retirement planning details and click "Calculate" to see comprehensive projections</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-section">
+                    <h3>Understanding Retirement Planning</h3>
+                    <p class="info-description">
+                        Retirement planning involves estimating how much money you'll need for retirement and developing a plan to reach your goals.
+                        This calculator helps you project your savings growth and retirement income needs.
+                    </p>
+
+                    <div class="features-grid">
+                        <div class="feature-card">
+                            <div class="feature-icon">🎯</div>
+                            <h4 class="feature-title">Start Early</h4>
+                            <p class="feature-description">The power of compound interest means starting early can significantly increase your retirement savings. Even small contributions add up over time.</p>
+                        </div>
+
+                        <div class="feature-card">
+                            <div class="feature-icon">📊</div>
+                            <h4 class="feature-title">Realistic Expectations</h4>
+                            <p class="feature-description">Use conservative estimates for investment returns and inflation. Market volatility can affect your actual results.</p>
+                        </div>
+
+                        <div class="feature-card">
+                            <div class="feature-icon">💰</div>
+                            <h4 class="feature-title">Multiple Income Sources</h4>
+                            <p class="feature-description">Consider Social Security, pensions, part-time work, and other income sources in addition to your savings.</p>
+                        </div>
+
+                        <div class="feature-card">
+                            <div class="feature-icon">🔄</div>
+                            <h4 class="feature-title">Regular Reviews</h4>
+                            <p class="feature-description">Review and adjust your retirement plan regularly as your life circumstances and market conditions change.</p>
+                        </div>
+                    </div>
+
+                    <div class="alert alert-info" style="margin-top: 24px;">
+                        <span class="alert-icon">ℹ️</span>
+                        <span>
+                            <strong>Disclaimer:</strong> This retirement calculator provides estimates based on the inputs provided and assumptions about investment returns, inflation, and life expectancy. Actual results may vary significantly due to market conditions, personal circumstances, and other factors. This is not financial advice - consult with a qualified financial advisor for personalized retirement planning.
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Savings Projection Modal -->
+    <div id="savings-projection-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Year-by-Year Savings Projection</h3>
+                <span class="modal-close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="data-table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Year</th>
+                                <th>Starting Balance</th>
+                                <th>Contributions</th>
+                                <th>Growth</th>
+                                <th>Ending Balance</th>
+                            </tr>
+                        </thead>
+                        <tbody id="savings-projection-table">
+                            <!-- Table rows will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Income Analysis Modal -->
+    <div id="income-analysis-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Retirement Income Analysis</h3>
+                <span class="modal-close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="data-table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Year</th>
+                                <th>Income Needed</th>
+                                <th>Savings Withdrawal</th>
+                                <th>Social Security</th>
+                                <th>Other Income</th>
+                                <th>Total Income</th>
+                                <th>Shortfall/Surplus</th>
+                            </tr>
+                        </thead>
+                        <tbody id="income-analysis-table">
+                            <!-- Table rows will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+// Minimal utilities for retirement calculator
+class SphereVistaTools {
+    constructor() {
+        this.animations = new AnimationManager();
+        this.validation = new ValidationManager();
+        this.export = new ExportManager();
+        this.charts = new ChartManager();
+        this.ui = new UIManager();
+        this.storage = new StorageManager();
+    }
+}
+
+class AnimationManager {
+    scrollTo(element, offset = 0) {
+        const elementPosition = element.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.pageYOffset - offset;
+        window.scrollTo({
+            top: offsetPosition,
+            behavior: "smooth"
+        });
+    }
+    
+    animateNumber(element, start, end, duration = 1000, formatter = null) {
+        const startTime = performance.now();
+        const difference = end - start;
+        const animate = (currentTime) => {
+            const elapsed = currentTime - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            const easeOutQuart = 1 - Math.pow(1 - progress, 4);
+            const current = start + (difference * easeOutQuart);
+            element.textContent = formatter ? formatter(current) : Math.round(current);
+            if (progress < 1) {
+                requestAnimationFrame(animate);
+            }
+        };
+        requestAnimationFrame(animate);
+    }
+}
+
+class ValidationManager {
+    validateField(field) {
+        const value = field.value.trim();
+        const type = field.type;
+        
+        if (field.hasAttribute("required") && !value) {
+            return "This field is required";
+        }
+        
+        if (type === "number") {
+            const numValue = parseFloat(value);
+            if (isNaN(numValue)) {
+                return "Please enter a valid number";
+            }
+            if (field.hasAttribute("min") && numValue < parseFloat(field.getAttribute("min"))) {
+                return "Value must be at least " + field.getAttribute("min");
+            }
+        }
+        
+        return null;
+    }
+}
+
+class ExportManager {
+    exportToCSV(data, filename) {
+        let csv = "";
+        if (data.length > 0) {
+            csv += Object.keys(data[0]).join(",") + "\n";
+            data.forEach(row => {
+                csv += Object.values(row).join(",") + "\n";
+            });
+        }
+        this.downloadFile(csv, filename + ".csv", "text/csv");
+    }
+    
+    exportToPDF(content, filename) {
+        // Simple PDF export using browser print
+        const printWindow = window.open("", "_blank");
+        printWindow.document.write(content);
+        printWindow.document.close();
+        printWindow.print();
+    }
+    
+    downloadFile(content, filename, mimeType) {
+        const blob = new Blob([content], { type: mimeType });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    }
+}
+
+class ChartManager {
+    createPlaceholderChart(containerId, title) {
+        const container = document.getElementById(containerId);
+        if (container) {
+            container.innerHTML = "<div style=\"padding: 20px; text-align: center; border: 1px dashed #ccc; color: #666;\">Chart: " + title + "</div>";
+        }
+    }
+    
+    clearCharts() {
+        // Clear any chart containers
+    }
+}
+
+class UIManager {
+    showAlert(message, type = "info") {
+        alert(message);
+    }
+}
+
+class StorageManager {
+    set(key, value) {
+        try {
+            localStorage.setItem(key, JSON.stringify(value));
+        } catch (e) {
+            console.warn("Storage not available");
+        }
+    }
+    
+    get(key) {
+        try {
+            const item = localStorage.getItem(key);
+            return item ? JSON.parse(item) : null;
+        } catch (e) {
+            return null;
+        }
+    }
+}
+
+// Number formatting utility
+class NumberFormatter {
+    static formatCurrency(num) {
+        return "$" + num.toLocaleString("en-US", { maximumFractionDigits: 0 });
+    }
+}
+    <script>
+        class RetirementPlanner {
+            constructor() {
+                this.results = null;
+                this.tools = new SphereVistaTools();
+                this.initializeEventListeners();
+                this.setDefaultValues();
+            }
+
+            initializeEventListeners() {
+                const calculateBtn = document.getElementById('calculate-retirement-btn');
+                const resetBtn = document.getElementById('reset-retirement-btn');
+                const riskProfileSelect = document.getElementById('risk-profile');
+                const exportJsonBtn = document.getElementById('export-retirement-json');
+                const exportPdfBtn = document.getElementById('export-retirement-pdf');
+                const shareBtn = document.getElementById('share-retirement-plan');
+                const printBtn = document.getElementById('print-retirement-plan');
+                const closeModalBtn = document.getElementById('close-savings-projection');
+                const closeIncomeAnalysisBtn = document.getElementById('close-income-analysis');
+
+                // Event listeners
+                document.getElementById('calculate-btn').addEventListener('click', () => this.calculateRetirement());
+                document.getElementById('reset-btn').addEventListener('click', () => this.resetCalculator());
+                document.getElementById('print-btn').addEventListener('click', () => this.printRetirementPlan());
+                document.getElementById('export-pdf-btn').addEventListener('click', () => this.tools.export.exportToPDF('retirement-planner', 'Retirement Plan'));
+                document.getElementById('export-csv-btn').addEventListener('click', () => this.tools.export.exportToCSV(this.generateSavingsProjection(), 'retirement-savings-projection.csv'));
+
+                // Data table buttons
+                document.getElementById('show-savings-projection-btn').addEventListener('click', () => this.showSavingsProjection());
+                document.getElementById('show-income-analysis-btn').addEventListener('click', () => this.showIncomeAnalysis());
+
+                // Modal close buttons
+                document.querySelectorAll('.modal-close').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        btn.closest('.modal').style.display = 'none';
+                    });
+                });
+
+                // Close modals when clicking outside
+                document.querySelectorAll('.modal').forEach(modal => {
+                    modal.addEventListener('click', (e) => {
+                        if (e.target === modal) {
+                            modal.style.display = 'none';
+                        }
+                    });
+                });
+
+                calculateBtn.addEventListener('click', () => this.calculateRetirement());
+                resetBtn.addEventListener('click', () => this.resetCalculator());
+                riskProfileSelect.addEventListener('change', () => this.updateExpectedReturn());
+                exportJsonBtn.addEventListener('click', () => this.exportRetirementJSON());
+                exportPdfBtn.addEventListener('click', () => this.exportRetirementPDF());
+                shareBtn.addEventListener('click', () => this.shareRetirementPlan());
+                printBtn.addEventListener('click', () => this.printRetirementPlan());
+                closeModalBtn.addEventListener('click', () => this.closeSavingsProjection());
+                closeIncomeAnalysisBtn.addEventListener('click', () => this.closeIncomeAnalysis());
+            }
+
+            setDefaultValues() {
+                document.getElementById('current-age').value = '35';
+                document.getElementById('retirement-age').value = '65';
+                document.getElementById('current-savings').value = '50000';
+                document.getElementById('annual-contribution').value = '6000';
+                document.getElementById('expected-return').value = '7';
+                document.getElementById('life-expectancy').value = '85';
+                document.getElementById('annual-expenses').value = '40000';
+                document.getElementById('inflation-rate').value = '3';
+                document.getElementById('social-security').value = '1500';
+                document.getElementById('other-income').value = '0';
+            }
+
+            updateExpectedReturn() {
+                const riskProfile = document.getElementById('risk-profile').value;
+                const expectedReturnInput = document.getElementById('expected-return');
+
+                const riskReturns = {
+                    conservative: 4,
+                    moderate: 7,
+                    aggressive: 10,
+                    custom: expectedReturnInput.value || 7
+                };
+
+                if (riskProfile !== 'custom') {
+                    expectedReturnInput.value = riskReturns[riskProfile];
+                }
+            }
+
+            calculateRetirement() {
+                // Get input values
+                const currentAge = parseInt(document.getElementById('current-age').value) || 0;
+                const retirementAge = parseInt(document.getElementById('retirement-age').value) || 0;
+                const currentSavings = parseFloat(document.getElementById('current-savings').value) || 0;
+                const annualContribution = parseFloat(document.getElementById('annual-contribution').value) || 0;
+                const expectedReturn = parseFloat(document.getElementById('expected-return').value) / 100 || 0;
+                const lifeExpectancy = parseInt(document.getElementById('life-expectancy').value) || 0;
+                const annualExpenses = parseFloat(document.getElementById('annual-expenses').value) || 0;
+                const inflationRate = parseFloat(document.getElementById('inflation-rate').value) / 100 || 0;
+                const socialSecurityMonthly = parseFloat(document.getElementById('social-security').value) || 0;
+                const otherIncome = parseFloat(document.getElementById('other-income').value) || 0;
+
+                if (currentAge <= 0 || retirementAge <= currentAge || lifeExpectancy <= retirementAge) {
+                    this.tools.ui.showAlert('Please enter valid ages and ensure retirement age is greater than current age.', 'error');
+                    return;
+                }
+
+                // Calculate years to retirement and total years in retirement
+                const yearsToRetirement = retirementAge - currentAge;
+                const yearsInRetirement = lifeExpectancy - retirementAge;
+
+                // Generate year-by-year savings projection
+                const savingsProjection = this.generateSavingsProjection(
+                    currentAge, retirementAge, currentSavings, annualContribution, expectedReturn
+                );
+
+                const projectedSavings = savingsProjection[savingsProjection.length - 1].endingBalance;
+                const totalContributions = savingsProjection.reduce((sum, year) => sum + year.contribution, 0);
+                const investmentGrowth = projectedSavings - totalContributions;
+
+                // Calculate retirement income needs (adjusted for inflation at retirement)
+                const annualIncomeNeeded = annualExpenses * Math.pow(1 + inflationRate, yearsToRetirement);
+
+                // Calculate Social Security and other income at retirement
+                const socialSecurityAnnual = socialSecurityMonthly * 12;
+                const totalRetirementIncome = socialSecurityAnnual + otherIncome;
+                const savingsCoverage = projectedSavings > 0 ? ((annualIncomeNeeded - totalRetirementIncome) / projectedSavings) * 100 : 0;
+
+                // Calculate if savings will last through retirement using 4% safe withdrawal rate
+                const safeWithdrawalRate = 0.04;
+                const annualWithdrawalFromSavings = Math.max(0, annualIncomeNeeded - totalRetirementIncome);
+                const requiredSavings = annualWithdrawalFromSavings / safeWithdrawalRate;
+
+                const savingsShortfall = requiredSavings - projectedSavings;
+                const savingsStatus = savingsShortfall > 0 ? 'shortfall' : 'surplus';
+
+                // Store results
+                this.results = {
+                    currentAge,
+                    retirementAge,
+                    currentSavings,
+                    annualContribution,
+                    expectedReturn: expectedReturn * 100,
+                    lifeExpectancy,
+                    annualExpenses,
+                    inflationRate: inflationRate * 100,
+                    socialSecurityMonthly,
+                    socialSecurityAnnual,
+                    otherIncome,
+                    yearsToRetirement,
+                    yearsInRetirement,
+                    projectedSavings,
+                    totalContributions,
+                    investmentGrowth,
+                    annualIncomeNeeded,
+                    totalRetirementIncome,
+                    savingsCoverage: Math.max(0, Math.min(100, savingsCoverage)),
+                    requiredSavings,
+                    savingsShortfall: Math.abs(savingsShortfall),
+                    savingsStatus,
+                    savingsProjection
+                };
+
+                // Display results
+                this.displayResults();
+
+                // Show data tables
+                this.showSavingsProjection();
+                this.showIncomeAnalysis();
+
+                // Show recommendations
+                this.showRecommendations();
+
+                // Save to local storage
+                this.tools.storage.saveCalculatorState('retirement-planner', this.results);
+            }
+
+            generateSavingsProjection(currentAge, retirementAge, currentSavings, annualContribution, expectedReturn) {
+                const yearsToRetirement = retirementAge - currentAge;
+                const projection = [];
+
+                let balance = currentSavings;
+
+                for (let year = 0; year <= yearsToRetirement; year++) {
+                    const age = currentAge + year;
+                    const beginningBalance = balance;
+                    const contribution = year > 0 ? annualContribution : 0; // No contribution in year 0
+                    const growth = beginningBalance * expectedReturn;
+                    const endingBalance = beginningBalance + contribution + growth;
+
+                    projection.push({
+                        year: year + 1,
+                        age,
+                        beginningBalance,
+                        contribution,
+                        growth,
+                        endingBalance
+                    });
+
+                    balance = endingBalance;
+                }
+
+                return projection;
+            }
+
+            generateIncomeAnalysis() {
+                const analysis = [];
+                const inputs = this.getInputs();
+                const results = this.results;
+
+                // Calculate for each year of retirement
+                for (let year = 1; year <= results.yearsInRetirement; year++) {
+                    const neededIncome = results.annualIncomeNeeded * Math.pow(1 + (inputs.inflationRate / 100), year - 1);
+                    const savingsWithdrawal = Math.min(neededIncome * 0.04, results.projectedSavings / results.yearsInRetirement);
+                    const socialSecurity = inputs.socialSecurityAnnual;
+                    const otherIncome = inputs.otherIncome;
+                    const totalIncome = savingsWithdrawal + socialSecurity + otherIncome;
+                    const shortfall = neededIncome - totalIncome;
+
+                    analysis.push({
+                        year: year,
+                        neededIncome: neededIncome,
+                        savingsWithdrawal: savingsWithdrawal,
+                        socialSecurity: socialSecurity,
+                        otherIncome: otherIncome,
+                        totalIncome: totalIncome,
+                        shortfall: shortfall
+                    });
+                }
+
+                return analysis;
+            }
+
+            displayResults() {
+                const results = this.results;
+                const resultsContainer = document.getElementById('results-container');
+                const noResults = document.getElementById('no-results');
+
+                // Show results section with animation
+                resultsContainer.style.display = 'block';
+                noResults.style.display = 'none';
+                this.tools.animations.slideInUp(resultsContainer);
+
+                // Animate result values
+                this.tools.animations.animateNumber(
+                    document.getElementById('years-to-retirement'),
+                    0,
+                    results.yearsToRetirement,
+                    1000
+                );
+
+                this.tools.animations.animateNumber(
+                    document.getElementById('projected-savings'),
+                    0,
+                    results.projectedSavings,
+                    1000,
+                    (num) => NumberFormatter.formatCurrency(num)
+                );
+
+                this.tools.animations.animateNumber(
+                    document.getElementById('total-contributions'),
+                    0,
+                    results.totalContributions,
+                    1000,
+                    (num) => NumberFormatter.formatCurrency(num)
+                );
+
+                this.tools.animations.animateNumber(
+                    document.getElementById('investment-growth'),
+                    0,
+                    results.investmentGrowth,
+                    1000,
+                    (num) => NumberFormatter.formatCurrency(num)
+                );
+
+                this.tools.animations.animateNumber(
+                    document.getElementById('annual-income-needed'),
+                    0,
+                    results.annualIncomeNeeded,
+                    1000,
+                    (num) => NumberFormatter.formatCurrency(num)
+                );
+
+                // Savings status
+                const savingsStatusEl = document.getElementById('savings-status');
+                if (results.savingsStatus === 'shortfall') {
+                    savingsStatusEl.textContent = `Shortfall: ${NumberFormatter.formatCurrency(results.savingsShortfall)}`;
+                    savingsStatusEl.style.color = '#ef4444';
+                } else {
+                    savingsStatusEl.textContent = `Surplus: ${NumberFormatter.formatCurrency(results.savingsShortfall)}`;
+                    savingsStatusEl.style.color = '#10b981';
+                }
+
+                // New result fields
+                this.tools.animations.animateNumber(
+                    document.getElementById('social-security-result'),
+                    0,
+                    results.socialSecurityAnnual,
+                    1000,
+                    (num) => NumberFormatter.formatCurrency(num)
+                );
+
+                this.tools.animations.animateNumber(
+                    document.getElementById('other-income-result'),
+                    0,
+                    results.otherIncome,
+                    1000,
+                    (num) => NumberFormatter.formatCurrency(num)
+                );
+
+                this.tools.animations.animateNumber(
+                    document.getElementById('total-retirement-income'),
+                    0,
+                    results.totalRetirementIncome,
+                    1000,
+                    (num) => NumberFormatter.formatCurrency(num)
+                );
+
+                this.tools.animations.animateNumber(
+                    document.getElementById('savings-coverage'),
+                    0,
+                    results.savingsCoverage,
+                    1000,
+                    (num) => num.toFixed(1) + '%'
+                );
+
+                // Calculate income projections for different years
+                const year1Income = results.annualIncomeNeeded;
+                const year10Income = results.annualIncomeNeeded * Math.pow(1 + (results.inflationRate / 100), 9);
+                const year20Income = results.annualIncomeNeeded * Math.pow(1 + (results.inflationRate / 100), 19);
+                const finalYearIncome = results.annualIncomeNeeded * Math.pow(1 + (results.inflationRate / 100), results.yearsInRetirement - 1);
+
+                this.tools.animations.animateNumber(
+                    document.getElementById('year1-income'),
+                    0,
+                    year1Income,
+                    1000,
+                    (num) => NumberFormatter.formatCurrency(num)
+                );
+
+                this.tools.animations.animateNumber(
+                    document.getElementById('year10-income'),
+                    0,
+                    year10Income,
+                    1000,
+                    (num) => NumberFormatter.formatCurrency(num)
+                );
+
+                this.tools.animations.animateNumber(
+                    document.getElementById('year20-income'),
+                    0,
+                    year20Income,
+                    1000,
+                    (num) => NumberFormatter.formatCurrency(num)
+                );
+
+                this.tools.animations.animateNumber(
+                    document.getElementById('final-year-income'),
+                    0,
+                    finalYearIncome,
+                    1000,
+                    (num) => NumberFormatter.formatCurrency(num)
+                );
+
+                // Create chart placeholder
+                this.tools.charts.createPlaceholderChart('savings-chart', 'Savings Growth Projection Chart');
+
+                // Display recommendations
+                const recommendationsEl = document.getElementById('recommendations-content');
+                recommendationsEl.innerHTML = `<p>${this.generateRecommendations()}</p>`;
+
+                // Scroll to results
+                setTimeout(() => {
+                    this.tools.animations.scrollTo(resultsContainer, 100);
+                }, 300);
+            }
+
+            populateSavingsProjectionTable(results) {
+                const tableBody = document.getElementById('savings-projection-body');
+                tableBody.innerHTML = ''; // Clear existing rows
+
+                const yearsToRetirement = results.yearsToRetirement;
+                const annualContribution = results.annualContribution;
+                const adjustedReturn = results.expectedReturn / 100;
+                let beginningBalance = results.currentSavings;
+                let endingBalance = beginningBalance;
+
+                for (let year = 1; year <= yearsToRetirement; year++) {
+                    // Calculate annual growth and ending balance
+                    const investmentGrowth = endingBalance * adjustedReturn;
+                    endingBalance += investmentGrowth + annualContribution;
+
+                    // Insert row into table
+                    const row = tableBody.insertRow();
+                    row.insertCell(0).textContent = year;
+                    row.insertCell(1).textContent = results.currentAge + year;
+                    row.insertCell(2).textContent = NumberFormatter.formatCurrency(beginningBalance);
+                    row.insertCell(3).textContent = NumberFormatter.formatCurrency(annualContribution);
+                    row.insertCell(4).textContent = NumberFormatter.formatCurrency(investmentGrowth);
+                    row.insertCell(5).textContent = NumberFormatter.formatCurrency(endingBalance);
+
+                    // Update beginning balance for next year
+                    beginningBalance = endingBalance;
+                }
+            }
+
+            populateIncomeAnalysisTable(results) {
+                const tableBody = document.getElementById('income-analysis-body');
+                tableBody.innerHTML = ''; // Clear existing rows
+
+                // Income sources
+                const socialSecurityAnnual = results.socialSecurity * 12;
+                const otherIncomeAnnual = results.otherIncome;
+
+                // Total annual income
+                const totalAnnualIncome = socialSecurityAnnual + otherIncomeAnnual;
+
+                // Insert Social Security row
+                const ssRow = tableBody.insertRow();
+                ssRow.insertCell(0).textContent = 'Social Security';
+                ssRow.insertCell(1).textContent = NumberFormatter.formatCurrency(socialSecurityAnnual);
+                ssRow.insertCell(2).textContent = ((socialSecurityAnnual / totalAnnualIncome) * 100).toFixed(2) + '%';
+                ssRow.insertCell(3).textContent = 'Monthly benefit: ' + NumberFormatter.formatCurrency(results.socialSecurity) + ' (adjusted for inflation)';
+
+                // Insert Other Income row
+                const otherRow = tableBody.insertRow();
+                otherRow.insertCell(0).textContent = 'Other Income';
+                otherRow.insertCell(1).textContent = NumberFormatter.formatCurrency(otherIncomeAnnual);
+                otherRow.insertCell(2).textContent = ((otherIncomeAnnual / totalAnnualIncome) * 100).toFixed(2) + '%';
+                otherRow.insertCell(3).textContent = 'Pensions, part-time work, etc.';
+
+                // Insert Total Income row
+                const totalRow = tableBody.insertRow();
+                totalRow.insertCell(0).textContent = 'Total Income';
+                totalRow.insertCell(1).textContent = NumberFormatter.formatCurrency(totalAnnualIncome);
+                totalRow.insertCell(2).textContent = '100%';
+                totalRow.insertCell(3).textContent = '';
+            }
+
+            showRecommendations(results) {
+                const recommendationsSection = document.getElementById('recommendations-section');
+                const recommendationsList = document.getElementById('recommendations-list');
+
+                // Clear existing recommendations
+                recommendationsList.innerHTML = '';
+
+                // Add personalized recommendations
+                const recommendations = [
+                    'Consider increasing your annual contributions to improve retirement security',
+                    'Review your investment strategy regularly and rebalance as needed',
+                    'Consider delaying Social Security benefits for higher monthly payments',
+                    'Plan for healthcare costs in retirement (not included in this calculator)',
+                    'Consult with a financial advisor for personalized retirement planning'
+                ];
+
+                recommendations.forEach((rec) => {
+                    const li = document.createElement('li');
+                    li.textContent = rec;
+                    recommendationsList.appendChild(li);
+                });
+
+                // Show recommendations section
+                recommendationsSection.style.display = 'block';
+            }
+
+            generateRecommendations() {
+                const inputs = this.getInputs();
+                const results = this.results;
+                const recommendations = [];
+
+                // Savings recommendations
+                if (results.savingsCoverage < 80) {
+                    recommendations.push("Consider increasing your monthly contributions to reach your retirement goals.");
+                } else if (results.savingsCoverage > 120) {
+                    recommendations.push("You're on track for a comfortable retirement. Consider if you can reduce contributions while maintaining your lifestyle.");
+                }
+
+                // Age recommendations
+                if (inputs.retirementAge < 65) {
+                    recommendations.push("Retiring before 65 may reduce Social Security benefits. Consider delaying retirement if possible.");
+                }
+
+                // Risk recommendations
+                if (inputs.riskProfile === 'conservative' && inputs.expectedReturn > 5) {
+                    recommendations.push("Your expected return seems high for a conservative risk profile. Consider adjusting your investment strategy.");
+                } else if (inputs.riskProfile === 'aggressive' && inputs.expectedReturn < 8) {
+                    recommendations.push("Your expected return seems low for an aggressive risk profile. Consider increasing your investment risk.");
+                }
+
+                // Social Security recommendations
+                if (inputs.socialSecurityAnnual === 0) {
+                    recommendations.push("Consider including estimated Social Security benefits in your planning. You can estimate this using the SSA website.");
+                }
+
+                // Inflation recommendations
+                if (inputs.inflationRate < 2) {
+                    recommendations.push("Historical inflation averages around 3%. Consider using a slightly higher rate for conservative planning.");
+                }
+
+                if (recommendations.length === 0) {
+                    recommendations.push("Your retirement plan looks well-balanced. Continue monitoring and adjusting as needed.");
+                }
+
+                return recommendations.join(' ');
+            }
+
+            exportRetirementJSON() {
+                if (!this.results) return;
+
+                try {
+                    this.tools.export.export(this.results, 'json', 'retirement_plan');
+                    this.tools.ui.showAlert('Retirement plan exported as JSON successfully!', 'success');
+                } catch (error) {
+                    this.tools.ui.showAlert('Export failed. Please try again.', 'error');
+                }
+            }
+
+            exportRetirementPDF() {
+                if (!this.results) return;
+
+                try {
+                    // For PDF export, we'd need a more complex implementation
+                    // For now, just export as JSON with a note
+                    this.tools.ui.showAlert('PDF export coming soon. Use JSON export for now.', 'info');
+                } catch (error) {
+                    this.tools.ui.showAlert('Export failed. Please try again.', 'error');
+                }
+            }
+
+            async shareRetirementPlan() {
+                if (!this.results) return;
+
+                const shared = await this.tools.export.share(this.results, 'Retirement Plan Results');
+                if (!shared) {
+                    this.tools.ui.showAlert('Sharing not supported on this device. Try exporting instead.', 'info');
+                }
+            }
+
+            printRetirementPlan() {
+                // Create a print-friendly version
+                const printWindow = window.open('', '_blank');
+                const inputs = this.getInputs();
+                const results = this.results;
+
+                const printContent = `
+                    <!DOCTYPE html>
+                    <html>
+                    <head>
+                        <title>Retirement Plan Summary</title>
+                        <style>
+                            body { font-family: Arial, sans-serif; margin: 20px; }
+                            h1 { color: #2563eb; }
+                            .section { margin-bottom: 20px; }
+                            .section h2 { border-bottom: 2px solid #e5e7eb; padding-bottom: 5px; }
+                            table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+                            th, td { border: 1px solid #e5e7eb; padding: 8px; text-align: left; }
+                            th { background-color: #f9fafb; }
+                            .highlight { background-color: #fef3c7; }
+                        </style>
+                    </head>
+                    <body>
+                        <h1>Retirement Plan Summary</h1>
+
+                        <div class="section">
+                            <h2>Input Parameters</h2>
+                            <p><strong>Current Age:</strong> ${inputs.currentAge}</p>
+                            <p><strong>Retirement Age:</strong> ${inputs.retirementAge}</p>
+                            <p><strong>Current Savings:</strong> ${NumberFormatter.formatCurrency(inputs.currentSavings)}</p>
+                            <p><strong>Monthly Contribution:</strong> ${NumberFormatter.formatCurrency(inputs.monthlyContribution)}</p>
+                            <p><strong>Expected Return:</strong> ${inputs.expectedReturn}%</p>
+                            <p><strong>Inflation Rate:</strong> ${inputs.inflationRate}%</p>
+                            <p><strong>Annual Income Needed:</strong> ${NumberFormatter.formatCurrency(inputs.annualIncomeNeeded)}</p>
+                            <p><strong>Social Security Annual:</strong> ${NumberFormatter.formatCurrency(inputs.socialSecurityAnnual)}</p>
+                            <p><strong>Other Income:</strong> ${NumberFormatter.formatCurrency(inputs.otherIncome)}</p>
+                            <p><strong>Risk Profile:</strong> ${inputs.riskProfile}</p>
+                        </div>
+
+                        <div class="section">
+                            <h2>Retirement Projections</h2>
+                            <p><strong>Years to Retirement:</strong> ${results.yearsToRetirement}</p>
+                            <p><strong>Projected Savings:</strong> ${NumberFormatter.formatCurrency(results.projectedSavings)}</p>
+                            <p><strong>Total Contributions:</strong> ${NumberFormatter.formatCurrency(results.totalContributions)}</p>
+                            <p><strong>Investment Growth:</strong> ${NumberFormatter.formatCurrency(results.investmentGrowth)}</p>
+                            <p><strong>Total Retirement Income:</strong> ${NumberFormatter.formatCurrency(results.totalRetirementIncome)}</p>
+                            <p><strong>Savings Coverage:</strong> ${results.savingsCoverage.toFixed(1)}%</p>
+                        </div>
+
+                        <div class="section">
+                            <h2>Recommendations</h2>
+                            <p>${this.generateRecommendations()}</p>
+                        </div>
+                    </body>
+                    </html>
+                `;
+
+                printWindow.document.write(printContent);
+                printWindow.document.close();
+                printWindow.print();
+            }
+        }
+
+        // Initialize calculator when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            new RetirementPlanner();
+        });
+    </script>
+</body>
+</html>
